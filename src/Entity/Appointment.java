@@ -52,5 +52,42 @@ public class Appointment {
     public void complete() {
         this.status = "Completed";
     }
+
+    public String getAppointmentId() {
+        return null;
+    }
+
+    public String getPatientId() {
+
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public Object getAppointmentDate() {
+        return null;
+    }
+
+    public void setAppointmentDate(LocalDate newDate) {
+
+    }
+
+    public void setAppointmentTime(String newTime) {
+
+    }
+
+    public void setStatus(String rescheduled) {
+
+    }
 }
 

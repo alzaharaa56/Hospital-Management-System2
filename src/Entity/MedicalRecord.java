@@ -39,4 +39,16 @@ public class MedicalRecord {
         System.out.println("Test Results: " + testResults);
         System.out.println("Notes: " + notes);
     }
+
+    public Object getPatientId() {
+        return null;
+    }
+
+    public Object getDoctorId() {
+        return null;
+    }
+
+    public Object getRecordId() {
+        return null;
+    }
 }

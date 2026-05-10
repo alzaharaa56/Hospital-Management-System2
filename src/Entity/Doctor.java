@@ -51,4 +51,16 @@ public class Doctor extends Person {
     public void updateAvailability(List<String> slots) {
         this.availableSlots = slots;
     }
+
+    public String getDoctorId() {
+        return null;
+    }
+
+    public String getSpecialization() {
+        return null;
+    }
+
+    public CharSequence getAvailableSlots() {
+        return null;
+    }
 }

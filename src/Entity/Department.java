@@ -44,5 +44,21 @@ public class Department {
     public void updateBedAvailability(int availableBeds) {
         this.availableBeds = availableBeds;
     }
+
+    public String getDepartmentId() {
+        return null;
+    }
+
+    public <E> List<E> getDoctors() {
+        return null;
+    }
+
+    public <E> List<E> getNurses() {
+        return null;
+    }
+
+    public void setAvailableBeds(int availableBeds) {
+
+    }
 }
 

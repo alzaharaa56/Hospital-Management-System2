@@ -34,4 +34,16 @@ public class Nurse extends Person {
     public void assignPatient(Patient patient) {
         assignedPatients.add(patient);
     }
+
+    public String getNurseId() {
+        return null;
+    }
+
+    public String getDepartmentId() {
+        return null;
+    }
+
+    public String getShift() {
+        return null;
+    }
 }

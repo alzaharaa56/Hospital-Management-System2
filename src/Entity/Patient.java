@@ -50,5 +50,9 @@ public class Patient extends Person {
     public void updateInsurance(String newInsuranceId) {
         this.insuranceId = newInsuranceId;
     }
+
+    public String getPatientId() {
+        return null;
+    }
 }
 
