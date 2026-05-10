@@ -2,6 +2,8 @@ package Entity;
 
 import java.time.LocalDate;
 
+
+
 public class MedicalRecord {
     private String recordId;
     private String patientId;
@@ -25,28 +27,16 @@ public class MedicalRecord {
         this.notes = notes;
     }
 
-    // Getters & Setters
-    public String getRecordId() {
-        return recordId;
-    }
 
-    public void setRecordId(String recordId) {
-        this.recordId = recordId;
-    }
 
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(String doctorId) {
-        this.doctorId
+    public void displayInfo() {
+        System.out.println("Record ID: " + recordId);
+        System.out.println("Patient ID: " + patientId);
+        System.out.println("Doctor ID: " + doctorId);
+        System.out.println("Visit Date: " + visitDate);
+        System.out.println("Diagnosis: " + diagnosis);
+        System.out.println("Prescription: " + prescription);
+        System.out.println("Test Results: " + testResults);
+        System.out.println("Notes: " + notes);
     }
 }
