@@ -3,62 +3,36 @@ package Entity;
 import java.time.LocalDate;
 
 public class Appointment {
+
     private String appointmentId;
     private String patientId;
     private String doctorId;
     private LocalDate appointmentDate;
     private String appointmentTime;
-    private String status; // Scheduled/Completed/Cancelled/Rescheduled
+    private String status;
     private String reason;
     private String notes;
 
-    public Appointment(String appointmentId, String patientId, String doctorId,
-                       LocalDate appointmentDate, String appointmentTime,
-                       String status, String reason, String notes) {
-        this.appointmentId = appointmentId;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
-        this.appointmentDate = appointmentDate;
-        this.appointmentTime = appointmentTime;
-        this.status = status;
-        this.reason = reason;
+    public Appointment(String notes, String reason, String status, String appointmentTime, LocalDate appointmentDate, String doctorId, String patientId, String appointmentId) {
         this.notes = notes;
-    }
-
-
-
-    public void displayInfo() {
-        System.out.println("Appointment ID: " + appointmentId);
-        System.out.println("Patient ID: " + patientId);
-        System.out.println("Doctor ID: " + doctorId);
-        System.out.println("Date: " + appointmentDate);
-        System.out.println("Time: " + appointmentTime);
-        System.out.println("Status: " + status);
-        System.out.println("Reason: " + reason);
-        System.out.println("Notes: " + notes);
-    }
-
-
-    public void reschedule(LocalDate newDate, String newTime) {
-        this.appointmentDate = newDate;
-        this.appointmentTime = newTime;
-        this.status = "Rescheduled";
-    }
-
-    public void cancel() {
-        this.status = "Cancelled";
-    }
-
-    public void complete() {
-        this.status = "Completed";
+        this.reason = reason;
+        this.status = status;
+        this.appointmentTime = appointmentTime;
+        this.appointmentDate = appointmentDate;
+        this.doctorId = doctorId;
+        this.patientId = patientId;
+        this.appointmentId = appointmentId;
     }
 
     public String getAppointmentId() {
-        return null;
+        return appointmentId;
+    }
+
+    public void setAppointmentId(String appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
     public String getPatientId() {
-
         return patientId;
     }
 
@@ -74,20 +48,80 @@ public class Appointment {
         this.doctorId = doctorId;
     }
 
-    public Object getAppointmentDate() {
-        return null;
+    public LocalDate getAppointmentDate() {
+        return appointmentDate;
     }
 
-    public void setAppointmentDate(LocalDate newDate) {
-
+    public void setAppointmentDate(LocalDate appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
-    public void setAppointmentTime(String newTime) {
-
+    public String getAppointmentTime() {
+        return appointmentTime;
     }
 
-    public void setStatus(String rescheduled) {
-
+    public void setAppointmentTime(String appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public void displayInfo(){
+        System.out.println("Appointment ID: " + appointmentId);
+        System.out.println("Patient ID: " + patientId);
+        System.out.println("Doctor ID: " + doctorId);
+        System.out.println("Appointment Date: " + appointmentDate);
+        System.out.println("Appointment Time: " + appointmentTime);
+        System.out.println("Status: " + status);
+        System.out.println("Reason: " + reason);
+        System.out.println("Notes: " + notes);
+    }
+
+    // reschedule() method
+    public void reschedule(LocalDate newDate, String newTime) {
+
+        this.appointmentDate = newDate;
+        this.appointmentTime = newTime;
+        this.status = "Rescheduled";
+
+        System.out.println("Appointment rescheduled successfully.");
+    }
+
+
+    public void cancel() {
+
+        this.status = "Cancelled";
+
+        System.out.println("Appointment cancelled.");
+    }
+
+
+    public void complete() {
+        this.status = "Completed";
+
+        System.out.println("Appointment marked as completed.");
+    }
+
 }
-
