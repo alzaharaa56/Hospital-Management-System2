@@ -66,7 +66,7 @@ public class DepartmentService {
     public void assignDoctorToDepartment(String doctorId, String departmentId) {
         Department department = getDepartmentById(departmentId);
         if (department != null) {
-            // Assuming DoctorService is available to fetch doctor by ID
+
             Doctor doctor = new DoctorService().getDoctorById(doctorId);
             if (doctor != null) {
                 department.getDoctors().add(doctor);
@@ -81,7 +81,7 @@ public class DepartmentService {
     public void assignNurseToDepartment(String nurseId, String departmentId) {
         Department department = getDepartmentById(departmentId);
         if (department != null) {
-            // Assuming NurseService is available to fetch nurse by ID
+
             Nurse nurse = new NurseService().getNurseById(nurseId);
             if (nurse != null) {
                 department.getNurses().add(nurse);
