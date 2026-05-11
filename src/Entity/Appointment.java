@@ -13,7 +13,7 @@ public class Appointment {
     private String reason;
     private String notes;
 
-    public Appointment(String notes, String reason, String status, String appointmentTime, LocalDate appointmentDate, String doctorId, String patientId, String appointmentId) {
+    public Appointment(String notes, String reason, String status, LocalDate appointmentTime, String appointmentDate, String doctorId, String patientId, String appointmentId) {
         this.notes = notes;
         this.reason = reason;
         this.status = status;
