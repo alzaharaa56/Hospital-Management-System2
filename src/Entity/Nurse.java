@@ -35,7 +35,7 @@ public class Nurse extends Person {
     }
 
     public void assignPatient(Patient patient) {
-        assignedPatients.add(patient);
+        assignedPatients.add(String.valueOf(patient));
     }
 
     public String getNurseId() {
@@ -48,5 +48,17 @@ public class Nurse extends Person {
 
     public String getShift() {
         return null;
+    }
+
+    public void setNurseId(String s) {
+
+    }
+
+    public void setShift(String s) {
+
+    }
+
+    public void setQualification(String s) {
+
     }
 }

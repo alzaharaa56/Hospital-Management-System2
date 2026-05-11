@@ -26,10 +26,6 @@ public class Department {
         this.availableBeds = availableBeds;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
-    }
-
     public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
     }
@@ -50,16 +46,8 @@ public class Department {
         this.headDoctorId = headDoctorId;
     }
 
-    public List<Doctor> getDoctors() {
-        return doctors;
-    }
-
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
-    }
-
-    public List<Nurse> getNurses() {
-        return nurses;
     }
 
     public void setNurses(List<Nurse> nurses) {
@@ -127,8 +115,5 @@ public class Department {
         return null;
     }
 
-    public void setAvailableBeds(int availableBeds) {
-
-    }
 }
 

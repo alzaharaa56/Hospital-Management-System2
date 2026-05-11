@@ -13,6 +13,7 @@ public class Person {
     private String phoneNumber;
     private String email;
     private String address;
+    private String departmentId;
 
     public Person(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
         this.id = id;
@@ -124,5 +125,14 @@ public class Person {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, dateOfBirth, gender, phoneNumber, email, address);
+    }
+
+    public void setDepartmentId(String departmentId) {
+
+        this.departmentId = departmentId;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
     }
 }
