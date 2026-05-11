@@ -1,4 +1,4 @@
-package Entity.Doctor;
+package Entities.Doctor;
 
 import java.time.LocalDate;
 import java.util.List;

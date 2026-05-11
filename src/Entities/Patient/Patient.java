@@ -1,8 +1,8 @@
-package Entity.Patient;
+package Entities.Patient;
 
-import Entity.Appointment;
-import Entity.MedicalRecord;
-import Entity.Person;
+import Entities.Appointment;
+import Entities.MedicalRecord;
+import Entities.Person;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -43,6 +43,12 @@ public class Patient extends Person {
     }
 
     public Patient(String id, String patientFName, LocalDate dob, String patientLName, String gender, String phone, String email, String address, String patientID, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate dor, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
+
+
+    }
+
+    public <E> Patient(String id001, String omar, String khalid, LocalDate of, String male, String number, String mail, String s, String p003, String s1, List<E> penicillin, String aliHassan, LocalDate of1, String ins123, ArrayList<E> es, ArrayList<E> es1) {
+
 
 
     }

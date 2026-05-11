@@ -1,5 +1,5 @@
 package Service;
-import Entity.Appointment;
+import Entities.Appointment;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

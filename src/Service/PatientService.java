@@ -1,9 +1,9 @@
 
 package Service;
 
-import Entity.Appointment;
-import Entity.MedicalRecord;
-import Entity.Patient.Patient;
+import Entities.Appointment;
+import Entities.MedicalRecord;
+import Entities.Patient.Patient;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class PatientService {
     }
 
 
-    public Patient addPatient(){
+    public Patient addPatient(String ali, String hassan, String number, String s, String mail) {
 
         System.out.println("Enter patient id :");
         String id = scanner.nextLine();
@@ -86,17 +86,17 @@ public class PatientService {
             }
         }
 
-        Patient patient = new Patient(id,patientFName,DOB,patientLName,gender,phone,email,address,patientID,bloodGroup,allergies,emergencyContact,DOR,medicalRecords,insuranceId,appointments);
+        Patient patient = new Patient(id, patientFName, DOB, patientLName, gender, phone, email, address, patientID, bloodGroup, allergies, emergencyContact, DOR, medicalRecords, insuranceId, appointments);
 
         return patient;
     }
 
-    public List<Patient> addPatients(){
+    public List<Patient> addPatients() {
 
         Boolean continueFlag = true;
         while (continueFlag) {
 
-            patients.add(addPatient());
+            patients.add(addPatient("Ali", "Hassan", "9876543210", "O+", "sara@example.com"));
             System.out.println("Patient add successfully");
 
             System.out.println("Enter c to add more , and q to exit");
@@ -109,11 +109,11 @@ public class PatientService {
     }
 
 
-    public void editPatient(String patientId){
+    public void editPatient(String patientId) {
 
-        for(Patient patient: patients ){
+        for (Patient patient : patients) {
 
-            if(patient.getPatientId().equals(patientId)){
+            if (patient.getPatientId().equals(patientId)) {
 
                 System.out.println("Enter updated patient id :");
                 patient.setId(scanner.nextLine());
@@ -180,7 +180,7 @@ public class PatientService {
     }
 
 
-    public void removePatient(String patientId){
+    public void removePatient(String patientId) {
 
         patients.removeIf(b -> b.getPatientId() == patientId);
         System.out.println("patient removed successfully");
@@ -190,10 +190,10 @@ public class PatientService {
     }
 
 
-    public Patient getPatientById(String patientId){
+    public Patient getPatientById(String patientId) {
 
-        for(Patient patient: patients){
-            if(patient.getPatientId().equals(patientId)){
+        for (Patient patient : patients) {
+            if (patient.getPatientId().equals(patientId)) {
                 return patient;
             }
 
@@ -203,9 +203,9 @@ public class PatientService {
     }
 
 
-    public void displayAllPatients(){
+    public void displayAllPatients() {
 
-        for(Patient patient: patients){
+        for (Patient patient : patients) {
             patient.displayInfo();
         }
 
@@ -217,92 +217,66 @@ public class PatientService {
         boolean found = false;
 
 
-        for(Patient patient : patients){
+        for (Patient patient : patients) {
 
             String fullName = patient.getFirstName() + " " + patient.getLastName();
 
-            if(fullName.toLowerCase().contains(name.toLowerCase())){
+            if (fullName.toLowerCase().contains(name.toLowerCase())) {
                 patient.displayInfo();
                 found = true;
             }
         }
 
-        if(!found){
+        if (!found) {
             System.out.println("No patients found with this name");
         }
 
     }
 
-    private static List<Patient> patient = new ArrayList<>();
+    public class PatientServiceDemo {
+        public static void main(String[] args) {
+            PatientService service = new PatientService();
 
-    // ---------------- Overloaded addPatient methods ----------------
-    public void addPatient(String firstName, String lastName, String phone) {
-        Patient patient = new Patient(
-                "GEN-" + (patients.size() + 1), firstName, lastName, null,
-                "Unknown", phone, null, "Unknown",
-                "P-" + (patients.size() + 1), "Unknown", new ArrayList<>(),
-                "N/A", null, "N/A", String.valueOf(new ArrayList<>()), new ArrayList<>()
-        );
-        patients.add(patient);
-    }
+            // Add patients using different overloads
+            service.addPatient("Ali", "Hassan", "9876543210", "O+", "sara@example.com");
+            service.addPatient("Sara", "Ahmed", "9123456789", "O+", "sara@example.com");
 
-    public void addPatient(String firstName, String lastName, String phone, String bloodGroup, String email) {
-        Patient patient = new Patient(
-                "GEN-" + (patients.size() + 1), firstName, lastName, null,
-                "Unknown", phone, email, "Unknown",
-                "P-" + (patients.size() + 1), bloodGroup, new ArrayList<>(),
-                "N/A", null, "N/A", new String(), new ArrayList<>()
-        );
-        patients.add(patient);
-    }
+            Patient fullPatient = new Patient("ID001", "Omar", "Khalid", LocalDate.of(1990, 5, 12),
+                    "Male", "999888777", "omar@example.com", "Muscat, Oman",
+                    "P003", "A+", List.of("Penicillin"), "Ali Hassan",
+                    LocalDate.of(2026, 5, 10), "INS123", new ArrayList<>(), new ArrayList<>());
+            service.addPatient(fullPatient);
 
-    public void addPatient(Patient patient) {
-        patients.add(patient);
-    }
+            // Display all patients
+            System.out.println("---- All Patients ----");
+            service.displayPatients(2);
 
-    // ---------------- Overloaded searchPatients methods ----------------
-    public List<Patient> searchPatients(String keyword) {
-        List<Patient> results = new ArrayList<>();
-        for (Patient p : patients) {
-            if (p.toString().toLowerCase().contains(keyword.toLowerCase())) {
-                results.add(p);
-            }
-        }
-        return results;
-    }
+            // Display filtered patients
+            System.out.println("---- Filtered Patients (Sara) ----");
+            service.displayPatients(Integer.parseInt("Sara"));
 
-    public List<Patient> searchPatients(String firstName, String lastName) {
-        List<Patient> results = new ArrayList<>();
-        for (Patient p : patients) {
-            if (p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName)) {
-                results.add(p);
-            }
-        }
-        return results;
-    }
+            // Display limited patients
+            System.out.println("---- First 2 Patients ----");
+            service.displayPatients(2);
 
-    // ---------------- Overloaded displayPatients methods ----------------
-    public void displayPatients() {
-        for (Patient p : patients) {
-            p.displayInfo();
-            System.out.println("-------------------");
+            // Search patients
+            System.out.println("---- Search by Keyword (Omar) ----");
+            List<Patient> results = service.searchPatients("Omar");
+            results.forEach(Patient::displayInfo);
         }
     }
 
-    public void displayPatients(String filter) {
-        for (Patient p : patients) {
-            if (p.toString().toLowerCase().contains(filter.toLowerCase())) {
-                p.displayInfo();
-                System.out.println("-------------------");
-            }
-        }
+    private List<Patient> searchPatients(String omar) {
+        return null;
     }
 
-    public void displayPatients(int limit) {
-        for (int i = 0; i < Math.min(limit, patients.size()); i++) {
-            patients.get(i).displayInfo();
-            System.out.println("-------------------");
-        }
+    private void displayPatients(int i) {
+
+    }
+
+    private void addPatient(Patient fullPatient) {
+
     }
 }
+
 

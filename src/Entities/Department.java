@@ -1,6 +1,6 @@
-package Entity;
+package Entities;
 
-import Entity.Doctor.Doctor;
+import Entities.Doctor.Doctor;
 
 import java.util.List;
 

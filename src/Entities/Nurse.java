@@ -1,6 +1,6 @@
-package Entity;
+package Entities;
 
-import Entity.Patient.Patient;
+import Entities.Patient.Patient;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

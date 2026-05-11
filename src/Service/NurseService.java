@@ -1,6 +1,6 @@
 package Service;
 
-import Entity.Nurse;
+import Entities.Nurse;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

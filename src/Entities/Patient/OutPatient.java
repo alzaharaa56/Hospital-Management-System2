@@ -1,7 +1,7 @@
-package Entity.Patient;
+package Entities.Patient;
 
-import Entity.Appointment;
-import Entity.MedicalRecord;
+import Entities.Appointment;
+import Entities.MedicalRecord;
 
 import java.time.LocalDate;
 import java.util.List;
