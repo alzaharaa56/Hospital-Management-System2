@@ -1,7 +1,6 @@
 package Entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 public class Person {
@@ -15,7 +14,7 @@ public class Person {
     private String address;
     private String departmentId;
 
-    public Person(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
+    public Person() {
         this.id = id;
         this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
@@ -24,6 +23,9 @@ public class Person {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    public Person(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String departmentId, double consultationFee) {
     }
 
     public String getId() {

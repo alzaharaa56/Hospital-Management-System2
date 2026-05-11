@@ -16,7 +16,7 @@ public class Nurse extends Person {
 
     // Constructor with constructor chaining
     public Nurse(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String nurseId, String departmentId, String shift, String qualification, List<String> assignedPatients) {
-        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
+        super();
         this.nurseId = nurseId;
         this.departmentId = departmentId;
         this.shift = shift;

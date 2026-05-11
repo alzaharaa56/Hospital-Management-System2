@@ -1,10 +1,8 @@
 package Entity;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Patient extends Person {
 
@@ -18,7 +16,7 @@ public class Patient extends Person {
     private List <Appointment>appointments;
 
     public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
-        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
+        super();
 
         this.patientId = patientId;
         this.bloodGroup = bloodGroup;
