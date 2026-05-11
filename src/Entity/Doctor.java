@@ -28,6 +28,10 @@ public class Doctor extends Person{
         this.assignedPatients =new ArrayList<>();
     }
 
+    public Doctor(String id, int experienceYears) {
+
+    }
+
     public String getDoctorId() {
         return doctorId;
     }
