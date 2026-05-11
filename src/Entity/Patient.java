@@ -129,4 +129,7 @@ public class Patient extends Person {
         System.out.println("Insurance updated.");
     }
 
+    protected void getDetails() {
+
+    }
 }

@@ -14,15 +14,15 @@ public class Doctor extends Person{
     private List<String> availableSlots;
     private List<String> assignedPatients;
 
-    public Doctor(String id, String firstName) {
-        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
+    public Doctor(String id, int experienceYears) {
+        super(id, firstName, getDateOfBirth(), lastName, gender, getPhoneNumber(), email, address);
 
-        this.doctorId = doctorId;
-        this.specialization = specialization;
-        this.qualification = qualification;
-        this.experienceYears = experienceYears;
-        this.departmentId = departmentId;
-        this.consultationFee = consultationFee;
+        this.doctorId = this.doctorId;
+        this.specialization = this.specialization;
+        this.qualification = this.qualification;
+        this.experienceYears = this.experienceYears;
+        this.departmentId = this.departmentId;
+        this.consultationFee = this.consultationFee;
         this.availableSlots = new ArrayList<>();
         this.assignedPatients =new ArrayList<>();
     }
@@ -125,5 +125,9 @@ public class Doctor extends Person{
     public void updateAvailability(List<String> newSlots) {
         availableSlots = newSlots;
         System.out.println("Availability updated.");
+    }
+
+    protected void displayDetails() {
+
     }
 }

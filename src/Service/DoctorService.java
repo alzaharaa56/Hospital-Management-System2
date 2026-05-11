@@ -60,7 +60,10 @@ public class DoctorService {
         System.out.println("Enter Doctor consultationFee :");
         double consultationFee = scanner.nextDouble();
 
-        Doctor doctor = new Doctor(id,doctorFName);
+        String lastName = "";
+        LocalDate dob = null;
+        List<String> slots = List.of();
+        Doctor doctor = new Doctor(id, experienceYears);
         return doctor;
     }
 
