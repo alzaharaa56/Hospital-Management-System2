@@ -32,22 +32,21 @@ public class Nurse extends Person {
         System.out.println("Department ID: " + departmentId);
         System.out.println("Shift: " + shift);
         System.out.println("Qualification: " + qualification);
-        System.out.println("Assigned Patients: " + assignedPatients);
     }
 
-    // Method to assign patient
-    public void assignPatient(String patientId ,String nurseId ) {
-        assignedPatients.add(patientId);
-        System.out.println(patientId + " assigned to Nurse " + nurseId);
+    public void assignPatient(Patient patient) {
+        assignedPatients.add(patient);
     }
 
-
-    public void removePatient(String patientId ,String nurseId) {
-        if (assignedPatients.remove(patientId)) {
-            System.out.println(patientId + " removed from Nurse " + nurseId);
-        } else {
-            System.out.println("Patient not found.");
-        }
+    public String getNurseId() {
+        return null;
     }
 
+    public String getDepartmentId() {
+        return null;
+    }
+
+    public String getShift() {
+        return null;
+    }
 }

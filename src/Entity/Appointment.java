@@ -110,6 +110,7 @@ public class Appointment {
     }
 
 
+    // cancel() method
     public void cancel() {
 
         this.status = "Cancelled";
@@ -118,6 +119,7 @@ public class Appointment {
     }
 
 
+    // Complete Appointment
     public void complete() {
         this.status = "Completed";
 

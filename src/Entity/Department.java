@@ -93,7 +93,6 @@ public class Department {
         System.out.println("Available Beds: " + availableBeds);
     }
 
-
     public void assignDoctor(Doctor doctor) {
 
         if (!doctors.contains(doctor)) {
@@ -105,6 +104,7 @@ public class Department {
     }
 
 
+    // Assign nurse
     public void assignNurse(Nurse nurse) {
 
         if (!nurses.contains(nurse)) {
@@ -115,15 +115,20 @@ public class Department {
         }
     }
 
-
-    public void updateBedAvailability(int beds) {
-
-        if (beds >= 0 && beds <= bedCapacity) {
-            availableBeds = beds;
-            System.out.println("Available beds updated.");
-        } else {
-            System.out.println("Invalid bed count.");
-        }
+    public String getDepartmentId() {
+        return null;
     }
 
+    public <E> List<E> getDoctors() {
+        return null;
+    }
+
+    public <E> List<E> getNurses() {
+        return null;
+    }
+
+    public void setAvailableBeds(int availableBeds) {
+
+    }
 }
+
