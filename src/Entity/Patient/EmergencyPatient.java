@@ -1,8 +1,4 @@
-package Entity;
-
-import java.time.LocalDate;
-import java.util.List;
-
+package Entity.Patient;
 
 import java.time.LocalDate;
 import java.util.List;

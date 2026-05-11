@@ -3,7 +3,7 @@ package Service;
 
 import Entity.Appointment;
 import Entity.MedicalRecord;
-import Entity.Patient;
+import Entity.Patient.Patient;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

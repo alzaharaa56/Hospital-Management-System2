@@ -1,10 +1,10 @@
-package Entity;
+package Entity.Doctor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Consultant extends Doctor{
+public class Consultant extends Doctor {
 
     private List<String> consultationTypes;
     private boolean onlineConsultationAvailable;

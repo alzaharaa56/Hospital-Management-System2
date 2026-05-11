@@ -1,6 +1,6 @@
 package Service;
 
-import Entity.Doctor;
+import Entity.Doctor.Doctor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

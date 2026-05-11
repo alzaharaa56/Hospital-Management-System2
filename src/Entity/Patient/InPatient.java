@@ -1,10 +1,13 @@
-package Entity;
+package Entity.Patient;
+
+import Entity.Appointment;
+import Entity.MedicalRecord;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class InPatient extends Patient{
+public class InPatient extends Patient {
 
     private LocalDate admissionDate;
     private LocalDate dischargeDate;

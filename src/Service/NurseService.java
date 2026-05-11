@@ -1,6 +1,5 @@
 package Service;
 
-import Entity.Doctor;
 import Entity.Nurse;
 
 import java.time.LocalDate;

@@ -1,9 +1,12 @@
-package Entity;
+package Entity.Patient;
+
+import Entity.Appointment;
+import Entity.MedicalRecord;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class OutPatient extends Patient{
+public class OutPatient extends Patient {
 
     private int visitCount;
     private LocalDate lastVisitDate;

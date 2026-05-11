@@ -1,4 +1,8 @@
-package Entity;
+package Entity.Patient;
+
+import Entity.Appointment;
+import Entity.MedicalRecord;
+import Entity.Person;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package Entity;
 
+import Entity.Doctor.Doctor;
+
 import java.util.List;
 
 public class Department {

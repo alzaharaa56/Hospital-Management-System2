@@ -1,10 +1,10 @@
-package Entity;
+package Entity.Doctor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Surgeon extends Doctor{
+public class Surgeon extends Doctor {
 
     private int surgeriesPerformed;
     private List<String> surgeryTypes;
