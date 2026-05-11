@@ -28,6 +28,10 @@ public class Patient extends Person {
         this.appointments = new ArrayList<>();
     }
 
+    public Patient(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, String emergencyContact, String insuranceId) {
+
+    }
+
     public String getPatientId() {
         return patientId;
     }
