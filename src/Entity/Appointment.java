@@ -17,8 +17,8 @@ public class Appointment {
         this.notes = notes;
         this.reason = reason;
         this.status = status;
-        this.appointmentTime = appointmentTime;
-        this.appointmentDate = appointmentDate;
+        this.appointmentTime = String.valueOf(appointmentTime);
+        this.appointmentDate = LocalDate.parse(appointmentDate);
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.appointmentId = appointmentId;

@@ -1,7 +1,6 @@
 package Service;
 
 import Entity.Doctor;
-import Entity.Patient;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class DoctorService {
         System.out.println("Enter Doctor consultationFee :");
         double consultationFee = scanner.nextDouble();
 
-        Doctor doctor = new Doctor(id,doctorFName,DOB,doctorLName,gender,phone,email,address,doctorId,specialization,qualification,experienceYears,departmentId,consultationFee,availableSlots,assignedPatients);
+        Doctor doctor = new Doctor(id,doctorFName);
         return doctor;
     }
 

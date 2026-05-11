@@ -10,19 +10,19 @@ public class Person {
     private LocalDate dateOfBirth;
     private String gender;
     private String phoneNumber;
-    private String email;
-    private String address;
+    String email;
+    String address;
     private String departmentId;
 
-    public Person() {
-        this.id = id;
-        this.firstName = firstName;
-        this.dateOfBirth = dateOfBirth;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.address = address;
+    public Person(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
+        this.id = this.id;
+        this.firstName = this.firstName;
+        this.dateOfBirth = this.dateOfBirth;
+        this.lastName = this.lastName;
+        this.gender = this.gender;
+        this.phoneNumber = this.phoneNumber;
+        this.email = this.email;
+        this.address = this.address;
     }
 
     public Person(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String departmentId, double consultationFee) {
