@@ -1,5 +1,5 @@
 package Service;
-import Entities.MedicalRecord;
+import Entity.MedicalRecord;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

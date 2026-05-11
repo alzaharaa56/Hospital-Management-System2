@@ -1,12 +1,10 @@
-package Entities.Patient;
+package Entity;
 
-import Entities.Appointment;
-import Entities.MedicalRecord;
-import Entities.Person;
-
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Patient extends Person {
 
@@ -19,7 +17,7 @@ public class Patient extends Person {
     private List<MedicalRecord> medicalRecords;
     private List <Appointment>appointments;
 
-    public Patient(String id, String firstName, String dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, String medicalRecords, String insuranceId, List<Appointment> appointments) {
+    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
 
         this.patientId = patientId;
@@ -32,24 +30,7 @@ public class Patient extends Person {
         this.appointments = new ArrayList<>();
     }
 
-    public Patient(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, String emergencyContact, String insuranceId) {
-
-        super(id, firstName, String.valueOf(dateOfBirth), lastName, gender, phoneNumber, email, address);
-    }
-
-    public Patient(String id, String fName, String lName, LocalDate dob, String gender, String phone, String email, String address, String patientId, String bloodGroup, LocalDate registrationDate, String emergencyContact, List<String> allergies) {
-        super();
-
-    }
-
-    public Patient(String id, String patientFName, LocalDate dob, String patientLName, String gender, String phone, String email, String address, String patientID, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate dor, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
-
-
-    }
-
-    public <E> Patient(String id001, String omar, String khalid, LocalDate of, String male, String number, String mail, String s, String p003, String s1, List<E> penicillin, String aliHassan, LocalDate of1, String ins123, ArrayList<E> es, ArrayList<E> es1) {
-
-
+    public Patient(){
 
     }
 
@@ -149,7 +130,4 @@ public class Patient extends Person {
         System.out.println("Insurance updated.");
     }
 
-    protected void getDetails() {
-
-    }
 }

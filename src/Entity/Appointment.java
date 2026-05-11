@@ -1,4 +1,4 @@
-package Entities;
+package Entity;
 
 import java.time.LocalDate;
 
@@ -13,12 +13,12 @@ public class Appointment {
     private String reason;
     private String notes;
 
-    public Appointment(String notes, String reason, String status, LocalDate appointmentTime, String appointmentDate, String doctorId, String patientId, String appointmentId) {
+    public Appointment(String notes, String reason, String status, String appointmentTime, LocalDate appointmentDate, String doctorId, String patientId, String appointmentId) {
         this.notes = notes;
         this.reason = reason;
         this.status = status;
-        this.appointmentTime = String.valueOf(appointmentTime);
-        this.appointmentDate = LocalDate.parse(appointmentDate);
+        this.appointmentTime = appointmentTime;
+        this.appointmentDate = appointmentDate;
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.appointmentId = appointmentId;
@@ -109,7 +109,6 @@ public class Appointment {
         System.out.println("Appointment rescheduled successfully.");
     }
 
-
     // cancel() method
     public void cancel() {
 
@@ -117,7 +116,6 @@ public class Appointment {
 
         System.out.println("Appointment cancelled.");
     }
-
 
     // Complete Appointment
     public void complete() {

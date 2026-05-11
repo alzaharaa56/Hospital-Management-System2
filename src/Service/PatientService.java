@@ -1,9 +1,8 @@
-
 package Service;
 
-import Entities.Appointment;
-import Entities.MedicalRecord;
-import Entities.Patient.Patient;
+import Entity.Appointment;
+import Entity.MedicalRecord;
+import Entity.Patient;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,21 +12,14 @@ import java.util.Scanner;
 public class PatientService {
     Scanner scanner = new Scanner(System.in);
 
-
     static List<Patient> patients = new ArrayList<>();
     List<MedicalRecord> medicalRecords = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
 
-    public static List<Patient> getPatients() {
-        return patients;
-    }
 
-    public static void setPatients(List<Patient> patients) {
-        PatientService.patients = patients;
-    }
+    //add new patient
 
-
-    public Patient addPatient(String ali, String hassan, String number, String s, String mail) {
+    public Patient addPatient() {
 
         System.out.println("Enter patient id :");
         String id = scanner.nextLine();
@@ -96,7 +88,7 @@ public class PatientService {
         Boolean continueFlag = true;
         while (continueFlag) {
 
-            patients.add(addPatient("Ali", "Hassan", "9876543210", "O+", "sara@example.com"));
+            patients.add(addPatient());
             System.out.println("Patient add successfully");
 
             System.out.println("Enter c to add more , and q to exit");
@@ -108,15 +100,85 @@ public class PatientService {
 
     }
 
+    // Overload addPatient(String firstName, String lastName, String phone) - minimal info
 
-    public void editPatient(String patientId) {
+    public void addPatient(String firstName, String lastName, String phone) {
+
+        Patient patient = new Patient();
+
+        patient.setFirstName(firstName);
+        patient.setLastName(lastName);
+        patient.setPhoneNumber(phone);
+
+        patients.add(patient);
+        System.out.println("Patient add successfully");
+
+    }
+
+    // Overload addPatient(String firstName, String lastName, String phone, String bloodGroup, String email)
+
+    public void addPatient(String firstName, String lastName, String phone, String bloodGroup, String email) {
+        Patient patient = new Patient();
+
+        patient.setFirstName(firstName);
+        patient.setLastName(lastName);
+        patient.setPhoneNumber(phone);
+        patient.setBloodGroup(bloodGroup);
+        patient.setEmail(email);
+
+        patients.add(patient);
+        System.out.println("Patient add successfully");
+
+    }
+
+    // search Patients by any field
+
+    public List<Patient> searchPatients(String keyword) {
+
+        List<Patient> matchedPatients = new ArrayList<>();
+
 
         for (Patient patient : patients) {
+            if (patient.getPatientId().toLowerCase().contains(keyword.toLowerCase())
+                    || patient.getFirstName().toLowerCase().contains(keyword.toLowerCase())
+                    || patient.getLastName().toLowerCase().contains(keyword.toLowerCase())
+                    || patient.getPhoneNumber().contains(keyword)
+                    || patient.getBloodGroup().toLowerCase().contains(keyword.toLowerCase())
+                    || patient.getEmail().toLowerCase().contains(keyword.toLowerCase())) {
 
-            if (patient.getPatientId().equals(patientId)) {
+                matchedPatients.add(patient);
 
-                System.out.println("Enter updated patient id :");
-                patient.setId(scanner.nextLine());
+            }
+
+        }
+        return matchedPatients;
+    }
+
+    // search by name
+    public List<Patient> searchPatients(String firstName, String lastName) {
+
+        List<Patient> matchedPatients = new ArrayList<>();
+        for (Patient patient : patients) {
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+    //update existing patient
+    public void editPatient(String patientId){
+
+        for(Patient patient: patients ){
+
+            if(patient.getPatientId().equals(patientId)){
 
                 System.out.println("Enter updated patient first name :");
                 patient.setFirstName(scanner.nextLine());
@@ -140,9 +202,6 @@ public class PatientService {
 
                 System.out.println("Enter updated patient address :");
                 patient.setAddress(scanner.nextLine());
-
-                System.out.println("Enter updated patient id :");
-                patient.setPatientId(scanner.nextLine());
 
                 System.out.println("Enter updated patient blood Group :");
                 patient.setBloodGroup(scanner.nextLine());
@@ -173,14 +232,16 @@ public class PatientService {
                         continueFlag = false;
                     }
                 }
+                System.out.println("Patient updated successfully");
+
 
             }
         }
 
     }
 
-
-    public void removePatient(String patientId) {
+    // remove patient by ID
+    public void removePatient(String patientId){
 
         patients.removeIf(b -> b.getPatientId() == patientId);
         System.out.println("patient removed successfully");
@@ -189,11 +250,11 @@ public class PatientService {
 
     }
 
+    //retrieve patient
+    public Patient getPatientById(String patientId){
 
-    public Patient getPatientById(String patientId) {
-
-        for (Patient patient : patients) {
-            if (patient.getPatientId().equals(patientId)) {
+        for(Patient patient: patients){
+            if(patient.getPatientId().equals(patientId)){
                 return patient;
             }
 
@@ -202,81 +263,35 @@ public class PatientService {
         return null;
     }
 
+    //display all patients with formatted output
+    public void displayAllPatients(){
 
-    public void displayAllPatients() {
-
-        for (Patient patient : patients) {
+        for(Patient patient: patients){
             patient.displayInfo();
         }
 
     }
 
-
+    //search functionality
     public void searchPatientsByName(String name) {
 
         boolean found = false;
 
 
-        for (Patient patient : patients) {
+        for(Patient patient : patients){
 
             String fullName = patient.getFirstName() + " " + patient.getLastName();
 
-            if (fullName.toLowerCase().contains(name.toLowerCase())) {
+            if(fullName.toLowerCase().contains(name.toLowerCase())){
                 patient.displayInfo();
                 found = true;
             }
         }
 
-        if (!found) {
+        if(!found){
             System.out.println("No patients found with this name");
         }
 
     }
 
-    public class PatientServiceDemo {
-        public static void main(String[] args) {
-            PatientService service = new PatientService();
-
-            // Add patients using different overloads
-            service.addPatient("Ali", "Hassan", "9876543210", "O+", "sara@example.com");
-            service.addPatient("Sara", "Ahmed", "9123456789", "O+", "sara@example.com");
-
-            Patient fullPatient = new Patient("ID001", "Omar", "Khalid", LocalDate.of(1990, 5, 12),
-                    "Male", "999888777", "omar@example.com", "Muscat, Oman",
-                    "P003", "A+", List.of("Penicillin"), "Ali Hassan",
-                    LocalDate.of(2026, 5, 10), "INS123", new ArrayList<>(), new ArrayList<>());
-            service.addPatient(fullPatient);
-
-            // Display all patients
-            System.out.println("---- All Patients ----");
-            service.displayPatients(2);
-
-            // Display filtered patients
-            System.out.println("---- Filtered Patients (Sara) ----");
-            service.displayPatients(Integer.parseInt("Sara"));
-
-            // Display limited patients
-            System.out.println("---- First 2 Patients ----");
-            service.displayPatients(2);
-
-            // Search patients
-            System.out.println("---- Search by Keyword (Omar) ----");
-            List<Patient> results = service.searchPatients("Omar");
-            results.forEach(Patient::displayInfo);
-        }
-    }
-
-    private List<Patient> searchPatients(String omar) {
-        return null;
-    }
-
-    private void displayPatients(int i) {
-
-    }
-
-    private void addPatient(Patient fullPatient) {
-
-    }
 }
-
-

@@ -1,6 +1,7 @@
-package Entities;
+package Entity;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 public class Person {
@@ -8,24 +9,24 @@ public class Person {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
-    String gender;
+    private String gender;
     private String phoneNumber;
-    String email;
-    String address;
-    private String departmentId;
+    private String email;
+    private String address;
 
-    public Person(String id, String firstName, String dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
-        this.id = this.id;
-        this.firstName = this.firstName;
-        this.dateOfBirth = this.dateOfBirth;
-        this.lastName = this.lastName;
-        this.gender = this.gender;
-        this.phoneNumber = this.phoneNumber;
-        this.email = this.email;
-        this.address = this.address;
+    public Person(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.dateOfBirth = dateOfBirth;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
     }
 
-    public Person() {
+    public Person(){
+
     }
 
     public String getId() {
@@ -93,7 +94,7 @@ public class Person {
     }
 
     public void displayInfo(){
-        System.out.println(" full name : " + firstName + lastName);
+        System.out.println(" full name : " + firstName + " "+lastName);
         System.out.println(" dateOfBirth : " + dateOfBirth);
         System.out.println(" gender : " + gender);
         System.out.println(" phoneNumber : " + phoneNumber);
@@ -105,7 +106,16 @@ public class Person {
 
     @Override
     public String toString() {
-        return STR."Person{id='\{id}', firstName='\{firstName}', lastName='\{lastName}', dateOfBirth=\{dateOfBirth}, gender='\{gender}', phoneNumber='\{phoneNumber}', email='\{email}', address='\{address}'}";
+        return "Person{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender='" + gender + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 
     @Override
@@ -118,14 +128,5 @@ public class Person {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, dateOfBirth, gender, phoneNumber, email, address);
-    }
-
-    public void setDepartmentId(String departmentId) {
-
-        this.departmentId = departmentId;
-    }
-
-    public String getDepartmentId() {
-        return departmentId;
     }
 }

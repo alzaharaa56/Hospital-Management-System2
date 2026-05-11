@@ -1,5 +1,5 @@
 package Service;
-import Entities.Department;
+import Entity.Department;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
