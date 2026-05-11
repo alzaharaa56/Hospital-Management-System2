@@ -14,7 +14,7 @@ public class Person {
     String address;
     private String departmentId;
 
-    public Person(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
+    public Person(String id, String firstName, String dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
         this.id = this.id;
         this.firstName = this.firstName;
         this.dateOfBirth = this.dateOfBirth;

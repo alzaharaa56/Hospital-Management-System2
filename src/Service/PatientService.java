@@ -13,11 +13,18 @@ import java.util.Scanner;
 public class PatientService {
     Scanner scanner = new Scanner(System.in);
 
+
     static List<Patient> patients = new ArrayList<>();
     List<MedicalRecord> medicalRecords = new ArrayList<>();
     List<Appointment> appointments = new ArrayList<>();
 
+    public static List<Patient> getPatients() {
+        return patients;
+    }
 
+    public static void setPatients(List<Patient> patients) {
+        PatientService.patients = patients;
+    }
 
 
     public Patient addPatient(){
@@ -226,4 +233,76 @@ public class PatientService {
 
     }
 
+    private static List<Patient> patient = new ArrayList<>();
+
+    // ---------------- Overloaded addPatient methods ----------------
+    public void addPatient(String firstName, String lastName, String phone) {
+        Patient patient = new Patient(
+                "GEN-" + (patients.size() + 1), firstName, lastName, null,
+                "Unknown", phone, null, "Unknown",
+                "P-" + (patients.size() + 1), "Unknown", new ArrayList<>(),
+                "N/A", null, "N/A", String.valueOf(new ArrayList<>()), new ArrayList<>()
+        );
+        patients.add(patient);
+    }
+
+    public void addPatient(String firstName, String lastName, String phone, String bloodGroup, String email) {
+        Patient patient = new Patient(
+                "GEN-" + (patients.size() + 1), firstName, lastName, null,
+                "Unknown", phone, email, "Unknown",
+                "P-" + (patients.size() + 1), bloodGroup, new ArrayList<>(),
+                "N/A", null, "N/A", new String(), new ArrayList<>()
+        );
+        patients.add(patient);
+    }
+
+    public void addPatient(Patient patient) {
+        patients.add(patient);
+    }
+
+    // ---------------- Overloaded searchPatients methods ----------------
+    public List<Patient> searchPatients(String keyword) {
+        List<Patient> results = new ArrayList<>();
+        for (Patient p : patients) {
+            if (p.toString().toLowerCase().contains(keyword.toLowerCase())) {
+                results.add(p);
+            }
+        }
+        return results;
+    }
+
+    public List<Patient> searchPatients(String firstName, String lastName) {
+        List<Patient> results = new ArrayList<>();
+        for (Patient p : patients) {
+            if (p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName)) {
+                results.add(p);
+            }
+        }
+        return results;
+    }
+
+    // ---------------- Overloaded displayPatients methods ----------------
+    public void displayPatients() {
+        for (Patient p : patients) {
+            p.displayInfo();
+            System.out.println("-------------------");
+        }
+    }
+
+    public void displayPatients(String filter) {
+        for (Patient p : patients) {
+            if (p.toString().toLowerCase().contains(filter.toLowerCase())) {
+                p.displayInfo();
+                System.out.println("-------------------");
+            }
+        }
+    }
+
+    public void displayPatients(int limit) {
+        for (int i = 0; i < Math.min(limit, patients.size()); i++) {
+            patients.get(i).displayInfo();
+            System.out.println("-------------------");
+        }
+    }
 }
+
