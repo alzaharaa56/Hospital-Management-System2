@@ -1,5 +1,6 @@
 package Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Department {
@@ -20,10 +21,14 @@ public class Department {
         this.departmentId = departmentId;
         this.departmentName = departmentName;
         this.headDoctorId = headDoctorId;
-        this.doctors = doctors;
-        this.nurses = nurses;
+        this.doctors = new ArrayList<>();
+        this.nurses = new ArrayList<>();
         this.bedCapacity = bedCapacity;
         this.availableBeds = availableBeds;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
     }
 
     public void setDepartmentId(String departmentId) {
@@ -46,8 +51,16 @@ public class Department {
         this.headDoctorId = headDoctorId;
     }
 
+    public List<Doctor> getDoctors() {
+        return doctors;
+    }
+
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
+    }
+
+    public List<Nurse> getNurses() {
+        return nurses;
     }
 
     public void setNurses(List<Nurse> nurses) {
@@ -81,6 +94,7 @@ public class Department {
         System.out.println("Available Beds: " + availableBeds);
     }
 
+    // Assign doctor
     public void assignDoctor(Doctor doctor) {
 
         if (!doctors.contains(doctor)) {
@@ -90,7 +104,6 @@ public class Department {
             System.out.println("Doctor already assigned.");
         }
     }
-
 
     // Assign nurse
     public void assignNurse(Nurse nurse) {
@@ -103,17 +116,15 @@ public class Department {
         }
     }
 
-    public String getDepartmentId() {
-        return null;
-    }
+    // Update bed availability
+    public void updateBedAvailability(int beds) {
 
-    public <E> List<E> getDoctors() {
-        return null;
-    }
-
-    public <E> List<E> getNurses() {
-        return null;
+        if (beds >= 0 && beds <= bedCapacity) {
+            availableBeds = beds;
+            System.out.println("Available beds updated.");
+        } else {
+            System.out.println("Invalid bed count.");
+        }
     }
 
 }
-

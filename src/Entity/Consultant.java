@@ -1,130 +1,85 @@
 package Entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Department {
+public class Consultant extends Doctor{
 
-    // Fields
-    private String departmentId;
-    private String departmentName;
-    private String headDoctorId;
-    private List<Doctor> doctors;
-    private List<Nurse> nurses;
-    private int bedCapacity;
-    private int availableBeds;
+    private List<String> consultationTypes;
+    private boolean onlineConsultationAvailable;
+    private int consultationDuration; // int - in minutes
 
+    public Consultant(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String qualification, int experienceYears, String departmentId, double consultationFee, List<String> availableSlots, List<String> assignedPatients, List<String> consultationTypes, boolean onlineConsultationAvailable, int consultationDuration) {
 
-    // full constructor
-    public Department(String departmentId, String departmentName, String headDoctorId, List<Doctor> doctors, List<Nurse> nurses, int bedCapacity, int availableBeds) {
+        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address, doctorId, specialization, qualification, experienceYears, departmentId, consultationFee, availableSlots, assignedPatients);
 
-        this.departmentId = departmentId;
-        this.departmentName = departmentName;
-        this.headDoctorId = headDoctorId;
-        this.doctors = new ArrayList<>();
-        this.nurses = new ArrayList<>();
-        this.bedCapacity = bedCapacity;
-        this.availableBeds = availableBeds;
+        this.consultationTypes = new ArrayList<>();
+        this.onlineConsultationAvailable = onlineConsultationAvailable;
+        this.consultationDuration = consultationDuration;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
+    public List<String> getConsultationTypes() {
+        return consultationTypes;
     }
 
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
+    public void setConsultationTypes(List<String> consultationTypes) {
+        this.consultationTypes = consultationTypes;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public boolean isOnlineConsultationAvailable() {
+        return onlineConsultationAvailable;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setOnlineConsultationAvailable(boolean onlineConsultationAvailable) {
+        this.onlineConsultationAvailable = onlineConsultationAvailable;
     }
 
-    public String getHeadDoctorId() {
-        return headDoctorId;
+    public int getConsultationDuration() {
+        return consultationDuration;
     }
 
-    public void setHeadDoctorId(String headDoctorId) {
-        this.headDoctorId = headDoctorId;
+    public void setConsultationDuration(int consultationDuration) {
+        this.consultationDuration = consultationDuration;
     }
 
-    public List<Doctor> getDoctors() {
-        return doctors;
-    }
-
-    public void setDoctors(List<Doctor> doctors) {
-        this.doctors = doctors;
-    }
-
-    public List<Nurse> getNurses() {
-        return nurses;
-    }
-
-    public void setNurses(List<Nurse> nurses) {
-        this.nurses = nurses;
-    }
-
-    public int getBedCapacity() {
-        return bedCapacity;
-    }
-
-    public void setBedCapacity(int bedCapacity) {
-        this.bedCapacity = bedCapacity;
-    }
-
-    public int getAvailableBeds() {
-        return availableBeds;
-    }
-
-    public void setAvailableBeds(int availableBeds) {
-        this.availableBeds = availableBeds;
-    }
-
+    @Override
     public void displayInfo() {
+        super.displayInfo();
+        System.out.println(" consultation Types : " + consultationTypes);
+        System.out.println(" online Consultation Available : " + onlineConsultationAvailable);
+        System.out.println(" consultation Duration : " + consultationDuration);
 
-        System.out.println("Department ID: " + departmentId);
-        System.out.println("Department Name: " + departmentName);
-        System.out.println("Head Doctor ID: " + headDoctorId);
-        System.out.println("Doctors: " + doctors);
-        System.out.println("Nurses: " + nurses);
-        System.out.println("Bed Capacity: " + bedCapacity);
-        System.out.println("Available Beds: " + availableBeds);
+
     }
 
-    // Assign doctor
-    public void assignDoctor(Doctor doctor) {
+    // scheduleConsultation()
 
-        if (!doctors.contains(doctor)) {
-            doctors.add(doctor);
-            System.out.println("Doctor assigned successfully.");
-        } else {
-            System.out.println("Doctor already assigned.");
+    public void scheduleConsultation(String consultationType, boolean online) {
+
+        if (!consultationTypes.contains(consultationType)) {
+            System.out.println("Consultation type not available.");
+            return;
         }
-    }
 
-    // Assign nurse
-    public void assignNurse(Nurse nurse) {
-
-        if (!nurses.contains(nurse)) {
-            nurses.add(nurse);
-            System.out.println("Nurse assigned successfully.");
-        } else {
-            System.out.println("Nurse already assigned.");
+        if(online && !onlineConsultationAvailable){
+            System.out.println("Online consultation is not available.");
+            return;
         }
+
+        System.out.println("Consultation scheduled successfully.");
+        System.out.println("Type      : " + consultationType);
+        System.out.println("Mode      : " + (online ? "Online" : "Offline"));
+        System.out.println("Duration  : " + consultationDuration + " minutes");
+
     }
 
-    // Update bed availability
-    public void updateBedAvailability(int beds) {
+    // provideSecondOpinion()
+    public void provideSecondOpinion(String patientCase) {
 
-        if (beds >= 0 && beds <= bedCapacity) {
-            availableBeds = beds;
-            System.out.println("Available beds updated.");
-        } else {
-            System.out.println("Invalid bed count.");
-        }
+        System.out.println("Providing second opinion for case:");
+        System.out.println(patientCase);
     }
+
 
 }
