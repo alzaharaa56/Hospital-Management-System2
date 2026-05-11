@@ -25,7 +25,7 @@ public class Person {
         this.address = this.address;
     }
 
-    public Person(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String departmentId, double consultationFee) {
+    public Person() {
     }
 
     public String getId() {
@@ -105,16 +105,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", gender='" + gender + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                '}';
+        return STR."Person{id='\{id}', firstName='\{firstName}', lastName='\{lastName}', dateOfBirth=\{dateOfBirth}, gender='\{gender}', phoneNumber='\{phoneNumber}', email='\{email}', address='\{address}'}";
     }
 
     @Override

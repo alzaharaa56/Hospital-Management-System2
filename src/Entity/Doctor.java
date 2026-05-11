@@ -1,5 +1,6 @@
 package Entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,9 @@ public class Doctor extends Person{
     private List<String> availableSlots;
     private List<String> assignedPatients;
 
-    public Doctor(String id, int experienceYears) {
-        super(id, firstName, getDateOfBirth(), lastName, gender, getPhoneNumber(), email, address);
+    public Doctor(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String qualification, int experienceYears, String departmentId, double consultationFee, List<String> availableSlots, List<String> assignedPatients) {
+        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
+
 
         this.doctorId = this.doctorId;
         this.specialization = this.specialization;
@@ -25,6 +27,10 @@ public class Doctor extends Person{
         this.consultationFee = this.consultationFee;
         this.availableSlots = new ArrayList<>();
         this.assignedPatients =new ArrayList<>();
+    }
+
+    public Doctor(String id, int experienceYears) {
+
     }
 
     public String getDoctorId() {

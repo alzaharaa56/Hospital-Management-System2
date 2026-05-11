@@ -33,6 +33,11 @@ public class Patient extends Person {
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
     }
 
+    public Patient(String id, String fName, String lName, LocalDate dob, String gender, String phone, String email, String address, String patientId, String bloodGroup, String emergencyContact) {
+        super();
+
+    }
+
     public String getPatientId() {
         return patientId;
     }
