@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Doctor extends Person{
+public class Doctor extends Person {
 
     private String doctorId;
     private String specialization;
@@ -15,7 +15,13 @@ public class Doctor extends Person{
     private List<String> availableSlots;
     private List<String> assignedPatients;
 
-    public Doctor(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String qualification, int experienceYears, String departmentId, double consultationFee, List<String> availableSlots, List<String> assignedPatients) {
+
+    public Doctor(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
+                  String phoneNumber, String email, String address, String doctorId, String specialization,
+                  String qualification, int experienceYears, String departmentId, double consultationFee,
+                  List<String> availableSlots, List<String> assignedPatients) {
+
+
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
 
         this.doctorId = doctorId;
@@ -24,115 +30,70 @@ public class Doctor extends Person{
         this.experienceYears = experienceYears;
         this.departmentId = departmentId;
         this.consultationFee = consultationFee;
-        this.availableSlots = new ArrayList<>();
-        this.assignedPatients =new ArrayList<>();
+        this.availableSlots = (availableSlots != null) ? availableSlots : new ArrayList<>();
+        this.assignedPatients = (assignedPatients != null) ? assignedPatients : new ArrayList<>();
     }
 
-    public Doctor(String id, int experienceYears) {
-
+    public Doctor() {
+        super();
     }
 
-    public String getDoctorId() {
-        return doctorId;
+
+    public void updateFee(double fee) {
+        this.consultationFee = fee;
+        System.out.println("Fee updated successfully to: $" + fee);
     }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+
+    public void updateFee(double fee, String reason) {
+        this.consultationFee = fee;
+        System.out.println("Fee updated to: $" + fee + ". Reason: " + reason);
     }
 
-    public String getSpecialization() {
-        return specialization;
+
+
+
+    public void addAvailability(String slot) {
+        if (this.availableSlots == null) this.availableSlots = new ArrayList<>();
+        this.availableSlots.add(slot);
+        System.out.println("New slot added: " + slot);
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+
+    public void addAvailability(List<String> slots) {
+        if (this.availableSlots == null) this.availableSlots = new ArrayList<>();
+        this.availableSlots.addAll(slots);
+        System.out.println("Multiple slots added to availability list.");
     }
 
-    public String getQualification() {
-        return qualification;
-    }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
 
-    public int getExperienceYears() {
-        return experienceYears;
-    }
+    public String getDoctorId() { return doctorId; }
+    public void setDoctorId(String doctorId) { this.doctorId = doctorId; }
 
-    public void setExperienceYears(int experienceYears) {
-        this.experienceYears = experienceYears;
-    }
+    public String getSpecialization() { return specialization; }
+    public void setSpecialization(String specialization) { this.specialization = specialization; }
 
-    public String getDepartmentId() {
-        return departmentId;
-    }
+    public double getConsultationFee() { return consultationFee; }
+    public void setConsultationFee(double consultationFee) { this.consultationFee = consultationFee; }
 
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
-    }
+    public List<String> getAvailableSlots() { return availableSlots; }
+    public List<String> getAssignedPatients() { return assignedPatients; }
 
-    public double getConsultationFee() {
-        return consultationFee;
-    }
 
-    public void setConsultationFee(double consultationFee) {
-        this.consultationFee = consultationFee;
-    }
-
-    public List<String> getAvailableSlots() {
-        return availableSlots;
-    }
-
-    public void setAvailableSlots(List<String> availableSlots) {
-        this.availableSlots = availableSlots;
-    }
-
-    public List<String> getAssignedPatients() {
-        return assignedPatients;
-    }
-
-    public void setAssignedPatients(List<String> assignedPatients) {
-        this.assignedPatients = assignedPatients;
-    }
 
     @Override
     public void displayInfo() {
         super.displayInfo();
-
         System.out.println("Doctor ID: " + doctorId);
         System.out.println("Specialization: " + specialization);
-        System.out.println("Qualification: " + qualification);
         System.out.println("Experience: " + experienceYears + " years");
-        System.out.println("Department ID: " + departmentId);
         System.out.println("Consultation Fee: $" + consultationFee);
-
         System.out.println("Available Slots: " + availableSlots);
-        System.out.println("Assigned Patients: " + assignedPatients);
     }
 
-    // Method to assign a patient
-    public void assignPatient(String patientId , String doctorId) {
+    public void assignPatient(String patientId) {
         assignedPatients.add(patientId);
-        System.out.println(patientId + " assigned to Dr. " + doctorId);
-    }
-
-    // Method to remove a patient
-    public void removePatient(String patientId,String doctorId) {
-        if (assignedPatients.remove(patientId)) {
-            System.out.println(doctorId + " removed from Dr. " + doctorId);
-        } else {
-            System.out.println("Patient not found.");
-        }
-    }
-
-    // Method to update availability
-    public void updateAvailability(List<String> newSlots) {
-        availableSlots = newSlots;
-        System.out.println("Availability updated.");
-    }
-
-    public Doctor(){
-
+        System.out.println("Patient " + patientId + " assigned to Dr. " + this.getLastName());
     }
 }
