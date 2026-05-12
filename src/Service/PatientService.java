@@ -1,18 +1,15 @@
 package Service;
 
 import Entity.Patient;
-import Behaviour.Manageable; // Task 3.2
-import Behaviour.Searchable; // Task 3.2
+import Behaviour.Manageable;
+import Behaviour.Searchable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-/**
- * Task 3.2: PatientService implements Manageable and Searchable interfaces.
- * This class handles the business logic for managing patient records.
- */
+
 public class PatientService implements Manageable<Patient>, Searchable<Patient> {
 
     private Scanner scanner = new Scanner(System.in);
@@ -85,7 +82,7 @@ public class PatientService implements Manageable<Patient>, Searchable<Patient> 
             p.setPatientId(pId);
             p.setRegistrationDate(LocalDate.now());
 
-            add(p); // Calls the interface 'add' method
+            add(p);
 
         } catch (Exception e) {
             System.out.println("Error during console registration: " + e.getMessage());
