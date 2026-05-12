@@ -1,7 +1,7 @@
 package Entity;
 
-import Interface.Displayable;
-import Interface.Editable;
+import Behaviour.Displayable;
+import Behaviour.Editable;
 import java.time.LocalDate;
 import java.util.Objects;
 

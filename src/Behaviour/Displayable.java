@@ -1,4 +1,4 @@
-package Interface;
+package Behaviour;
 
 public interface Displayable {
     void displayInfo();

@@ -1,4 +1,4 @@
-package Interface;
+package Behaviour;
 import Entity.Appointment;
 import java.time.LocalDate;
 

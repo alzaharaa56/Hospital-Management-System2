@@ -1,9 +1,8 @@
 package Entity;
 
-import Interface.Appointable;
-import Interface.Billable;
+import Behaviour.Appointable;
+import Behaviour.Billable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Patient extends Person implements Appointable, Billable {

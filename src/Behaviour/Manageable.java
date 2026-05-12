@@ -1,4 +1,4 @@
-package Interface;
+package Behaviour;
 import java.util.List;
 
 public interface Manageable<T> {

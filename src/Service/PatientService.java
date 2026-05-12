@@ -2,11 +2,9 @@ package Service;
 
 import Entity.Patient;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class PatientService {
     private Scanner scanner = new Scanner(System.in);
