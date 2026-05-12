@@ -96,4 +96,12 @@ public class Doctor extends Person {
         assignedPatients.add(patientId);
         System.out.println("Patient " + patientId + " assigned to Dr. " + this.getLastName());
     }
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
 }

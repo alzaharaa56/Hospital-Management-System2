@@ -1,8 +1,14 @@
 package Entity;
 
+import Behaviour.Displayable;
+import Behaviour.Editable;
 import java.time.LocalDate;
 
-public class MedicalRecord {
+/**
+ * Task 3.2: MedicalRecord implements Displayable and Editable.
+ * This class stores clinical data regarding a specific patient visit.
+ */
+public class MedicalRecord implements Displayable, Editable {
     private String recordId;
     private String patientId;
     private String doctorId;
@@ -12,7 +18,9 @@ public class MedicalRecord {
     private String testResults;
     private String notes;
 
-    public MedicalRecord(String recordId, String patientId, String doctorId, LocalDate visitDate, String diagnosis, String testResults, String prescription, String notes) {
+    // Full Constructor
+    public MedicalRecord(String recordId, String patientId, String doctorId, LocalDate visitDate,
+                         String diagnosis, String testResults, String prescription, String notes) {
         this.recordId = recordId;
         this.patientId = patientId;
         this.doctorId = doctorId;
@@ -23,81 +31,72 @@ public class MedicalRecord {
         this.notes = notes;
     }
 
-    public String getRecordId() {
-        return recordId;
+    // Default Constructor
+    public MedicalRecord() {}
+
+    // --- Task 3.2: Implementation of Displayable ---
+
+    @Override
+    public void displayInfo() {
+        System.out.println("\n--- Clinical Medical Record ---");
+        System.out.println("Record ID    : " + recordId);
+        System.out.println("Patient ID   : " + patientId);
+        System.out.println("Doctor ID    : " + doctorId);
+        System.out.println("Visit Date   : " + visitDate);
+        System.out.println("Diagnosis    : " + diagnosis);
+        System.out.println("Prescription : " + prescription);
+        System.out.println("Test Results : " + testResults);
+        System.out.println("Clinical Notes: " + (notes == null || notes.isEmpty() ? "No notes available." : notes));
     }
 
-    public void setRecordId(String recordId) {
-        this.recordId = recordId;
+    @Override
+    public void displaySummary() {
+        System.out.println("Record: " + recordId + " | Patient: " + patientId + " | Date: " + visitDate);
     }
 
-    public String getPatientId() {
-        return patientId;
+    // --- Task 3.2: Implementation of Editable ---
+
+    @Override
+    public void edit(Object updatedData) {
+        if (updatedData instanceof MedicalRecord) {
+            MedicalRecord record = (MedicalRecord) updatedData;
+            this.diagnosis = record.diagnosis;
+            this.prescription = record.prescription;
+            this.testResults = record.testResults;
+            this.notes = record.notes;
+            System.out.println("Medical record " + recordId + " has been updated.");
+        }
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    @Override
+    public boolean validate() {
+        // Ensure record has a diagnosis and a valid patient/doctor link
+        return recordId != null && diagnosis != null && patientId != null && doctorId != null;
     }
 
-    public LocalDate getVisitDate() {
-        return visitDate;
-    }
+    // --- Getters and Setters ---
 
-    public void setVisitDate(LocalDate visitDate) {
-        this.visitDate = visitDate;
-    }
+    public String getRecordId() { return recordId; }
+    public void setRecordId(String recordId) { this.recordId = recordId; }
 
-    public String getDoctorId() {
-        return doctorId;
-    }
+    public String getPatientId() { return patientId; }
+    public void setPatientId(String patientId) { this.patientId = patientId; }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
-    }
+    public String getDoctorId() { return doctorId; }
+    public void setDoctorId(String doctorId) { this.doctorId = doctorId; }
 
-    public String getDiagnosis() {
-        return diagnosis;
-    }
+    public LocalDate getVisitDate() { return visitDate; }
+    public void setVisitDate(LocalDate visitDate) { this.visitDate = visitDate; }
 
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
+    public String getDiagnosis() { return diagnosis; }
+    public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
 
-    public String getPrescription() {
-        return prescription;
-    }
+    public String getPrescription() { return prescription; }
+    public void setPrescription(String prescription) { this.prescription = prescription; }
 
-    public void setPrescription(String prescription) {
-        this.prescription = prescription;
-    }
+    public String getTestResults() { return testResults; }
+    public void setTestResults(String testResults) { this.testResults = testResults; }
 
-    public String getTestResults() {
-        return testResults;
-    }
-
-    public void setTestResults(String testResults) {
-        this.testResults = testResults;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public void displayInfo(){
-
-        System.out.println("record Id : " + recordId);
-        System.out.println("patient Id : " + patientId);
-        System.out.println("doctor Id : " + doctorId);
-        System.out.println("visit Date  : " + visitDate);
-        System.out.println("diagnosis  : " + diagnosis);
-        System.out.println("prescription  : " + prescription);
-        System.out.println("test Results  : " + testResults);
-        System.out.println("notes  : " + notes);
-
-
-    }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 }
