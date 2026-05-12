@@ -17,7 +17,7 @@ public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
     private Scanner scanner = new Scanner(System.in);
     private static List<Doctor> doctors = new ArrayList<>();
 
-    // --- Implementation of Manageable Interface ---
+
 
     @Override
     public void add(Doctor doctor) {
@@ -47,7 +47,7 @@ public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
         return new ArrayList<>(doctors);
     }
 
-    // --- Implementation of Searchable Interface ---
+
 
     @Override
     public Doctor searchById(String doctorId) {
@@ -69,7 +69,7 @@ public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
                 .collect(Collectors.toList());
     }
 
-    // --- Task 3.4: Integrated Logic Methods ---
+
 
     public Doctor addDoctorFromConsole() {
         try {
@@ -79,7 +79,7 @@ public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
             System.out.print("Last Name: ");
             String lName = scanner.nextLine();
 
-            // Task 3.4: Automated ID Generation
+
             String docId = Helper.generateId("DOC", 4);
 
             System.out.print("Specialization: ");
@@ -87,7 +87,7 @@ public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
             System.out.print("Consultation Fee: ");
             double fee = scanner.nextDouble(); scanner.nextLine();
 
-            // Create Doctor object with auto-generated ID
+
             Doctor doctor = new Doctor();
             doctor.setFirstName(fName);
             doctor.setLastName(lName);
@@ -95,7 +95,7 @@ public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
             doctor.setSpecialization(spec);
             doctor.setConsultationFee(fee);
 
-            add(doctor); // Uses the Manageable 'add' method with validation
+            add(doctor);
             return doctor;
         } catch (Exception e) {
             System.out.println("Input Error: " + e.getMessage());
@@ -122,7 +122,7 @@ public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
         } else {
             System.out.println("\n--- Hospital Medical Staff ---");
             for (Doctor doc : doctors) {
-                doc.displaySummary(); // Using Displayable interface method
+                doc.displaySummary();
             }
         }
     }
