@@ -1,20 +1,21 @@
 package Entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Appointment {
-
     private String appointmentId;
     private String patientId;
     private String doctorId;
     private LocalDate appointmentDate;
     private String appointmentTime;
-    private String status;
+    private String status; // Scheduled, Cancelled, Completed, Rescheduled
     private String reason;
     private String notes;
 
-    public Appointment(String notes, String reason, String status, String appointmentTime, LocalDate appointmentDate, String doctorId, String patientId, String appointmentId) {
-        this.notes = notes;
+
+    public Appointment(String quickBooking, String reason, String status, String appointmentTime, LocalDate appointmentDate,
+                       String doctorId, String patientId, String appointmentId) {
         this.reason = reason;
         this.status = status;
         this.appointmentTime = appointmentTime;
@@ -22,106 +23,64 @@ public class Appointment {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.appointmentId = appointmentId;
+        this.notes = "";
     }
 
-    public String getAppointmentId() {
-        return appointmentId;
+    public Appointment() {
     }
 
-    public void setAppointmentId(String appointmentId) {
-        this.appointmentId = appointmentId;
+
+    public void addNotes(String notes) {
+        this.notes += "\n- " + notes;
+        System.out.println("Note added to appointment " + appointmentId);
     }
 
-    public String getPatientId() {
-        return patientId;
+    public void addNotes(String notes, String addedBy) {
+        this.notes += "\n- [" + addedBy + "]: " + notes;
+        System.out.println("Note added by " + addedBy);
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+
+    public void addNotes(String notes, String addedBy, LocalDateTime timestamp) {
+        this.notes += "\n- [" + timestamp + "] " + addedBy + ": " + notes;
+        System.out.println("Detailed clinical note recorded.");
     }
 
-    public String getDoctorId() {
-        return doctorId;
-    }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
-    }
 
-    public LocalDate getAppointmentDate() {
-        return appointmentDate;
-    }
+    public String getAppointmentId() { return appointmentId; }
+    public void setAppointmentId(String appointmentId) { this.appointmentId = appointmentId; }
 
-    public void setAppointmentDate(LocalDate appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
+    public String getPatientId() { return patientId; }
+    public void setPatientId(String patientId) { this.patientId = patientId; }
 
-    public String getAppointmentTime() {
-        return appointmentTime;
-    }
+    public String getDoctorId() { return doctorId; }
+    public void setDoctorId(String doctorId) { this.doctorId = doctorId; }
 
-    public void setAppointmentTime(String appointmentTime) {
-        this.appointmentTime = appointmentTime;
-    }
+    public LocalDate getAppointmentDate() { return appointmentDate; }
+    public void setAppointmentDate(LocalDate appointmentDate) { this.appointmentDate = appointmentDate; }
 
-    public String getStatus() {
-        return status;
-    }
+    public String getAppointmentTime() { return appointmentTime; }
+    public void setAppointmentTime(String appointmentTime) { this.appointmentTime = appointmentTime; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public String getReason() {
-        return reason;
-    }
+    public String getReason() { return reason; }
+    public void setReason(String reason) { this.reason = reason; }
 
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
-    public String getNotes() {
-        return notes;
-    }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public void displayInfo(){
-        System.out.println("Appointment ID: " + appointmentId);
+    public void displayInfo() {
+        System.out.println("\n--- Appointment Details ---");
+        System.out.println("ID: " + appointmentId);
         System.out.println("Patient ID: " + patientId);
         System.out.println("Doctor ID: " + doctorId);
-        System.out.println("Appointment Date: " + appointmentDate);
-        System.out.println("Appointment Time: " + appointmentTime);
+        System.out.println("Date & Time: " + appointmentDate + " at " + appointmentTime);
         System.out.println("Status: " + status);
         System.out.println("Reason: " + reason);
-        System.out.println("Notes: " + notes);
+        System.out.println("Clinical Notes: " + (notes.isEmpty() ? "No notes available." : notes));
     }
-
-    // reschedule() method
-    public void reschedule(LocalDate newDate, String newTime) {
-
-        this.appointmentDate = newDate;
-        this.appointmentTime = newTime;
-        this.status = "Rescheduled";
-
-        System.out.println("Appointment rescheduled successfully.");
-    }
-
-    // cancel() method
-    public void cancel() {
-
-        this.status = "Cancelled";
-
-        System.out.println("Appointment cancelled.");
-    }
-
-    // Complete Appointment
-    public void complete() {
-        this.status = "Completed";
-
-        System.out.println("Appointment marked as completed.");
-    }
-
 }
