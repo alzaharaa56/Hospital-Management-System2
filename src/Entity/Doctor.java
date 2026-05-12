@@ -131,4 +131,8 @@ public class Doctor extends Person{
         availableSlots = newSlots;
         System.out.println("Availability updated.");
     }
+
+    public Doctor(){
+
+    }
 }
