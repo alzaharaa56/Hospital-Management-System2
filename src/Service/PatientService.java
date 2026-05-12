@@ -10,10 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-/**
- * Task 3.4 Implementation:
- * PatientService utilizes the Helper class for ID generation and null safety.
- */
+
 public class PatientService implements Manageable<Patient>, Searchable<Patient> {
 
     private Scanner scanner = new Scanner(System.in);
@@ -74,7 +71,7 @@ public class PatientService implements Manageable<Patient>, Searchable<Patient> 
                 .collect(Collectors.toList());
     }
 
-    // --- Refactored Console Logic ---
+
 
     public void addPatientFromConsole() {
         try {
