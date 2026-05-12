@@ -9,43 +9,58 @@ public class Patient extends Person implements Appointable, Billable {
     private String patientId;
     private String bloodGroup;
     private LocalDate registrationDate;
+    private String insuranceId;
 
-    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
+
+    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
+                   String phoneNumber, String email, String address, String patientId,
+                   String bloodGroup, LocalDate registrationDate, String insuranceId) {
 
 
+        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
+
+        this.patientId = patientId;
+        this.bloodGroup = bloodGroup;
+        this.registrationDate = registrationDate;
+        this.insuranceId = insuranceId;
     }
 
     public Patient() {
-
+        super();
     }
 
+    public void setPatientId(String pId) { this.patientId = pId; }
+    public String getPatientId() { return this.patientId; }
 
-    public void setPatientId(String pId) {
-        this.patientId = pId;
+    public void setBloodGroup(String blood) { this.bloodGroup = blood; }
+    public String getBloodGroup() { return this.bloodGroup; }
+
+    public void setRegistrationDate(LocalDate now) { this.registrationDate = now; }
+    public LocalDate getRegistrationDate() { return this.registrationDate; }
+
+
+    @Override
+    public void scheduleAppointment(Appointment a) {
+        System.out.println("Appointment scheduled for Patient ID: " + patientId);
     }
 
-    public void setBloodGroup(String blood) {
-        this.bloodGroup = blood;
+    @Override public void cancelAppointment(String id) {
+        System.out.println("Appointment " + id + " cancelled.");
     }
 
-    public void setRegistrationDate(LocalDate now) {
-        this.registrationDate = now;
+    @Override public void rescheduleAppointment(String id, LocalDate d) {
+        System.out.println("Appointment " + id + " moved to " + d);
     }
 
-
-    public String getPatientId() {
-        return this.patientId;
+    @Override public double calculateCharges() {
+        return 100.0;
     }
 
-    public String getBloodGroup() {
-        return this.bloodGroup;
+    @Override public void generateBill() {
+        System.out.println("Generating bill for: " + getFirstName());
     }
 
-
-    @Override public void scheduleAppointment(Appointment a) { }
-    @Override public void cancelAppointment(String id) { }
-    @Override public void rescheduleAppointment(String id, LocalDate d) { }
-    @Override public double calculateCharges() { return 0.0; }
-    @Override public void generateBill() { }
-    @Override public void processPayment(double a) { }
+    @Override public void processPayment(double a) {
+        System.out.println("Payment of " + a + " processed.");
+    }
 }
