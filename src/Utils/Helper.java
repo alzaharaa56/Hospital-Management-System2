@@ -6,25 +6,55 @@ import java.util.UUID;
 import java.util.Random;
 
 /**
- * Task 3.3: Comprehensive HelperUtils.
- * Final Modules: ID Generation, Date Validation, Numeric Validation, and Input Logic.
+ * Task 3.3 & 3.4: Comprehensive Helper Class.
+ * Includes Null Checks, String Validation, and ID Generation.
  */
 public class Helper {
 
-    // --- ID Generation Methods (Overloaded) ---
+    // --- Null Check Methods (CRITICAL TO FIX ERRORS) ---
 
-    /** Generates a standard random UUID. */
+    public static boolean isNull(Object obj) {
+        return obj == null;
+    }
+
+    public static boolean isNotNull(Object obj) {
+        return obj != null;
+    }
+
+    /** Checks if a string is null or empty/whitespace only. */
+    public static boolean isNull(String str) {
+        return str == null || str.trim().isEmpty();
+    }
+
+    /** Checks if a string has actual text content. */
+    public static boolean isNotNull(String str) {
+        return !isNull(str);
+    }
+
+    // --- String Validation Methods (CRITICAL TO FIX ERRORS) ---
+
+    /** Validates that a string is not null and not empty. */
+    public static boolean isValidString(String str) {
+        return isNotNull(str);
+    }
+
+    /** Validates string against a regex pattern. */
+    public static boolean isValidString(String str, String regex) {
+        if (isNull(str)) return false;
+        return str.matches(regex);
+    }
+
+    // --- ID Generation Methods ---
+
     public static String generateId() {
         return UUID.randomUUID().toString();
     }
 
-    /** Generates an ID with a prefix and 5 random digits (e.g., PAT-12345). */
     public static String generateId(String prefix) {
         int randomNumber = new Random().nextInt(90000) + 10000;
         return prefix.toUpperCase() + "-" + randomNumber;
     }
 
-    /** Generates an ID with a prefix and a specific length of random numbers. */
     public static String generateId(String prefix, int length) {
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
@@ -34,30 +64,7 @@ public class Helper {
         return prefix.toUpperCase() + "-" + sb.toString();
     }
 
-    /** Generates an ID with both a prefix and a suffix (e.g., ER-5521-VIP). */
-    public static String generateId(String prefix, String suffix) {
-        return prefix.toUpperCase() + "-" + (new Random().nextInt(900) + 100) + "-" + suffix.toUpperCase();
-    }
-
-    // --- Date Validation Methods (Overloaded) ---
-
-    public static boolean isValidDate(LocalDate date) {
-        return date != null;
-    }
-
-    public static boolean isValidDate(String dateStr) {
-        try {
-            LocalDate.parse(dateStr);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean isValidDate(LocalDate date, LocalDate minDate, LocalDate maxDate) {
-        if (date == null) return false;
-        return !date.isBefore(minDate) && !date.isAfter(maxDate);
-    }
+    // --- Date Validation Methods ---
 
     public static boolean isFutureDate(LocalDate date) {
         return date != null && date.isAfter(LocalDate.now());
@@ -71,32 +78,20 @@ public class Helper {
         return date != null && date.isEqual(LocalDate.now());
     }
 
-    // --- Numeric Validation Methods (Overloaded) ---
+    // --- Numeric & Input Validation ---
 
-    public static boolean isValidNumber(int num, int min, int max) {
-        return num >= min && num <= max;
+    public static boolean isPositive(double num) {
+        return num > 0;
     }
 
-    public static boolean isValidNumber(double num, double min, double max) {
-        return num >= min && num <= max;
-    }
-
-    public static boolean isPositive(int num) { return num > 0; }
-    public static boolean isPositive(double num) { return num > 0; }
-    public static boolean isNegative(int num) { return num < 0; }
-    public static boolean isNegative(double num) { return num < 0; }
-
-    // --- Input Validation Methods (Overloaded) ---
-
-    /** Standard human age check (0-120). */
-    public static boolean isValidAge(int age) {
-        return age >= 0 && age <= 120;
-    }
-
-    /** Calculates age from DOB and validates it. */
     public static boolean isValidAge(LocalDate dateOfBirth) {
         if (dateOfBirth == null) return false;
         int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
-        return isValidAge(age);
+        return age >= 0 && age <= 120;
+    }
+
+    // Helper to print headers for a cleaner console UI
+    public static void printHeader(String title) {
+        System.out.println("\n=== " + title.toUpperCase() + " ===");
     }
 }

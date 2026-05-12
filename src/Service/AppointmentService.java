@@ -4,6 +4,7 @@ import Entity.Appointment;
 import Behaviour.Appointable;
 import Behaviour.Manageable;
 import Behaviour.Searchable;
+import Utils.Helper;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -11,10 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-/**
- * Task 3.2: AppointmentService implements Manageable, Searchable, and Appointable.
- * This class handles the core logic for hospital scheduling.
- */
+
 public class AppointmentService implements Manageable<Appointment>, Searchable<Appointment>, Appointable {
 
     private Scanner scanner = new Scanner(System.in);
@@ -24,9 +22,10 @@ public class AppointmentService implements Manageable<Appointment>, Searchable<A
 
     @Override
     public void add(Appointment appointment) {
-        if (appointment != null && appointment.validate()) {
+
+        if (Helper.isNotNull(appointment) && appointment.validate()) {
             appointmentList.add(appointment);
-            System.out.println("Success: Appointment synchronized and saved.");
+            System.out.println("Success: Appointment record saved to the system.");
         } else {
             System.out.println("Error: Appointment validation failed.");
         }
@@ -34,11 +33,14 @@ public class AppointmentService implements Manageable<Appointment>, Searchable<A
 
     @Override
     public void remove(String appointmentId) {
+
+        if (Helper.isNull(appointmentId)) return;
+
         boolean removed = appointmentList.removeIf(a -> a.getAppointmentId().equals(appointmentId));
         if (removed) {
-            System.out.println("Success: Appointment record deleted.");
+            System.out.println("Success: Appointment " + appointmentId + " removed.");
         } else {
-            System.out.println("Error: Appointment ID not found.");
+            System.out.println("Error: Record not found.");
         }
     }
 
@@ -51,6 +53,7 @@ public class AppointmentService implements Manageable<Appointment>, Searchable<A
 
     @Override
     public Appointment searchById(String appointmentId) {
+        if (Helper.isNull(appointmentId)) return null;
         return appointmentList.stream()
                 .filter(a -> a.getAppointmentId().equals(appointmentId))
                 .findFirst()
@@ -59,6 +62,9 @@ public class AppointmentService implements Manageable<Appointment>, Searchable<A
 
     @Override
     public List<Appointment> search(String keyword) {
+
+        if (Helper.isNull(keyword)) return new ArrayList<>();
+
         String key = keyword.toLowerCase();
         return appointmentList.stream()
                 .filter(a -> a.getReason().toLowerCase().contains(key) ||
@@ -71,66 +77,70 @@ public class AppointmentService implements Manageable<Appointment>, Searchable<A
 
     @Override
     public void scheduleAppointment(Appointment appointment) {
-        // We use the add logic but specifically for scheduling
         add(appointment);
     }
 
     @Override
     public void cancelAppointment(String appointmentId) {
         Appointment app = searchById(appointmentId);
-        if (app != null) {
+        if (Helper.isNotNull(app)) {
             app.setStatus("Cancelled");
-            System.out.println("Success: Appointment " + appointmentId + " has been cancelled.");
+            System.out.println("Status Update: Appointment " + appointmentId + " is now Cancelled.");
         } else {
-            System.out.println("Error: Cannot cancel. Appointment not found.");
+            System.out.println("Error: Appointment not found.");
         }
     }
 
     @Override
     public void rescheduleAppointment(String appointmentId, LocalDate newDate) {
         Appointment app = searchById(appointmentId);
-        if (app != null) {
+        // Task 3.4: Using Helper to ensure date logic is sound
+        if (Helper.isNotNull(app) && (Helper.isFutureDate(newDate) || Helper.isToday(newDate))) {
             app.setAppointmentDate(newDate);
             app.setStatus("Rescheduled");
-            System.out.println("Success: Appointment moved to " + newDate);
+            System.out.println("Update Success: New date set to " + newDate);
         } else {
-            System.out.println("Error: Rescheduling failed. ID not found.");
+            System.out.println("Error: Invalid date or Appointment ID.");
         }
     }
 
-    // --- Overloaded Methods (Refined for better logic) ---
+    // --- Creation Methods ---
 
     public void addAppointmentFromConsole() {
         try {
-            System.out.println("\n--- Schedule New Appointment ---");
-            System.out.print("Enter Appointment ID: ");
-            String appId = scanner.nextLine();
-            System.out.print("Enter Patient ID: ");
+            System.out.println("\n--- Appointment Booking ---");
+            System.out.print("Patient ID: ");
             String patId = scanner.nextLine();
-            System.out.print("Enter Doctor ID: ");
+            System.out.print("Doctor ID: ");
             String docId = scanner.nextLine();
-            System.out.print("Enter Date (YYYY-MM-DD): ");
+            System.out.print("Date (YYYY-MM-DD): ");
             LocalDate date = LocalDate.parse(scanner.nextLine());
-            System.out.print("Enter Time: ");
+            System.out.print("Time: ");
             String time = scanner.nextLine();
 
-            createAppointment(patId, docId, date, time);
+
+            if (Helper.isNotNull(patId) && Helper.isNotNull(docId)) {
+                createAppointment(patId, docId, date, time);
+            }
 
         } catch (DateTimeParseException e) {
-            System.out.println("Error: Invalid date format. Use YYYY-MM-DD.");
+            System.out.println("Error: Invalid date format. Please use YYYY-MM-DD.");
         }
     }
 
     public void createAppointment(String patientId, String doctorId, LocalDate date, String time) {
-        String appId = "APP-" + (appointmentList.size() + 1);
+
+        String appId = Helper.generateId("APP", 5);
+
         Appointment app = new Appointment(appId, patientId, doctorId, date, time, "Consultation", "Scheduled");
         add(app);
     }
 
     public void displayAllAppointments() {
         if (appointmentList.isEmpty()) {
-            System.out.println("No appointments found.");
+            System.out.println("Registry is empty.");
         } else {
+            System.out.println("\n--- Scheduled Appointments ---");
             for (Appointment app : appointmentList) {
                 app.displaySummary();
             }
