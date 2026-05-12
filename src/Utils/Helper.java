@@ -98,4 +98,6 @@ public class Helper {
 
         return email.contains("@") && email.contains(".");
     }
+
+
 }
