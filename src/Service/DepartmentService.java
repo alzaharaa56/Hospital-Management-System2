@@ -3,6 +3,7 @@ package Service;
 import Entity.Department;
 import Entity.Doctor;
 import Entity.Nurse;
+import Utils.Helper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,48 +12,49 @@ public class DepartmentService {
     private Scanner scanner = new Scanner(System.in);
     private static List<Department> departmentList = new ArrayList<>();
 
-
     private DoctorService doctorService = new DoctorService();
     private NurseService nurseService = new NurseService();
-
 
     public void addDepartmentFromConsole() {
         try {
             System.out.println("\n--- Create New Department ---");
-            System.out.print("Enter Department ID: ");
-            String id = scanner.nextLine();
+
+            String id = Helper.generateId("DEP");
+
             System.out.print("Enter Department Name: ");
             String name = scanner.nextLine();
             System.out.print("Enter Head Doctor ID: ");
             String headId = scanner.nextLine();
             System.out.print("Enter Bed Capacity: ");
             int capacity = scanner.nextInt();
-            scanner.nextLine(); // تصحيح Scanner بعد int
+            scanner.nextLine();
 
-
-            Department dept = new Department(id, name, headId, new ArrayList<>(), new ArrayList<>(), capacity, capacity);
-            departmentList.add(dept);
-            System.out.println("Department '" + name + "' created successfully.");
+            if (Helper.isValidString(name)) {
+                Department dept = new Department(id, name, headId, capacity);
+                departmentList.add(dept);
+                System.out.println("Department '" + name + "' created successfully with ID: " + id);
+            } else {
+                System.out.println("Error: Department name is required.");
+            }
         } catch (Exception e) {
-            System.out.println("Error: Invalid input. Department not created.");
+            System.out.println("Error: Invalid input.");
             scanner.nextLine();
         }
     }
 
-
     public Department getDepartmentById(String departmentId) {
+        if (Helper.isNull(departmentId)) return null;
         for (Department dept : departmentList) {
             if (dept.getDepartmentId().equals(departmentId)) return dept;
         }
         return null;
     }
 
-
     public void assignDoctorToDepartment(String doctorId, String departmentId) {
         Department dept = getDepartmentById(departmentId);
-        Doctor doctor = doctorService.getDoctorById(doctorId);
+        Doctor doctor = doctorService.searchById(doctorId);
 
-        if (dept != null && doctor != null) {
+        if (Helper.isNotNull(dept) && Helper.isNotNull(doctor)) {
             dept.assignDoctor(doctor);
             System.out.println("Doctor " + doctor.getFirstName() + " assigned to " + dept.getDepartmentName());
         } else {
@@ -60,45 +62,51 @@ public class DepartmentService {
         }
     }
 
-
     public void assignNurseToDepartment(String nurseId, String departmentId) {
         Department dept = getDepartmentById(departmentId);
-        Nurse nurse = nurseService.getNurseById(nurseId);
+        Nurse nurse = nurseService.searchById(nurseId);
 
-        if (dept != null && nurse != null) {
+        if (Helper.isNotNull(dept) && Helper.isNotNull(nurse)) {
             dept.assignNurse(nurse);
-            System.out.println("Nurse assigned to department.");
+            System.out.println("Nurse " + nurse.getFirstName() + " assigned to " + dept.getDepartmentName());
+        } else {
+            System.out.println("Error: Nurse or Department not found.");
         }
     }
 
-
     public void editDepartment(String departmentId) {
         Department dept = getDepartmentById(departmentId);
-        if (dept != null) {
-            System.out.print("Enter new Name: ");
+        if (Helper.isNotNull(dept)) {
+            System.out.print("Enter new Name (Current: " + dept.getDepartmentName() + "): ");
             dept.setDepartmentName(scanner.nextLine());
             System.out.print("Enter new Bed Capacity: ");
             int cap = scanner.nextInt();
             scanner.nextLine();
             dept.setBedCapacity(cap);
             System.out.println("Department updated.");
+        } else {
+            System.out.println("Error: Department not found.");
         }
     }
-
 
     public void removeDepartment(String departmentId) {
-        if (departmentList.removeIf(d -> d.getDepartmentId().equals(departmentId))) {
-            System.out.println("Department removed.");
-        } else {
-            System.out.println("Not found.");
+        if (Helper.isValidString(departmentId)) {
+            if (departmentList.removeIf(d -> d.getDepartmentId().equals(departmentId))) {
+                System.out.println("Department removed.");
+            } else {
+                System.out.println("Error: Department not found.");
+            }
         }
     }
 
-
     public void displayAllDepartments() {
-        for (Department d : departmentList) {
-            d.displayInfo();
-            System.out.println("--------------------");
+        if (departmentList.isEmpty()) {
+            System.out.println("No departments registered.");
+        } else {
+            for (Department d : departmentList) {
+                d.displayInfo();
+                System.out.println("--------------------");
+            }
         }
     }
 }
