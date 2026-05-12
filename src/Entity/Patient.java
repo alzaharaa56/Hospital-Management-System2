@@ -1,10 +1,8 @@
 package Entity;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Patient extends Person {
 
@@ -15,119 +13,110 @@ public class Patient extends Person {
     private LocalDate registrationDate;
     private String insuranceId;
     private List<MedicalRecord> medicalRecords;
-    private List <Appointment>appointments;
+    private List<Appointment> appointments;
 
-    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
+
+    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
+                   String phoneNumber, String email, String address, String patientId, String bloodGroup,
+                   List<String> allergies, String emergencyContact, LocalDate registrationDate,
+                   List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
+
+
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
 
         this.patientId = patientId;
         this.bloodGroup = bloodGroup;
-        this.allergies = new ArrayList<>();
+
+        this.allergies = (allergies != null) ? allergies : new ArrayList<>();
         this.emergencyContact = emergencyContact;
         this.registrationDate = registrationDate;
-        this.medicalRecords = new ArrayList<>();
+        this.medicalRecords = (medicalRecords != null) ? medicalRecords : new ArrayList<>();
         this.insuranceId = insuranceId;
-        this.appointments = new ArrayList<>();
+        this.appointments = (appointments != null) ? appointments : new ArrayList<>();
     }
 
-    public Patient(){
 
+    public Patient() {
+        super();
     }
 
-    public String getPatientId() {
-        return patientId;
+
+    public void updateContact(String phone) {
+        this.setPhoneNumber(phone);
+        System.out.println("Contact updated: Phone changed to " + phone);
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+
+    public void updateContact(String phone, String email) {
+        this.setPhoneNumber(phone);
+        this.setEmail(email);
+        System.out.println("Contact updated: Phone and Email updated.");
     }
 
-    public String getBloodGroup() {
-        return bloodGroup;
+
+    public void updateContact(String phone, String email, String address) {
+        this.setPhoneNumber(phone);
+        this.setEmail(email);
+        this.setAddress(address);
+        System.out.println("Contact updated: All details synchronized.");
     }
 
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
-    }
 
-    public List<String> getAllergies() {
-        return allergies;
-    }
 
-    public void setAllergies(List<String> allergies) {
-        this.allergies = allergies;
-    }
+    public String getPatientId() { return patientId; }
+    public void setPatientId(String patientId) { this.patientId = patientId; }
 
-    public String getEmergencyContact() {
-        return emergencyContact;
-    }
+    public String getBloodGroup() { return bloodGroup; }
+    public void setBloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; }
 
-    public void setEmergencyContact(String emergencyContact) {
-        this.emergencyContact = emergencyContact;
-    }
+    public List<String> getAllergies() { return allergies; }
+    public void setAllergies(List<String> allergies) { this.allergies = allergies; }
 
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
+    public String getEmergencyContact() { return emergencyContact; }
+    public void setEmergencyContact(String emergencyContact) { this.emergencyContact = emergencyContact; }
 
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-    }
+    public LocalDate getRegistrationDate() { return registrationDate; }
+    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }
 
-    public String getInsuranceId() {
-        return insuranceId;
-    }
+    public String getInsuranceId() { return insuranceId; }
+    public void setInsuranceId(String insuranceId) { this.insuranceId = insuranceId; }
 
-    public void setInsuranceId(String insuranceId) {
-        this.insuranceId = insuranceId;
-    }
+    public List<MedicalRecord> getMedicalRecords() { return medicalRecords; }
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) { this.medicalRecords = medicalRecords; }
 
-    public List<MedicalRecord> getMedicalRecords() {
-        return medicalRecords;
-    }
+    public List<Appointment> getAppointments() { return appointments; }
+    public void setAppointments(List<Appointment> appointments) { this.appointments = appointments; }
 
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-        this.medicalRecords = medicalRecords;
-    }
 
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
-    }
 
     @Override
     public void displayInfo() {
+
         super.displayInfo();
-        System.out.println("patient Id : "+ patientId);
-        System.out.println("patient blood Group : "+ bloodGroup);
-        System.out.println("patient allergies : "+ allergies);
-        System.out.println("patient emergency Contact : "+ emergencyContact);
-        System.out.println("patient registration Date : "+ registrationDate);
-        System.out.println("patient insuranceId : "+ insuranceId);
-        System.out.println("patient medical Records : "+ medicalRecords);
-        System.out.println("patient appointments : "+ appointments);
-
+        System.out.println("Patient ID          : " + patientId);
+        System.out.println("Blood Group         : " + bloodGroup);
+        System.out.println("Allergies           : " + allergies);
+        System.out.println("Emergency Contact   : " + emergencyContact);
+        System.out.println("Registration Date   : " + registrationDate);
+        System.out.println("Insurance ID        : " + insuranceId);
+        System.out.println("Medical Records Count: " + medicalRecords.size());
+        System.out.println("Appointments Count  : " + appointments.size());
     }
 
-    // Add medical record
-    public void addMedicalRecord(MedicalRecord record){
+    public void addMedicalRecord(MedicalRecord record) {
+        if (medicalRecords == null) medicalRecords = new ArrayList<>();
         medicalRecords.add(record);
-        System.out.println("Medical record added.");
+        System.out.println("Medical record added for patient " + patientId);
     }
 
-    // Add appointment
     public void addAppointment(Appointment appointment) {
+        if (appointments == null) appointments = new ArrayList<>();
         appointments.add(appointment);
-        System.out.println("Appointment added.");
+        System.out.println("New appointment booked.");
     }
 
-    // Update insurance
     public void updateInsurance(String newInsuranceId) {
         this.insuranceId = newInsuranceId;
-        System.out.println("Insurance updated.");
+        System.out.println("Insurance information updated successfully.");
     }
-
 }
