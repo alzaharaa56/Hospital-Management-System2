@@ -69,7 +69,7 @@ public class Person implements Displayable, Editable {
 
     @Override
     public boolean validate() {
-        // التحقق من صحة البيانات الأساسية (مثل وجود بريد إلكتروني صحيح)
+
         if (email == null || !email.contains("@")) {
             System.out.println("Validation Failed: Invalid Email format.");
             return false;
