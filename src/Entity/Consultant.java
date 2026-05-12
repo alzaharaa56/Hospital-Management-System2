@@ -11,6 +11,7 @@ public class Consultant extends Doctor {
     private boolean onlineConsultationAvailable;
     private int consultationDuration;
 
+    // Full Constructor
     public Consultant(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                       String phoneNumber, String email, String address, String doctorId, String specialization,
                       String qualification, int experienceYears, String departmentId, double consultationFee,
@@ -21,31 +22,30 @@ public class Consultant extends Doctor {
                 doctorId, specialization, qualification, experienceYears, departmentId,
                 consultationFee, availableSlots, assignedPatients);
 
-        this.consultationTypes = (consultationTypes != null) ? consultationTypes : new ArrayList<>();
+
+        setConsultationTypes(consultationTypes);
+        setConsultationDuration(consultationDuration);
         this.onlineConsultationAvailable = onlineConsultationAvailable;
-        this.consultationDuration = consultationDuration;
     }
 
     public Consultant() {
         super();
+        this.consultationTypes = new ArrayList<>();
     }
 
-    @Override
-    public void displayInfo() {
-        super.displayInfo();
-        System.out.println("Consultation Types: " + consultationTypes);
-        System.out.println("Online Consultation: " + (onlineConsultationAvailable ? "Available" : "Not Available"));
-        System.out.println("Standard Duration: " + consultationDuration + " minutes");
-    }
+    // --- Business Logic & Validation ---
 
     @Override
-    public void displaySummary() {
-        System.out.println("Consultant: Dr. " + getLastName() + " | Specialty: " + getSpecialization() +
-                " | Online: " + (onlineConsultationAvailable ? "Yes" : "No"));
+    public boolean validate() {
+
+        return super.validate() &&
+                consultationDuration > 0 &&
+                Helper.isNotNull(consultationTypes) && !consultationTypes.isEmpty();
     }
 
     public void scheduleConsultation(String consultationType, boolean online) {
-        if (!consultationTypes.contains(consultationType)) {
+
+        if (Helper.isNull(consultationType) || !consultationTypes.contains(consultationType)) {
             System.out.println("Error: Consultation type '" + consultationType + "' is not offered by this consultant.");
             return;
         }
@@ -60,22 +60,60 @@ public class Consultant extends Doctor {
     }
 
     public void provideSecondOpinion(String patientCase) {
-        System.out.println("Dr. " + getLastName() + " is reviewing the case for a second opinion...");
-        System.out.println("Case Summary: " + patientCase);
-        System.out.println("Status: Review in progress.");
+
+        if (Helper.isValidString(patientCase)) {
+            System.out.println("Dr. " + getLastName() + " is reviewing the case for a second opinion...");
+            System.out.println("Case Summary: " + patientCase);
+            System.out.println("Status: Review in progress.");
+        } else {
+            System.out.println("Error: Patient case summary is required for a second opinion.");
+        }
+    }
+
+
+
+    public void setConsultationTypes(List<String> consultationTypes) {
+
+        if (Helper.isNotNull(consultationTypes)) {
+            this.consultationTypes = consultationTypes;
+        } else {
+            this.consultationTypes = new ArrayList<>();
+        }
+    }
+
+    public void setConsultationDuration(int consultationDuration) {
+
+        if (consultationDuration > 0) {
+            this.consultationDuration = consultationDuration;
+        } else {
+            System.out.println("Error: Consultation duration must be positive. Setting default to 30 mins.");
+            this.consultationDuration = 30;
+        }
+    }
+
+    public void setOnlineConsultationAvailable(boolean onlineConsultationAvailable) {
+        this.onlineConsultationAvailable = onlineConsultationAvailable;
+    }
+
+    // --- Display Methods ---
+
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("Consultation Types: " + (consultationTypes.isEmpty() ? "None Listed" : consultationTypes));
+        System.out.println("Online Consultation: " + (onlineConsultationAvailable ? "Available" : "Not Available"));
+        System.out.println("Standard Duration: " + consultationDuration + " minutes");
     }
 
     @Override
-    public boolean validate() {
-        return super.validate() && consultationDuration > 0;
+    public void displaySummary() {
+        System.out.println("Consultant: Dr. " + getLastName() + " | Specialty: " + (Helper.isNotNull(getSpecialization()) ? getSpecialization() : "N/A") +
+                " | Online: " + (onlineConsultationAvailable ? "Yes" : "No"));
     }
 
+    // --- Getters ---
+
     public List<String> getConsultationTypes() { return consultationTypes; }
-    public void setConsultationTypes(List<String> consultationTypes) { this.consultationTypes = consultationTypes; }
-
     public boolean isOnlineConsultationAvailable() { return onlineConsultationAvailable; }
-    public void setOnlineConsultationAvailable(boolean onlineConsultationAvailable) { this.onlineConsultationAvailable = onlineConsultationAvailable; }
-
     public int getConsultationDuration() { return consultationDuration; }
-    public void setConsultationDuration(int consultationDuration) { this.consultationDuration = consultationDuration; }
 }

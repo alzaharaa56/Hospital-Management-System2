@@ -39,23 +39,32 @@ public class GeneralPractitioner extends Doctor {
 
     @Override
     public void displaySummary() {
-        System.out.println("GP: Dr. " + getLastName() + " | Specialty: " + getSpecialization() +
+        System.out.println("GP: Dr. " + getLastName() + " | Specialty: " + (Helper.isNotNull(getSpecialization()) ? getSpecialization() : "General") +
                 " | Walk-in: " + (walkinAvailable ? "Enabled" : "Disabled"));
     }
 
     @Override
     public boolean validate() {
+
         return super.validate() && Helper.isValidString(getSpecialization());
     }
+
+
 
     public void scheduleHomeVisit(String patientName, String address) {
         if (!homeVisitAvailable) {
             System.out.println("Error: Home visits are not offered by Dr. " + getLastName());
             return;
         }
-        System.out.println("Home visit scheduled successfully.");
-        System.out.println("Patient Name : " + patientName);
-        System.out.println("Address      : " + address);
+
+
+        if (Helper.isValidString(patientName) && Helper.isValidString(address)) {
+            System.out.println("Home visit scheduled successfully.");
+            System.out.println("Patient Name : " + patientName);
+            System.out.println("Address      : " + address);
+        } else {
+            System.out.println("Error: Patient name and address are required for home visits.");
+        }
     }
 
     public void administerVaccine(String patientName, String vaccineName) {
@@ -63,10 +72,18 @@ public class GeneralPractitioner extends Doctor {
             System.out.println("Error: Dr. " + getLastName() + " is not certified to administer vaccinations.");
             return;
         }
-        System.out.println("Vaccine administered successfully.");
-        System.out.println("Patient Name : " + patientName);
-        System.out.println("Vaccine      : " + vaccineName);
+
+
+        if (Helper.isValidString(patientName) && Helper.isValidString(vaccineName)) {
+            System.out.println("Vaccine administered successfully.");
+            System.out.println("Patient Name : " + patientName);
+            System.out.println("Vaccine      : " + vaccineName);
+        } else {
+            System.out.println("Error: Vaccination details are incomplete.");
+        }
     }
+
+
 
     public boolean isWalkinAvailable() { return walkinAvailable; }
     public void setWalkinAvailable(boolean walkinAvailable) { this.walkinAvailable = walkinAvailable; }

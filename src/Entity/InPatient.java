@@ -23,25 +23,28 @@ public class InPatient extends Patient implements Billable {
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address,
                 patientId, bloodGroup, registrationDate, insuranceId);
 
-        this.admissionDate = admissionDate;
-        this.dischargeDate = dischargeDate;
-        this.roomNumber = roomNumber;
-        this.bedNumber = bedNumber;
-        this.admittingDoctorId = admittingDoctorId;
-        this.dailyCharges = dailyCharges;
+
+        setAdmissionDate(admissionDate);
+        setDischargeDate(dischargeDate);
+        setRoomNumber(roomNumber);
+        setBedNumber(bedNumber);
+        setAdmittingDoctorId(admittingDoctorId);
+        setDailyCharges(dailyCharges);
     }
 
     public InPatient() {
         super();
     }
 
+
+
     @Override
     public void displayInfo() {
         super.displayInfo();
         System.out.println("Admission Date      : " + admissionDate);
-        System.out.println("Discharge Date      : " + (dischargeDate == null ? "Still Admitted" : dischargeDate));
-        System.out.println("Room / Bed          : " + roomNumber + " / " + bedNumber);
-        System.out.println("Admitting Doctor ID : " + admittingDoctorId);
+        System.out.println("Discharge Date      : " + (Helper.isNotNull(dischargeDate) ? dischargeDate : "Still Admitted"));
+        System.out.println("Room / Bed          : " + (Helper.isNotNull(roomNumber) ? roomNumber : "N/A") + " / " + (Helper.isNotNull(bedNumber) ? bedNumber : "N/A"));
+        System.out.println("Admitting Doctor ID : " + (Helper.isNotNull(admittingDoctorId) ? admittingDoctorId : "Not Assigned"));
         System.out.println("Daily Charges       : $" + dailyCharges);
         System.out.println("Stay Duration       : " + calculateStayDuration() + " days");
         System.out.println("Total Amount Due    : $" + calculateCharges());
@@ -50,8 +53,10 @@ public class InPatient extends Patient implements Billable {
     @Override
     public void displaySummary() {
         System.out.println("In-Patient: " + getFirstName() + " " + getLastName() +
-                " | Room: " + roomNumber + " | Status: Admitted");
+                " | Room: " + (Helper.isNotNull(roomNumber) ? roomNumber : "N/A") + " | Status: Admitted");
     }
+
+
 
     @Override
     public double calculateCharges() {
@@ -62,7 +67,7 @@ public class InPatient extends Patient implements Billable {
     public void generateBill() {
         System.out.println("\n--- HOSPITAL BILL (IN-PATIENT) ---");
         System.out.println("Patient Name: " + getFirstName() + " " + getLastName());
-        System.out.println("Room Number : " + roomNumber);
+        System.out.println("Room Number : " + (Helper.isNotNull(roomNumber) ? roomNumber : "N/A"));
         System.out.println("Total Days  : " + calculateStayDuration());
         System.out.println("Total Cost  : $" + calculateCharges());
         System.out.println("----------------------------------");
@@ -70,33 +75,75 @@ public class InPatient extends Patient implements Billable {
 
     @Override
     public void processPayment(double amount) {
-        System.out.println("Payment of $" + amount + " received for patient: " + getLastName());
+
+        if (Helper.isPositive(amount)) {
+            System.out.println("Payment of $" + amount + " received for patient: " + getLastName());
+        } else {
+            System.out.println("Payment Error: Invalid amount.");
+        }
     }
+
+    // --- Business Logic ---
 
     public long calculateStayDuration() {
-        if (admissionDate == null) return 0;
+        if (Helper.isNull(admissionDate)) return 0;
 
-        LocalDate end = (dischargeDate == null) ? LocalDate.now() : dischargeDate;
+        LocalDate end = (Helper.isNull(dischargeDate)) ? LocalDate.now() : dischargeDate;
         long days = ChronoUnit.DAYS.between(admissionDate, end);
 
-        return (days == 0) ? 1 : days;
+        return (days <= 0) ? 1 : days;
     }
 
+
+
+    public void setAdmissionDate(LocalDate admissionDate) {
+
+        if (Helper.isNotNull(admissionDate) && !Helper.isFutureDate(admissionDate)) {
+            this.admissionDate = admissionDate;
+        } else {
+            this.admissionDate = LocalDate.now();
+        }
+    }
+
+    public void setDischargeDate(LocalDate dischargeDate) {
+
+        if (Helper.isNotNull(dischargeDate) && Helper.isNotNull(admissionDate) && !dischargeDate.isBefore(admissionDate)) {
+            this.dischargeDate = dischargeDate;
+        } else {
+            this.dischargeDate = null;
+        }
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        if (Helper.isValidString(roomNumber)) {
+            this.roomNumber = roomNumber;
+        }
+    }
+
+    public void setBedNumber(String bedNumber) {
+        if (Helper.isValidString(bedNumber)) {
+            this.bedNumber = bedNumber;
+        }
+    }
+
+    public void setAdmittingDoctorId(String admittingDoctorId) {
+        if (Helper.isValidString(admittingDoctorId)) {
+            this.admittingDoctorId = admittingDoctorId;
+        }
+    }
+
+    public void setDailyCharges(double dailyCharges) {
+        if (Helper.isPositive(dailyCharges)) {
+            this.dailyCharges = dailyCharges;
+        }
+    }
+
+
+
     public LocalDate getAdmissionDate() { return admissionDate; }
-    public void setAdmissionDate(LocalDate admissionDate) { this.admissionDate = admissionDate; }
-
     public LocalDate getDischargeDate() { return dischargeDate; }
-    public void setDischargeDate(LocalDate dischargeDate) { this.dischargeDate = dischargeDate; }
-
     public String getRoomNumber() { return roomNumber; }
-    public void setRoomNumber(String roomNumber) { this.roomNumber = roomNumber; }
-
     public String getBedNumber() { return bedNumber; }
-    public void setBedNumber(String bedNumber) { this.bedNumber = bedNumber; }
-
     public String getAdmittingDoctorId() { return admittingDoctorId; }
-    public void setAdmittingDoctorId(String admittingDoctorId) { this.admittingDoctorId = admittingDoctorId; }
-
     public double getDailyCharges() { return dailyCharges; }
-    public void setDailyCharges(double dailyCharges) { this.dailyCharges = dailyCharges; }
 }
