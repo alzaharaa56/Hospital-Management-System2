@@ -1,20 +1,16 @@
 package Entity;
 
+import Utils.Helper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Task 3.2: Surgeon class inheriting from Doctor.
- * Represents a medical specialist authorized to perform surgical procedures.
- */
 public class Surgeon extends Doctor {
 
     private int surgeriesPerformed;
     private List<String> surgeryTypes;
     private boolean operationTheatreAccess;
 
-    // Full Constructor with super() chaining
     public Surgeon(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                    String phoneNumber, String email, String address, String doctorId, String specialization,
                    String qualification, int experienceYears, String departmentId, double consultationFee,
@@ -30,17 +26,14 @@ public class Surgeon extends Doctor {
         this.operationTheatreAccess = operationTheatreAccess;
     }
 
-    // Default Constructor
     public Surgeon() {
         super();
         this.surgeryTypes = new ArrayList<>();
     }
 
-    // --- Task 3.2: Implementation of Displayable ---
-
     @Override
     public void displayInfo() {
-        super.displayInfo(); // Displays Person and Doctor attributes
+        super.displayInfo();
         System.out.println("Surgeries Performed      : " + surgeriesPerformed);
         System.out.println("Surgery Specializations  : " + surgeryTypes);
         System.out.println("Operation Theatre Access : " + (operationTheatreAccess ? "Granted" : "Denied"));
@@ -52,19 +45,11 @@ public class Surgeon extends Doctor {
                 " | Total Surgeries: " + surgeriesPerformed);
     }
 
-    // --- Task 3.2: Validation logic ---
-
     @Override
     public boolean validate() {
-        // Inherits Person validation and ensures at least one surgery type is listed for a surgeon
         return super.validate() && surgeriesPerformed >= 0 && !surgeryTypes.isEmpty();
     }
 
-    // --- Business Logic Methods ---
-
-    /**
-     * Attempts to perform a surgery if the type is supported and access is granted.
-     */
     public boolean performSurgery(String surgeryType) {
         if (operationTheatreAccess && surgeryTypes.contains(surgeryType)) {
             surgeriesPerformed++;
@@ -77,9 +62,6 @@ public class Surgeon extends Doctor {
         }
     }
 
-    /**
-     * Updates the total lifetime surgery count.
-     */
     public void updateSurgeryCount(int count) {
         if (count >= 0) {
             this.surgeriesPerformed = count;
@@ -88,8 +70,6 @@ public class Surgeon extends Doctor {
             System.out.println("Error: Surgery count cannot be negative.");
         }
     }
-
-    // --- Getters and Setters ---
 
     public int getSurgeriesPerformed() { return surgeriesPerformed; }
     public void setSurgeriesPerformed(int surgeriesPerformed) { this.surgeriesPerformed = surgeriesPerformed; }

@@ -5,13 +5,11 @@ import Behaviour.Billable;
 import Utils.Helper;
 import java.time.LocalDate;
 
-
 public class Patient extends Person implements Appointable, Billable {
     private String patientId;
     private String bloodGroup;
     private LocalDate registrationDate;
     private String insuranceId;
-
 
     public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                    String phoneNumber, String email, String address, String patientId,
@@ -19,13 +17,11 @@ public class Patient extends Person implements Appointable, Billable {
 
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
 
-
         this.patientId = Helper.isNotNull(patientId) ? patientId : Helper.generateId("PAT");
         this.bloodGroup = bloodGroup;
         this.registrationDate = registrationDate != null ? registrationDate : LocalDate.now();
         this.insuranceId = insuranceId;
     }
-
 
     public Patient() {
         super();
@@ -33,13 +29,7 @@ public class Patient extends Person implements Appointable, Billable {
         this.registrationDate = LocalDate.now();
     }
 
-    // --- Business Logic & Validation ---
-
-    /**
-     * Validates blood group using predefined Regex patterns in Helper.
-     */
     public void setBloodGroup(String blood) {
-
         if (Helper.isValidString(blood, "^(A|B|AB|O)[+-]$")) {
             this.bloodGroup = blood;
         } else {
@@ -49,13 +39,10 @@ public class Patient extends Person implements Appointable, Billable {
 
     @Override
     public boolean validate() {
-
         return super.validate() &&
                 Helper.isValidString(patientId) &&
                 (Helper.isPastDate(getDateOfBirth()) || Helper.isToday(getDateOfBirth()));
     }
-
-    // --- Display Methods ---
 
     @Override
     public void displayInfo() {
@@ -70,8 +57,6 @@ public class Patient extends Person implements Appointable, Billable {
     public void displaySummary() {
         System.out.println("Patient Record: " + getFirstName() + " " + getLastName() + " [ID: " + patientId + "]");
     }
-
-    // --- Appointable Implementation ---
 
     @Override
     public void scheduleAppointment(Appointment a) {
@@ -96,8 +81,6 @@ public class Patient extends Person implements Appointable, Billable {
         }
     }
 
-    // --- Billable Implementation ---
-
     @Override
     public double calculateCharges() {
         return 150.0;
@@ -121,10 +104,7 @@ public class Patient extends Person implements Appointable, Billable {
         }
     }
 
-
-
     public String getPatientId() { return patientId; }
-
 
     public void setPatientId(String pId) {
         if (Helper.isValidString(pId)) {

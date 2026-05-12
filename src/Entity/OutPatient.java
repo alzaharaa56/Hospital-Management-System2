@@ -1,18 +1,14 @@
 package Entity;
 
+import Utils.Helper;
 import java.time.LocalDate;
 
-/**
- * Task 3.2: OutPatient inherits from Patient.
- * Represents patients who visit the clinic without being admitted.
- */
 public class OutPatient extends Patient {
 
     private int visitCount;
     private LocalDate lastVisitDate;
     private String preferredDoctorId;
 
-    // Full Constructor aligned with our standard Patient structure
     public OutPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                       String phoneNumber, String email, String address, String patientId, String bloodGroup,
                       LocalDate registrationDate, String insuranceId, int visitCount,
@@ -26,16 +22,13 @@ public class OutPatient extends Patient {
         this.preferredDoctorId = preferredDoctorId;
     }
 
-    // Default Constructor
     public OutPatient() {
         super();
     }
 
-    // --- Task 3.2: Implementation of Displayable ---
-
     @Override
     public void displayInfo() {
-        super.displayInfo(); // Displays Person and Patient details
+        super.displayInfo();
         System.out.println("Visit Count        : " + visitCount);
         System.out.println("Last Visit Date    : " + (lastVisitDate == null ? "No previous visits" : lastVisitDate));
         System.out.println("Preferred Doctor ID: " + (preferredDoctorId == null ? "None assigned" : preferredDoctorId));
@@ -47,21 +40,13 @@ public class OutPatient extends Patient {
                 " | Total Visits: " + visitCount + " | Preferred MD: " + preferredDoctorId);
     }
 
-    // --- Task 3.2: Validation logic ---
-
     @Override
     public boolean validate() {
-        // Inherits validation from Person + ensures visit count isn't negative
         return super.validate() && visitCount >= 0;
     }
 
-    // --- Business Logic Methods ---
-
-    /**
-     * Schedules a follow-up appointment date.
-     */
     public void scheduleFollowUp(LocalDate followUpDate) {
-        if (followUpDate.isBefore(LocalDate.now())) {
+        if (followUpDate != null && followUpDate.isBefore(LocalDate.now())) {
             System.out.println("Error: Follow-up date cannot be in the past.");
             return;
         }
@@ -69,16 +54,11 @@ public class OutPatient extends Patient {
         System.out.println("Follow-up Date : " + followUpDate);
     }
 
-    /**
-     * Increments the visit count and updates the last visit timestamp to today.
-     */
     public void updateVisitCount() {
         this.visitCount++;
         this.lastVisitDate = LocalDate.now();
         System.out.println("Success: Visit count incremented to " + visitCount);
     }
-
-    // --- Getters and Setters ---
 
     public int getVisitCount() { return visitCount; }
     public void setVisitCount(int visitCount) { this.visitCount = visitCount; }

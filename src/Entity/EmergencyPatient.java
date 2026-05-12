@@ -1,26 +1,20 @@
 package Entity;
 
+import Utils.Helper;
 import java.time.LocalDate;
-import java.util.List;
 
-/**
- * Task 3.2: EmergencyPatient inherits from Patient.
- * Represents patients requiring urgent medical attention with triage prioritization.
- */
 public class EmergencyPatient extends Patient {
 
     private String emergencyType;
-    private String arrivalMode; // e.g., Ambulance, Walk-in, Helicopter
-    private int triageLevel;    // Priority scale: 1 (Critical) to 5 (Non-urgent)
+    private String arrivalMode;
+    private int triageLevel;
     private boolean admittedViaER;
 
-    // Full Constructor
     public EmergencyPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                             String phoneNumber, String email, String address, String patientId, String bloodGroup,
                             LocalDate registrationDate, String insuranceId, String emergencyType,
                             String arrivalMode, int triageLevel, boolean admittedViaER) {
 
-        // Calling the parent (Patient) constructor
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address,
                 patientId, bloodGroup, registrationDate, insuranceId);
 
@@ -30,16 +24,13 @@ public class EmergencyPatient extends Patient {
         this.admittedViaER = admittedViaER;
     }
 
-    // Default Constructor
     public EmergencyPatient() {
         super();
     }
 
-    // --- Task 3.2: Implementation of Displayable ---
-
     @Override
     public void displayInfo() {
-        super.displayInfo(); // Displays Person and Patient details
+        super.displayInfo();
         System.out.println("Emergency Type : " + emergencyType);
         System.out.println("Arrival Mode   : " + arrivalMode);
         System.out.println("Triage Level   : " + triageLevel + " (Priority)");
@@ -52,19 +43,11 @@ public class EmergencyPatient extends Patient {
                 " | Case: " + emergencyType);
     }
 
-    // --- Task 3.2: Validation logic ---
-
     @Override
     public boolean validate() {
-        // Validating parent rules + triage level range
         return super.validate() && (triageLevel >= 1 && triageLevel <= 5);
     }
 
-    // --- Business Logic Methods ---
-
-    /**
-     * Updates the triage level with validation.
-     */
     public void updateTriageLevel(int level) {
         if (level < 1 || level > 5) {
             System.out.println("Error: Invalid triage level. Must be between 1 and 5.");
@@ -73,8 +56,6 @@ public class EmergencyPatient extends Patient {
         this.triageLevel = level;
         System.out.println("Triage level updated to " + triageLevel + " for patient " + getLastName());
     }
-
-    // --- Getters and Setters ---
 
     public String getEmergencyType() { return emergencyType; }
     public void setEmergencyType(String emergencyType) { this.emergencyType = emergencyType; }

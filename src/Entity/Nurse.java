@@ -1,23 +1,18 @@
 package Entity;
 
+import Utils.Helper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Task 3.2: Nurse class inheriting from Person.
- * Manages nursing staff information, shifts, and patient assignments.
- */
 public class Nurse extends Person {
 
-    // Nurse-specific fields
     private String nurseId;
     private String departmentId;
-    private String shift; // e.g., Morning, Evening, Night
+    private String shift;
     private String qualification;
     private List<String> assignedPatients;
 
-    // Full Constructor with constructor chaining to Person
     public Nurse(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                  String phoneNumber, String email, String address, String nurseId, String departmentId,
                  String shift, String qualification) {
@@ -30,17 +25,14 @@ public class Nurse extends Person {
         this.assignedPatients = new ArrayList<>();
     }
 
-    // Default Constructor
     public Nurse() {
         super();
         this.assignedPatients = new ArrayList<>();
     }
 
-    // --- Task 3.2: Implementation of Displayable ---
-
     @Override
     public void displayInfo() {
-        super.displayInfo(); // Displays Person details (Name, ID, Contact)
+        super.displayInfo();
         System.out.println("Nurse ID          : " + nurseId);
         System.out.println("Department ID     : " + departmentId);
         System.out.println("Current Shift     : " + shift);
@@ -53,40 +45,29 @@ public class Nurse extends Person {
         System.out.println("Nurse: " + getFirstName() + " " + getLastName() + " [" + nurseId + "] | Shift: " + shift);
     }
 
-    // --- Task 3.2: Validation ---
-
     @Override
     public boolean validate() {
-        // Inherits Person validation and ensures shift is assigned
-        return super.validate() && shift != null && !shift.isEmpty();
+        return super.validate() && Helper.isValidString(shift);
     }
 
-    // --- Business Logic Methods ---
-
-    /**
-     * Assigns a patient to this nurse's care list.
-     */
     public void assignPatient(String patientId) {
-        if (!assignedPatients.contains(patientId)) {
-            assignedPatients.add(patientId);
-            System.out.println("Success: Patient " + patientId + " assigned to Nurse " + getLastName());
-        } else {
-            System.out.println("Note: Patient " + patientId + " is already assigned to this nurse.");
+        if (Helper.isValidString(patientId)) {
+            if (!assignedPatients.contains(patientId)) {
+                assignedPatients.add(patientId);
+                System.out.println("Success: Patient " + patientId + " assigned to Nurse " + getLastName());
+            } else {
+                System.out.println("Note: Patient " + patientId + " is already assigned to this nurse.");
+            }
         }
     }
 
-    /**
-     * Removes a patient from this nurse's care list.
-     */
     public void removePatient(String patientId) {
         if (assignedPatients.remove(patientId)) {
             System.out.println("Success: Patient " + patientId + " removed from Nurse " + getLastName() + "'s list.");
         } else {
-            System.out.println("Error: Patient ID " + patientId + " was not found in the assignment list.");
+            System.out.println("Error: Patient ID " + patientId + " was not found.");
         }
     }
-
-    // --- Getters and Setters ---
 
     public String getNurseId() { return nurseId; }
     public void setNurseId(String nurseId) { this.nurseId = nurseId; }

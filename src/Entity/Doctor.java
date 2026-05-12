@@ -1,5 +1,6 @@
 package Entity;
 
+import Utils.Helper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,10 @@ public class Doctor extends Person {
     private List<String> availableSlots;
     private List<String> assignedPatients;
 
-
     public Doctor(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                   String phoneNumber, String email, String address, String doctorId, String specialization,
                   String qualification, int experienceYears, String departmentId, double consultationFee,
                   List<String> availableSlots, List<String> assignedPatients) {
-
 
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
 
@@ -38,20 +37,15 @@ public class Doctor extends Person {
         super();
     }
 
-
     public void updateFee(double fee) {
         this.consultationFee = fee;
         System.out.println("Fee updated successfully to: $" + fee);
     }
 
-
     public void updateFee(double fee, String reason) {
         this.consultationFee = fee;
         System.out.println("Fee updated to: $" + fee + ". Reason: " + reason);
     }
-
-
-
 
     public void addAvailability(String slot) {
         if (this.availableSlots == null) this.availableSlots = new ArrayList<>();
@@ -59,14 +53,11 @@ public class Doctor extends Person {
         System.out.println("New slot added: " + slot);
     }
 
-
     public void addAvailability(List<String> slots) {
         if (this.availableSlots == null) this.availableSlots = new ArrayList<>();
         this.availableSlots.addAll(slots);
         System.out.println("Multiple slots added to availability list.");
     }
-
-
 
     public String getDoctorId() { return doctorId; }
     public void setDoctorId(String doctorId) { this.doctorId = doctorId; }
@@ -80,8 +71,6 @@ public class Doctor extends Person {
     public List<String> getAvailableSlots() { return availableSlots; }
     public List<String> getAssignedPatients() { return assignedPatients; }
 
-
-
     @Override
     public void displayInfo() {
         super.displayInfo();
@@ -93,8 +82,10 @@ public class Doctor extends Person {
     }
 
     public void assignPatient(String patientId) {
-        assignedPatients.add(patientId);
-        System.out.println("Patient " + patientId + " assigned to Dr. " + this.getLastName());
+        if (Helper.isValidString(patientId)) {
+            assignedPatients.add(patientId);
+            System.out.println("Patient " + patientId + " assigned to Dr. " + this.getLastName());
+        }
     }
 
     public String getDepartmentId() {

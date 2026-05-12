@@ -2,25 +2,21 @@ package Entity;
 
 import Behaviour.Displayable;
 import Behaviour.Editable;
+import Utils.Helper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Task 3.2: Appointment implements Displayable and Editable.
- * This class represents a medical appointment linking a Patient and a Doctor.
- */
 public class Appointment implements Displayable, Editable {
     private String appointmentId;
     private String patientId;
     private String doctorId;
     private LocalDate appointmentDate;
     private String appointmentTime;
-    private String status; // Possible values: Scheduled, Cancelled, Completed, Rescheduled
+    private String status;
     private String reason;
     private String notes = "";
 
-    // Full Constructor
-    public Appointment(String standardBooking, String appointmentId, String patientId, String doctorId, LocalDate appointmentDate,
+    public Appointment(String appointmentId, String patientId, String doctorId, LocalDate appointmentDate,
                        String appointmentTime, String reason, String status) {
         this.appointmentId = appointmentId;
         this.patientId = patientId;
@@ -29,30 +25,23 @@ public class Appointment implements Displayable, Editable {
         this.appointmentTime = appointmentTime;
         this.reason = reason;
         this.status = status;
+    }
+
+    public Appointment() {
         this.notes = "";
     }
 
-    // Default Constructor
-    public Appointment(String appId, String patientId, String doctorId, LocalDate date, String time, String consultation, String scheduled) {}
-
-    // --- Task 3.1: Method Overloading (Add Clinical Notes) ---
-
-    // Add a basic note
     public void addNotes(String notes) {
         this.notes += "\n- " + notes;
     }
 
-    // Add a note with the author's name
     public void addNotes(String notes, String addedBy) {
         this.notes += "\n- [" + addedBy + "]: " + notes;
     }
 
-    // Add a detailed note with author and precise timestamp
     public void addNotes(String notes, String addedBy, LocalDateTime timestamp) {
         this.notes += "\n- [" + timestamp + "] " + addedBy + ": " + notes;
     }
-
-    // --- Task 3.2: Implementation of Displayable ---
 
     @Override
     public void displayInfo() {
@@ -71,8 +60,6 @@ public class Appointment implements Displayable, Editable {
         System.out.println("Appt ID: " + appointmentId + " | Date: " + appointmentDate + " | Status: " + status);
     }
 
-    // --- Task 3.2: Implementation of Editable ---
-
     @Override
     public void edit(Object updatedData) {
         if (updatedData instanceof Appointment) {
@@ -86,11 +73,8 @@ public class Appointment implements Displayable, Editable {
 
     @Override
     public boolean validate() {
-        // Ensure the appointment date is not null and not in the past
         return appointmentDate != null && !appointmentDate.isBefore(LocalDate.now());
     }
-
-    // --- Getters & Setters ---
 
     public String getAppointmentId() { return appointmentId; }
     public void setAppointmentId(String appointmentId) { this.appointmentId = appointmentId; }

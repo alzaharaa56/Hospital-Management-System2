@@ -2,12 +2,9 @@ package Entity;
 
 import Behaviour.Displayable;
 import Behaviour.Editable;
+import Utils.Helper;
 import java.time.LocalDate;
 
-/**
- * Task 3.2: MedicalRecord implements Displayable and Editable.
- * This class stores clinical data regarding a specific patient visit.
- */
 public class MedicalRecord implements Displayable, Editable {
     private String recordId;
     private String patientId;
@@ -18,7 +15,6 @@ public class MedicalRecord implements Displayable, Editable {
     private String testResults;
     private String notes;
 
-    // Full Constructor
     public MedicalRecord(String recordId, String patientId, String doctorId, LocalDate visitDate,
                          String diagnosis, String testResults, String prescription, String notes) {
         this.recordId = recordId;
@@ -31,10 +27,7 @@ public class MedicalRecord implements Displayable, Editable {
         this.notes = notes;
     }
 
-    // Default Constructor
     public MedicalRecord() {}
-
-    // --- Task 3.2: Implementation of Displayable ---
 
     @Override
     public void displayInfo() {
@@ -54,8 +47,6 @@ public class MedicalRecord implements Displayable, Editable {
         System.out.println("Record: " + recordId + " | Patient: " + patientId + " | Date: " + visitDate);
     }
 
-    // --- Task 3.2: Implementation of Editable ---
-
     @Override
     public void edit(Object updatedData) {
         if (updatedData instanceof MedicalRecord) {
@@ -70,11 +61,9 @@ public class MedicalRecord implements Displayable, Editable {
 
     @Override
     public boolean validate() {
-        // Ensure record has a diagnosis and a valid patient/doctor link
-        return recordId != null && diagnosis != null && patientId != null && doctorId != null;
+        return Helper.isValidString(recordId) && Helper.isValidString(diagnosis) &&
+                Helper.isValidString(patientId) && Helper.isValidString(doctorId);
     }
-
-    // --- Getters and Setters ---
 
     public String getRecordId() { return recordId; }
     public void setRecordId(String recordId) { this.recordId = recordId; }

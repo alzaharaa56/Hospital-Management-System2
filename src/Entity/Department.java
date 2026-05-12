@@ -2,16 +2,12 @@ package Entity;
 
 import Behaviour.Displayable;
 import Behaviour.Editable;
+import Utils.Helper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Task 3.2: Department implements Displayable and Editable.
- * This class manages hospital departments, including staff and bed resources.
- */
 public class Department implements Displayable, Editable {
 
-    // Fields
     private String departmentId;
     private String departmentName;
     private String headDoctorId;
@@ -20,7 +16,6 @@ public class Department implements Displayable, Editable {
     private int bedCapacity;
     private int availableBeds;
 
-    // Full Constructor
     public Department(String departmentId, String departmentName, String headDoctorId, int bedCapacity) {
         this.departmentId = departmentId;
         this.departmentName = departmentName;
@@ -28,16 +23,13 @@ public class Department implements Displayable, Editable {
         this.doctors = new ArrayList<>();
         this.nurses = new ArrayList<>();
         this.bedCapacity = bedCapacity;
-        this.availableBeds = bedCapacity; // Initially, all beds are available
+        this.availableBeds = bedCapacity;
     }
 
-    // Default Constructor
     public Department() {
         this.doctors = new ArrayList<>();
         this.nurses = new ArrayList<>();
     }
-
-    // --- Task 3.2: Implementation of Displayable ---
 
     @Override
     public void displayInfo() {
@@ -54,8 +46,6 @@ public class Department implements Displayable, Editable {
         System.out.println("Dept: " + departmentName + " | Capacity: " + availableBeds + "/" + bedCapacity);
     }
 
-    // --- Task 3.2: Implementation of Editable ---
-
     @Override
     public void edit(Object updatedData) {
         if (updatedData instanceof Department) {
@@ -69,17 +59,11 @@ public class Department implements Displayable, Editable {
 
     @Override
     public boolean validate() {
-        // Ensure name is provided and capacity is not negative
-        return departmentName != null && !departmentName.isEmpty() && bedCapacity >= 0;
+        return Helper.isValidString(departmentName) && bedCapacity >= 0;
     }
 
-    // --- Staff Management Methods ---
-
-    /**
-     * Assigns a doctor to the department if not already assigned.
-     */
     public void assignDoctor(Doctor doctor) {
-        if (doctor != null && !doctors.contains(doctor)) {
+        if (Helper.isNotNull(doctor) && !doctors.contains(doctor)) {
             doctors.add(doctor);
             System.out.println("Doctor " + doctor.getLastName() + " assigned to " + departmentName);
         } else {
@@ -87,11 +71,8 @@ public class Department implements Displayable, Editable {
         }
     }
 
-    /**
-     * Assigns a nurse to the department if not already assigned.
-     */
     public void assignNurse(Nurse nurse) {
-        if (nurse != null && !nurses.contains(nurse)) {
+        if (Helper.isNotNull(nurse) && !nurses.contains(nurse)) {
             nurses.add(nurse);
             System.out.println("Nurse assigned successfully to " + departmentName);
         } else {
@@ -99,9 +80,6 @@ public class Department implements Displayable, Editable {
         }
     }
 
-    /**
-     * Updates the count of available beds.
-     */
     public void updateBedAvailability(int beds) {
         if (beds >= 0 && beds <= bedCapacity) {
             availableBeds = beds;
@@ -110,8 +88,6 @@ public class Department implements Displayable, Editable {
             System.out.println("Error: Invalid bed count provided.");
         }
     }
-
-    // --- Getters and Setters ---
 
     public String getDepartmentId() { return departmentId; }
     public void setDepartmentId(String departmentId) { this.departmentId = departmentId; }

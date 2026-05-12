@@ -2,9 +2,9 @@ package Entity;
 
 import Behaviour.Displayable;
 import Behaviour.Editable;
+import Utils.Helper;
 import java.time.LocalDate;
 import java.util.Objects;
-
 
 public class Person implements Displayable, Editable {
     private String id;
@@ -15,7 +15,6 @@ public class Person implements Displayable, Editable {
     private String phoneNumber;
     private String email;
     private String address;
-
 
     public Person(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
         this.id = id;
@@ -28,11 +27,8 @@ public class Person implements Displayable, Editable {
         this.address = address;
     }
 
-
     public Person() {
     }
-
-
 
     @Override
     public void displayInfo() {
@@ -51,11 +47,8 @@ public class Person implements Displayable, Editable {
         System.out.println("Summary: [" + id + "] " + firstName + " " + lastName + " (" + gender + ")");
     }
 
-
-
     @Override
     public void edit(Object updatedData) {
-
         if (updatedData instanceof Person) {
             Person p = (Person) updatedData;
             this.firstName = p.firstName;
@@ -69,18 +62,18 @@ public class Person implements Displayable, Editable {
 
     @Override
     public boolean validate() {
-
-        if (email == null || !email.contains("@")) {
+        if (!Helper.isValidEmail(email)) {
             System.out.println("Validation Failed: Invalid Email format.");
             return false;
         }
+
         if (phoneNumber == null || phoneNumber.length() < 8) {
             System.out.println("Validation Failed: Phone number too short.");
             return false;
         }
+
         return true;
     }
-
 
 
     public String getId() { return id; }
@@ -106,8 +99,6 @@ public class Person implements Displayable, Editable {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
-
 
     @Override
     public String toString() {

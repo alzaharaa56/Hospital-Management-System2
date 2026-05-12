@@ -1,13 +1,10 @@
 package Entity;
 
-import Behaviour.Billable; // Required for Task 3.2
+import Behaviour.Billable;
+import Utils.Helper;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-/**
- * Task 3.2: InPatient inherits from Patient and implements Billable.
- * This class handles patients admitted to the hospital for a stay.
- */
 public class InPatient extends Patient implements Billable {
 
     private LocalDate admissionDate;
@@ -17,14 +14,12 @@ public class InPatient extends Patient implements Billable {
     private String admittingDoctorId;
     private double dailyCharges;
 
-    // Full Constructor
     public InPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
                      String phoneNumber, String email, String address, String patientId, String bloodGroup,
                      LocalDate registrationDate, String insuranceId, LocalDate admissionDate,
                      LocalDate dischargeDate, String roomNumber, String bedNumber,
                      String admittingDoctorId, double dailyCharges) {
 
-        // Calling parent (Patient) constructor
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address,
                 patientId, bloodGroup, registrationDate, insuranceId);
 
@@ -36,12 +31,9 @@ public class InPatient extends Patient implements Billable {
         this.dailyCharges = dailyCharges;
     }
 
-    // Default Constructor
     public InPatient() {
         super();
     }
-
-    // --- Task 3.2: Implementation of Displayable ---
 
     @Override
     public void displayInfo() {
@@ -60,8 +52,6 @@ public class InPatient extends Patient implements Billable {
         System.out.println("In-Patient: " + getFirstName() + " " + getLastName() +
                 " | Room: " + roomNumber + " | Status: Admitted");
     }
-
-    // --- Task 3.2: Implementation of Billable ---
 
     @Override
     public double calculateCharges() {
@@ -83,21 +73,14 @@ public class InPatient extends Patient implements Billable {
         System.out.println("Payment of $" + amount + " received for patient: " + getLastName());
     }
 
-    // --- Business Logic ---
-
-    /**
-     * Calculates the number of days between admission and discharge.
-     */
     public long calculateStayDuration() {
         if (admissionDate == null) return 0;
 
         LocalDate end = (dischargeDate == null) ? LocalDate.now() : dischargeDate;
         long days = ChronoUnit.DAYS.between(admissionDate, end);
 
-        return (days == 0) ? 1 : days; // Minimum 1 day charge
+        return (days == 0) ? 1 : days;
     }
-
-    // --- Getters and Setters ---
 
     public LocalDate getAdmissionDate() { return admissionDate; }
     public void setAdmissionDate(LocalDate admissionDate) { this.admissionDate = admissionDate; }
