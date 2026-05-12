@@ -101,4 +101,6 @@ public class InPatient extends Patient{
 
         return calculateStayDuration() * dailyCharges;
     }
+
+
 }

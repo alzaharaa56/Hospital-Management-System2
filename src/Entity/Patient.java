@@ -4,11 +4,21 @@ import Interface.Appointable;
 import Interface.Billable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Patient extends Person implements Appointable, Billable {
     private String patientId;
     private String bloodGroup;
     private LocalDate registrationDate;
+
+    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
+
+
+    }
+
+    public Patient() {
+
+    }
 
 
     public void setPatientId(String pId) {
