@@ -1,126 +1,144 @@
 package Service;
 
 import Entity.Patient;
-import Behaviour.Manageable;
-import Behaviour.Searchable;
-import Utils.Helper;
+import Entity.InPatient;
+import Entity.EmergencyPatient;
+import Behavior.Manageable;
+import Behavior.Searchable;
+import Utils.HelperUtils;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
+public class PatientService implements Manageable, Searchable {
 
-public class PatientService implements Manageable<Patient>, Searchable<Patient> {
 
-    private Scanner scanner = new Scanner(System.in);
     private static List<Patient> patients = new ArrayList<>();
 
-    // --- Implementation of Manageable Interface ---
+
 
     @Override
-    public void add(Patient patient) {
+    public void add(Object entity) {
+        if (entity instanceof Patient) {
+            Patient p = (Patient) entity;
 
-        if (Helper.isNotNull(patient) && patient.validate()) {
-            patients.add(patient);
-            System.out.println("Success: Patient record synchronized.");
+            if (searchById(p.getPatientId()) == null) {
+                patients.add(p);
+                System.out.println("Success: Patient [" + p.getFirstName() + "] added to the system.");
+            } else {
+                System.out.println("Error: Patient ID already exists.");
+            }
+        }
+    }
+
+
+    public void add(String firstName, String lastName, String phone) {
+        if (HelperUtils.isValidString(firstName) && HelperUtils.isValidString(phone)) {
+            String generatedId = HelperUtils.generateId("PAT");
+            Patient newPatient = new Patient();
+            newPatient.setPatientId(generatedId);
+            newPatient.setFirstName(firstName);
+            newPatient.setLastName(lastName);
+            newPatient.setPhoneNumber(phone);
+            newPatient.setRegistrationDate(LocalDate.now());
+
+            patients.add(newPatient);
+            System.out.println("Success: Quick registration complete. ID: " + generatedId);
         } else {
-            System.out.println("Error: Failed to add patient. Data validation failed.");
+            System.out.println("Error: Basic info validation failed.");
         }
     }
 
     @Override
-    public void remove(String patientId) {
-
-        if (Helper.isNull(patientId)) return;
-
-        boolean removed = patients.removeIf(p -> p.getPatientId().equals(patientId));
-        if (removed) {
-            System.out.println("Success: Patient record removed.");
+    public void remove(String id) {
+        Patient p = (Patient) searchById(id);
+        if (p != null) {
+            patients.remove(p);
+            System.out.println("Success: Patient " + id + " has been removed.");
         } else {
-            System.out.println("Error: Patient ID not found.");
+            System.out.println("Error: Patient not found.");
         }
     }
 
     @Override
-    public List<Patient> getAll() {
+    public List<Object> getAll() {
+
         return new ArrayList<>(patients);
     }
 
-    // --- Implementation of Searchable Interface ---
+
 
     @Override
-    public Patient searchById(String patientId) {
-        if (Helper.isNull(patientId)) return null;
-
-        return patients.stream()
-                .filter(p -> p.getPatientId().equals(patientId))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    public List<Patient> search(String keyword) {
-        if (Helper.isNull(keyword)) return new ArrayList<>();
-
-        String key = keyword.toLowerCase();
-        return patients.stream()
-                .filter(p -> p.getFirstName().toLowerCase().contains(key) ||
-                        p.getLastName().toLowerCase().contains(key) ||
-                        p.getPatientId().toLowerCase().contains(key))
-                .collect(Collectors.toList());
-    }
-
-
-
-    public void addPatientFromConsole() {
-        try {
-            System.out.println("\n--- Register New Patient ---");
-            System.out.print("Enter First Name: ");
-            String fName = scanner.nextLine();
-            System.out.print("Enter Last Name: ");
-            String lName = scanner.nextLine();
-
-
-            String perId = Helper.generateId("PER");
-            String patId = Helper.generateId("PAT");
-
-            Patient p = new Patient();
-            p.setFirstName(fName);
-            p.setLastName(lName);
-            p.setId(perId);      // Person ID
-            p.setPatientId(patId); // Patient ID
-            p.setRegistrationDate(LocalDate.now());
-
-            add(p);
-            System.out.println("System: Patient registered with ID: " + patId);
-
-        } catch (Exception e) {
-            System.out.println("Input Error: " + e.getMessage());
+    public Object searchById(String id) {
+        for (Patient p : patients) {
+            if (p.getPatientId().equalsIgnoreCase(id)) {
+                return p;
+            }
         }
+        return null;
     }
 
+    @Override
+    public void search(String keyword) {
+        System.out.println("--- Search Results for: '" + keyword + "' ---");
+        List<Patient> results = patients.stream()
+                .filter(p -> p.getFirstName().toLowerCase().contains(keyword.toLowerCase()) ||
+                        p.getPatientId().equalsIgnoreCase(keyword))
+                .collect(Collectors.toList());
 
-    public void addPatient(String firstName, String lastName, String phone) {
-        Patient p = new Patient();
-        p.setFirstName(firstName);
-        p.setLastName(lastName);
-        p.setPhoneNumber(phone);
-        p.setPatientId(Helper.generateId("PAT"));
-        p.setRegistrationDate(LocalDate.now());
-        add(p);
-    }
-
-    // --- Display Methods ---
-
-    public void displayPatients() {
-        if (patients.isEmpty()) {
-            System.out.println("Registry Status: No patients registered.");
+        if (results.isEmpty()) {
+            System.out.println("No patients found.");
         } else {
-            System.out.println("\n--- Registered Patients List ---");
-            for (Patient p : patients) {
+            for (Patient p : results) {
                 p.displaySummary();
             }
         }
+    }
+
+
+
+
+    public void displayInPatients() {
+        System.out.println("--- List of Current In-Patients ---");
+        for (Patient p : patients) {
+            if (p instanceof InPatient) {
+                p.displaySummary();
+            }
+        }
+    }
+
+
+    public void displayCriticalEmergencyPatients() {
+        System.out.println("--- Critical Emergency Cases ---");
+        for (Patient p : patients) {
+            if (p instanceof EmergencyPatient) {
+                EmergencyPatient ep = (EmergencyPatient) p;
+                if (ep.getTriageLevel() <= 2) {
+                    ep.displaySummary();
+                }
+            }
+        }
+    }
+
+
+    public void displayAllFullInfo() {
+        if (patients.isEmpty()) {
+            System.out.println("The system is currently empty.");
+            return;
+        }
+        for (Patient p : patients) {
+            p.displayInfo();
+            System.out.println("------------------------------------");
+        }
+    }
+
+    public Patient getPatientById(String patientId) {
+        return null;
+    }
+
+    public void printFullPatientReport() {
+
     }
 }

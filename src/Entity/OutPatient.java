@@ -1,103 +1,104 @@
 package Entity;
 
-import Utils.Helper;
-import java.time.LocalDate;
+import Behavior.Displayable;
+import Utils.HelperUtils;
 
-public class OutPatient extends Patient {
+import java.time.LocalDate;
+import java.util.List;
+
+// Level 3 Inheritance
+public class OutPatient extends Patient implements Displayable {
 
     private int visitCount;
     private LocalDate lastVisitDate;
     private String preferredDoctorId;
 
-    public OutPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
-                      String phoneNumber, String email, String address, String patientId, String bloodGroup,
-                      LocalDate registrationDate, String insuranceId, int visitCount,
-                      LocalDate lastVisitDate, String preferredDoctorId) {
+    // Constructor chaining to Patient
+    public OutPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments, int visitCount, LocalDate lastVisitDate, String preferredDoctorId) {
 
-        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address,
-                patientId, bloodGroup, registrationDate, insuranceId);
-
-
-        setVisitCount(visitCount);
-        setLastVisitDate(lastVisitDate);
-        setPreferredDoctorId(preferredDoctorId);
+        // Calls Patient constructor
+        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address, patientId, bloodGroup, allergies, emergencyContact, registrationDate, medicalRecords, insuranceId, appointments);
+        this.visitCount = visitCount;
+        this.lastVisitDate = lastVisitDate;
+        this.preferredDoctorId = preferredDoctorId;
     }
 
-    public OutPatient() {
-        super();
+    public int getVisitCount() {
+        return visitCount;
     }
-
-
-
-    @Override
-    public boolean validate() {
-
-        return super.validate() && visitCount >= 0;
-    }
-
-    public void scheduleFollowUp(LocalDate followUpDate) {
-
-        if (Helper.isNotNull(followUpDate) && Helper.isPastDate(followUpDate)) {
-            System.out.println("Error: Follow-up date cannot be in the past.");
-            return;
-        }
-        System.out.println("Follow-up scheduled successfully.");
-        System.out.println("Follow-up Date : " + followUpDate);
-    }
-
-    public void updateVisitCount() {
-        this.visitCount++;
-        this.lastVisitDate = LocalDate.now();
-        System.out.println("Success: Visit count incremented to " + visitCount);
-    }
-
-
 
     public void setVisitCount(int visitCount) {
-        if (visitCount >= 0) {
-            this.visitCount = visitCount;
-        } else {
-            System.out.println("Error: Visit count cannot be negative.");
-        }
+        this.visitCount = visitCount;
+    }
+
+    public LocalDate getLastVisitDate() {
+        return lastVisitDate;
     }
 
     public void setLastVisitDate(LocalDate lastVisitDate) {
+        this.lastVisitDate = lastVisitDate;
+    }
 
-        if (Helper.isNotNull(lastVisitDate) && !Helper.isFutureDate(lastVisitDate)) {
-            this.lastVisitDate = lastVisitDate;
-        } else {
-            this.lastVisitDate = null;
-        }
+    public String getPreferredDoctorId() {
+        return preferredDoctorId;
     }
 
     public void setPreferredDoctorId(String preferredDoctorId) {
-
-        if (Helper.isValidString(preferredDoctorId)) {
-            this.preferredDoctorId = preferredDoctorId;
-        } else {
-            this.preferredDoctorId = null;
-        }
+        this.preferredDoctorId = preferredDoctorId;
     }
-
-    // --- Display Methods ---
 
     @Override
     public void displayInfo() {
         super.displayInfo();
         System.out.println("Visit Count        : " + visitCount);
-        System.out.println("Last Visit Date    : " + (Helper.isNotNull(lastVisitDate) ? lastVisitDate : "No previous visits"));
-        System.out.println("Preferred Doctor ID: " + (Helper.isNotNull(preferredDoctorId) ? preferredDoctorId : "None assigned"));
+        System.out.println("Last Visit Date    : " + lastVisitDate);
+        System.out.println("Preferred DoctorId : " + preferredDoctorId);
+
     }
 
     @Override
     public void displaySummary() {
-        System.out.println("Out-Patient: " + getFirstName() + " " + getLastName() +
-                " | Total Visits: " + visitCount + " | Preferred MD: " + (Helper.isNotNull(preferredDoctorId) ? preferredDoctorId : "N/A"));
+
     }
 
-    // --- Getters ---
+    // scheduleFollowUp()
+    public void scheduleFollowUp(LocalDate followUpDate ) {
 
-    public int getVisitCount() { return visitCount; }
-    public LocalDate getLastVisitDate() { return lastVisitDate; }
-    public String getPreferredDoctorId() { return preferredDoctorId; }
+        // Validate date using HelperUtils
+        if (!HelperUtils.isValidDate(followUpDate)) {
+            System.out.println("Invalid follow-up date.");
+            return;
+        }
+
+        // Prevent past follow-up dates
+        if (HelperUtils.isPastDate(followUpDate)) {
+            System.out.println("Follow-up date cannot be in the past.");
+            return;
+        }
+
+        System.out.println("Follow-up scheduled successfully.");
+        System.out.println("Follow-up Date : " + followUpDate);
+    }
+
+    // update Visit Count
+    public void updateVisitCount(){
+
+        //  validation (ensure object is in valid state)
+        if (!HelperUtils.isValidDate(lastVisitDate)) {
+            System.out.println("Patient record is not initialized properly.");
+            return;
+        }
+
+
+        // Update visit count
+        visitCount++;
+
+        // Update last visit date
+        lastVisitDate = LocalDate.now();
+
+        System.out.println("Visit count updated successfully.");
+        System.out.println("Total Visits: " + visitCount);
+        System.out.println("Last Visit Date: " + lastVisitDate);
+
+    }
 }

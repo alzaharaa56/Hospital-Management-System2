@@ -1,112 +1,163 @@
 package Service;
 
+import Behavior.Manageable;
+import Behavior.Searchable;
+import Entity.Appointment;
 import Entity.Department;
 import Entity.Doctor;
 import Entity.Nurse;
-import Utils.Helper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class DepartmentService {
-    private Scanner scanner = new Scanner(System.in);
-    private static List<Department> departmentList = new ArrayList<>();
+public class DepartmentService implements Manageable, Searchable {
 
-    private DoctorService doctorService = new DoctorService();
-    private NurseService nurseService = new NurseService();
+    Scanner scanner = new Scanner(System.in);
 
-    public void addDepartmentFromConsole() {
-        try {
-            System.out.println("\n--- Create New Department ---");
+    static List<Department> departmentList = new ArrayList<>();
+    List<Doctor> doctors = new ArrayList<>();
+    List<Nurse> nurses = new ArrayList<>();
+    DoctorService doctorService = new DoctorService();
 
-            String id = Helper.generateId("DEP");
+    public Department addDepartment(){
 
-            System.out.print("Enter Department Name: ");
-            String name = scanner.nextLine();
-            System.out.print("Enter Head Doctor ID: ");
-            String headId = scanner.nextLine();
-            System.out.print("Enter Bed Capacity: ");
-            int capacity = scanner.nextInt();
-            scanner.nextLine();
+        System.out.println("Enter Department Id :");
+        String departmentId = scanner.nextLine();
 
-            if (Helper.isValidString(name)) {
-                Department dept = new Department(id, name, headId, capacity);
-                departmentList.add(dept);
-                System.out.println("Department '" + name + "' created successfully with ID: " + id);
-            } else {
-                System.out.println("Error: Department name is required.");
-            }
-        } catch (Exception e) {
-            System.out.println("Error: Invalid input.");
-            scanner.nextLine();
-        }
+        System.out.println("Enter department Name :");
+        String departmentName = scanner.nextLine();
+
+        System.out.println("Enter department head DoctorId :");
+        String headDoctorId = scanner.nextLine();
+
+        System.out.println("Enter department  bed Capacity :");
+        int bedCapacity = scanner.nextInt();
+
+        System.out.println("Enter department available Beds :");
+        int availableBeds = scanner.nextInt();
+
+        Department department = new Department(departmentId,departmentName,headDoctorId,doctors,nurses,bedCapacity,availableBeds);
+
+        return department;
+
     }
 
-    public Department getDepartmentById(String departmentId) {
-        if (Helper.isNull(departmentId)) return null;
-        for (Department dept : departmentList) {
-            if (dept.getDepartmentId().equals(departmentId)) return dept;
+    public List<Department> addDepartments(){
+
+        Boolean continueFlag = true;
+        while (continueFlag) {
+
+            departmentList.add(addDepartment());
+            System.out.println("Department add successfully");
+
+            System.out.println("Enter c to add more , and q to exit");
+
+            if (scanner.nextLine().equalsIgnoreCase("q")) {
+                continueFlag = false;
+            }
         }
+        return departmentList;
+
+    }
+
+    // edit department
+
+    public void editDepartment(String departmentId){
+
+        for(Department department : departmentList){
+            if(department.getDepartmentId().equals(departmentId)){
+
+                System.out.println("Enter updated department Name :");
+                department.setDepartmentName(scanner.nextLine());
+
+                System.out.println("Enter updated department head DoctorId :");
+                department.setHeadDoctorId(scanner.nextLine());
+
+                System.out.println("Enter updated department  bed Capacity :");
+                department.setBedCapacity(scanner.nextInt());
+
+                System.out.println("Enter updated department available Beds :");
+                department.setAvailableBeds(scanner.nextInt());
+
+                System.out.println("department updated successfully");
+
+            }
+
+        }
+
+    }
+
+    // remove department by ID
+    public void removeDepartment(String departmentId){
+
+        departmentList.removeIf(D -> D.getDepartmentId() == departmentId);
+        System.out.println("Department removed successfully");
+
+        System.out.println("Department record not found");
+    }
+
+    //retrieve department
+    public Department getDepartment(String departmentId){
+
+        for(Department department: departmentList){
+
+            if(department.getDepartmentId().equals(departmentId)){
+                return department;
+            }
+
+        }
+        System.out.println("department not found");
         return null;
     }
 
-    public void assignDoctorToDepartment(String doctorId, String departmentId) {
-        Department dept = getDepartmentById(departmentId);
-        Doctor doctor = doctorService.searchById(doctorId);
+    // display All Departments
+    public void displayAllDepartments(){
 
-        if (Helper.isNotNull(dept) && Helper.isNotNull(doctor)) {
-            dept.assignDoctor(doctor);
-            System.out.println("Doctor " + doctor.getFirstName() + " assigned to " + dept.getDepartmentName());
-        } else {
-            System.out.println("Error: Doctor or Department not found.");
+        for(Department department : departmentList){
+            department.displayInfo();
         }
     }
 
-    public void assignNurseToDepartment(String nurseId, String departmentId) {
-        Department dept = getDepartmentById(departmentId);
-        Nurse nurse = nurseService.searchById(nurseId);
+    // assign Doctor To Department(String doctorId, String departmentId)
 
-        if (Helper.isNotNull(dept) && Helper.isNotNull(nurse)) {
-            dept.assignNurse(nurse);
-            System.out.println("Nurse " + nurse.getFirstName() + " assigned to " + dept.getDepartmentName());
-        } else {
-            System.out.println("Error: Nurse or Department not found.");
-        }
-    }
+    public void assignDoctorToDepartment(String doctorId, String departmentId){
 
-    public void editDepartment(String departmentId) {
-        Department dept = getDepartmentById(departmentId);
-        if (Helper.isNotNull(dept)) {
-            System.out.print("Enter new Name (Current: " + dept.getDepartmentName() + "): ");
-            dept.setDepartmentName(scanner.nextLine());
-            System.out.print("Enter new Bed Capacity: ");
-            int cap = scanner.nextInt();
-            scanner.nextLine();
-            dept.setBedCapacity(cap);
-            System.out.println("Department updated.");
-        } else {
-            System.out.println("Error: Department not found.");
-        }
-    }
+        Doctor doctor = doctorService.getDoctorById(doctorId);
 
-    public void removeDepartment(String departmentId) {
-        if (Helper.isValidString(departmentId)) {
-            if (departmentList.removeIf(d -> d.getDepartmentId().equals(departmentId))) {
-                System.out.println("Department removed.");
-            } else {
-                System.out.println("Error: Department not found.");
+        for(Department department : departmentList){
+
+            if(department.getDepartmentId().equals(departmentId)){
+
+                department.getDoctors().add(doctor);
             }
         }
+
+
     }
 
-    public void displayAllDepartments() {
-        if (departmentList.isEmpty()) {
-            System.out.println("No departments registered.");
-        } else {
-            for (Department d : departmentList) {
-                d.displayInfo();
-                System.out.println("--------------------");
-            }
-        }
+    @Override
+    public void add(Object entity) {
+
+    }
+
+    @Override
+    public void remove(String id) {
+
+    }
+
+    @Override
+    public List<Object> getAll() {
+        return List.of();
+    }
+
+    @Override
+    public void search(String keyword) {
+
+    }
+
+    @Override
+    public Object searchById(String id) {
+        return null;
     }
 }

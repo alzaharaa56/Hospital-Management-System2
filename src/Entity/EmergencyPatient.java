@@ -1,28 +1,23 @@
 package Entity;
 
-import Utils.Helper;
+import Behavior.Displayable;
+import Behavior.Billable;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-public class EmergencyPatient extends Patient {
+public class EmergencyPatient extends InPatient implements Displayable, Billable {
 
     private String emergencyType;
     private String arrivalMode;
     private int triageLevel;
     private boolean admittedViaER;
 
-
-    public EmergencyPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
-                            String phoneNumber, String email, String address, String patientId, String bloodGroup,
-                            LocalDate registrationDate, String insuranceId, String emergencyType,
-                            String arrivalMode, int triageLevel, boolean admittedViaER) {
-
-        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address,
-                patientId, bloodGroup, registrationDate, insuranceId);
-
-
-        setEmergencyType(emergencyType);
-        setArrivalMode(arrivalMode);
-        setTriageLevel(triageLevel);
+    public EmergencyPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments, LocalDate admissionDate, LocalDate dischargeDate, String roomNumber, String bedNumber, String admittingDoctorId, double dailyCharges, String emergencyType, String arrivalMode, int triageLevel, boolean admittedViaER) {
+        super();
+        this.emergencyType = emergencyType;
+        this.arrivalMode = arrivalMode;
+        this.triageLevel = triageLevel;
         this.admittedViaER = admittedViaER;
     }
 
@@ -30,75 +25,74 @@ public class EmergencyPatient extends Patient {
         super();
     }
 
+
     @Override
-    public boolean validate() {
+    public double calculateCharges() {
 
-        return super.validate() &&
-                (triageLevel >= 1 && triageLevel <= 5) &&
-                Helper.isValidString(emergencyType);
+        LocalDate end = (getDischargeDate() != null) ? getDischargeDate() : LocalDate.now();
+        long days = ChronoUnit.DAYS.between(getAdmissionDate(), end);
+        if (days <= 0) days = 1;
+
+
+        double emergencyFee = (triageLevel == 1) ? 50.0 : 20.0;
+        return (days * getDailyCharges()) + emergencyFee;
     }
 
-    public void updateTriageLevel(int level) {
+    @Override
+    public void generateBill() {
+        System.out.println("********** EMERGENCY BILL **********");
+        System.out.println("Patient: " + getFirstName() + " " + getLastName());
+        System.out.println("Emergency Type: " + emergencyType);
+        System.out.println("Total Charges: " + calculateCharges() + " OMR");
+        System.out.println("************************************");
+    }
 
-        setTriageLevel(level);
-        if (this.triageLevel == level) {
-            System.out.println("Triage level updated to " + triageLevel + " for patient " + getLastName());
+    @Override
+    public boolean processPayment(double amount) {
+        if (amount >= calculateCharges()) {
+            System.out.println("Payment of " + amount + " OMR processed successfully.");
+            return true;
         }
+        System.out.println("Insufficient payment amount.");
+        return false;
     }
 
+    // --- Getters & Setters ---
 
+    public String getEmergencyType() { return emergencyType; }
+    public void setEmergencyType(String emergencyType) { this.emergencyType = emergencyType; }
 
-    public void setEmergencyType(String emergencyType) {
-        if (Helper.isValidString(emergencyType)) {
-            this.emergencyType = emergencyType;
-        } else {
-            this.emergencyType = "Unknown Emergency";
-        }
-    }
+    public String getArrivalMode() { return arrivalMode; }
+    public void setArrivalMode(String arrivalMode) { this.arrivalMode = arrivalMode; }
 
-    public void setArrivalMode(String arrivalMode) {
-        if (Helper.isValidString(arrivalMode)) {
-            this.arrivalMode = arrivalMode;
-        } else {
-            this.arrivalMode = "Self-Arrival";
-        }
-    }
-
+    public int getTriageLevel() { return triageLevel; }
     public void setTriageLevel(int triageLevel) {
-
-        if (triageLevel >= 1 && triageLevel <= 5) {
-            this.triageLevel = triageLevel;
-        } else {
-            System.out.println("Error: Invalid triage level (Must be 1-5). Setting to 5 (Non-Urgent).");
-            this.triageLevel = 5;
+        if (triageLevel < 1 || triageLevel > 5) {
+            System.out.println("Invalid triage level. Must be 1-5.");
+            return;
         }
+        this.triageLevel = triageLevel;
     }
 
-    public void setAdmittedViaER(boolean admittedViaER) {
-        this.admittedViaER = admittedViaER;
-    }
+    public boolean isAdmittedViaER() { return admittedViaER; }
+    public void setAdmittedViaER(boolean admittedViaER) { this.admittedViaER = admittedViaER; }
 
-    // --- Display Methods ---
+
 
     @Override
     public void displayInfo() {
         super.displayInfo();
-        System.out.println("Emergency Type : " + (Helper.isNotNull(emergencyType) ? emergencyType : "N/A"));
-        System.out.println("Arrival Mode   : " + (Helper.isNotNull(arrivalMode) ? arrivalMode : "Unknown"));
-        System.out.println("Triage Level   : " + triageLevel + " (Priority)");
-        System.out.println("Admitted via ER: " + (admittedViaER ? "Yes" : "No"));
+        System.out.println("Emergency Type : " + emergencyType);
+        System.out.println("Arrival Mode   : " + arrivalMode);
+        System.out.println("Triage Level   : " + triageLevel);
+        System.out.println("Admitted Via ER: " + (admittedViaER ? "Yes" : "No"));
+        System.out.println("Current Bill   : " + calculateCharges() + " OMR");
     }
 
     @Override
     public void displaySummary() {
-        System.out.println("[ER-PRIORITY " + triageLevel + "] Patient: " + getFirstName() + " " + getLastName() +
-                " | Case: " + (Helper.isNotNull(emergencyType) ? emergencyType : "Emergency"));
+        System.out.println("Patient ID: " + getPatientId() +
+                " | Name: " + getFirstName() + " " + getLastName() +
+                " | Status: EMERGENCY (" + emergencyType + ")");
     }
-
-    // --- Getters ---
-
-    public String getEmergencyType() { return emergencyType; }
-    public String getArrivalMode() { return arrivalMode; }
-    public int getTriageLevel() { return triageLevel; }
-    public boolean isAdmittedViaER() { return admittedViaER; }
 }

@@ -1,131 +1,209 @@
 package Service;
 
+import Behavior.Manageable;
+import Behavior.Searchable;
+import Entity.Doctor;
 import Entity.Nurse;
-import Behaviour.Manageable;
-import Behaviour.Searchable;
-import Utils.Helper;
+
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
-public class NurseService implements Manageable<Nurse>, Searchable<Nurse> {
-    private Scanner scanner = new Scanner(System.in);
-    private static List<Nurse> nurseList = new ArrayList<>();
+public class NurseService implements Manageable, Searchable {
+    Scanner scanner = new Scanner(System.in);
 
-    @Override
-    public void add(Nurse nurse) {
-        if (Helper.isNotNull(nurse) && nurse.validate()) {
-            nurseList.add(nurse);
-            System.out.println("Success: Nurse record synchronized.");
-        } else {
-            System.out.println("Error: Validation failed. Nurse not added.");
-        }
+    static List<Nurse> nurseList = new ArrayList<>();
+    List<String> assignedPatients = new ArrayList<>();
+
+    public Nurse addNurse() {
+
+        System.out.println("Enter Nurse id :");
+        String id = scanner.nextLine();
+
+        System.out.println("Enter Nurse first name :");
+        String nurseFName = scanner.nextLine();
+
+        System.out.println("Enter Nurse last name :");
+        String nurseLName = scanner.nextLine();
+
+        System.out.println("Enter Nurse DOB: ");
+        String dateOfBirth = scanner.nextLine();
+        LocalDate DOB = LocalDate.parse(dateOfBirth);
+
+        System.out.println("Enter Nurse gender :");
+        String gender = scanner.nextLine();
+
+        System.out.println("Enter Nurse phone number :");
+        String phone = scanner.nextLine();
+
+        System.out.println("Enter Nurse email :");
+        String email = scanner.nextLine();
+
+        System.out.println("Enter Nurse address :");
+        String address = scanner.nextLine();
+
+        System.out.println("Enter Nurse nurse Id :");
+        String nurseId = scanner.nextLine();
+
+        System.out.println("Enter Nurse department Id :");
+        String departmentId = scanner.nextLine();
+
+        System.out.println("Enter Nurse shift :");
+        String shift = scanner.nextLine();
+
+        System.out.println("Enter Nurse qualification :");
+        String qualification = scanner.nextLine();
+
+        Nurse nurse = new Nurse(id, nurseFName, DOB, nurseLName, gender, phone, email, address, nurseId, departmentId, shift, qualification, assignedPatients);
+
+        return nurse;
     }
 
-    @Override
-    public void remove(String nurseId) {
-        if (Helper.isNull(nurseId)) return;
-        boolean removed = nurseList.removeIf(n -> n.getNurseId().equals(nurseId));
-        if (removed) System.out.println("Success: Nurse record deleted.");
-        else System.out.println("Error: Nurse ID not found.");
-    }
+    public List<Nurse> addNurses() {
 
-    @Override
-    public List<Nurse> getAll() {
-        return new ArrayList<>(nurseList);
-    }
+        Boolean continueFlag = true;
+        while (continueFlag) {
 
-    @Override
-    public Nurse searchById(String nurseId) {
-        if (Helper.isNull(nurseId)) return null;
-        return nurseList.stream()
-                .filter(n -> n.getNurseId().equals(nurseId))
-                .findFirst()
-                .orElse(null);
-    }
+            nurseList.add(addNurse());
+            System.out.println("Nurse add successfully");
 
-    @Override
-    public List<Nurse> search(String keyword) {
-        if (Helper.isNull(keyword)) return new ArrayList<>();
-        String key = keyword.toLowerCase();
-        return nurseList.stream()
-                .filter(n -> n.getFirstName().toLowerCase().contains(key) ||
-                        n.getLastName().toLowerCase().contains(key) ||
-                        n.getShift().toLowerCase().contains(key))
-                .collect(Collectors.toList());
-    }
-
-    public void addNurseFromConsole() {
-        try {
-            System.out.println("\n--- Register New Nurse ---");
-
-
-
-            String perId = Helper.generateId("PER");
-            String nurseId = Helper.generateId("NUR");
-
-            System.out.print("Enter First Name: ");
-            String fName = scanner.nextLine();
-            System.out.print("Enter Last Name: ");
-            String lName = scanner.nextLine();
-            System.out.print("Enter DOB (YYYY-MM-DD): ");
-            LocalDate dob = LocalDate.parse(scanner.nextLine());
-
-            if (!Helper.isValidAge(dob)) {
-                System.out.println("Error: Invalid Date of Birth.");
-                return;
+            System.out.println("Enter c to add more , and q to exit");
+            if (scanner.nextLine().equalsIgnoreCase("q")) {
+                continueFlag = false;
             }
-
-            System.out.print("Enter Gender: ");
-            String gender = scanner.nextLine();
-            System.out.print("Enter Phone: ");
-            String phone = scanner.nextLine();
-            System.out.print("Enter Email: ");
-            String email = scanner.nextLine();
-            System.out.print("Enter Address: ");
-            String address = scanner.nextLine();
-            System.out.print("Enter Department ID: ");
-            String depId = scanner.nextLine();
-            System.out.print("Enter Shift (Morning/Evening/Night): ");
-            String shift = scanner.nextLine();
-            System.out.print("Enter Qualification: ");
-            String qual = scanner.nextLine();
-
-            // Match your Nurse.java constructor exactly
-            Nurse nurse = new Nurse(perId, fName, dob, lName, gender, phone, email, address,
-                    nurseId, depId, shift, qual);
-
-            add(nurse);
-
-        } catch (DateTimeParseException e) {
-            System.out.println("Error: Invalid date format. Please use YYYY-MM-DD.");
         }
+        return nurseList;
+
     }
 
     public void editNurse(String nurseId) {
-        Nurse n = searchById(nurseId);
-        if (Helper.isNotNull(n)) {
-            System.out.print("Enter new Shift (Current: " + n.getShift() + "): ");
-            n.setShift(scanner.nextLine());
-            System.out.print("Enter new Department (Current: " + n.getDepartmentId() + "): ");
-            n.setDepartmentId(scanner.nextLine());
-            System.out.println("Update Success: Nurse information modified.");
-        } else {
-            System.out.println("Error: Nurse not found.");
+
+        for (Nurse nurse : nurseList){
+
+            if(nurse.getNurseId().equals(nurseId)){
+
+                System.out.println("Enter updated Nurse first name :");
+                nurse.setFirstName(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse last name :");
+                nurse.setLastName(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse DOB: ");
+                String dateOfBirth = scanner.nextLine();
+                LocalDate DOB = LocalDate.parse(dateOfBirth);
+                nurse.setDateOfBirth(DOB);
+
+                System.out.println("Enter updated Nurse gender :");
+                nurse.setGender(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse phone number :");
+                nurse.setPhoneNumber(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse email :");
+                nurse.setEmail(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse address :");
+                nurse.setAddress(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse department Id :");
+                nurse.setDepartmentId(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse shift :");
+                nurse.setShift(scanner.nextLine());
+
+                System.out.println("Enter updated Nurse qualification :");
+                nurse.setQualification(scanner.nextLine());
+
+                System.out.println("Nurse updated successfully");
+
+
+            }
+
         }
+
     }
 
-    public void displayAllNurses() {
-        if (nurseList.isEmpty()) {
-            System.out.println("Registry Status: No nurses registered.");
-        } else {
-            System.out.println("\n--- Hospital Nursing Staff ---");
-            for (Nurse n : nurseList) {
-                n.displaySummary();
+    // remove nurse by ID
+    public void removeNurse(String nurseId){
+
+        nurseList.removeIf(N -> N.getNurseId() == nurseId);
+        System.out.println("Nurse removed successfully");
+
+        System.out.println("Nurse not found");
+
+    }
+
+    //retrieve nurse
+    public Nurse getNurseById(String nurseId){
+
+        for(Nurse nurse: nurseList){
+            if(nurse.getNurseId().equals(nurseId)){
+                return nurse;
+            }
+
+        }
+        System.out.println("Nurse not found");
+        return null;
+    }
+
+    //display all nurses with formatted output
+    public void displayAllNurses(){
+
+        for(Nurse nurse: nurseList){
+            nurse.displayInfo();
+        }
+
+    }
+
+    // get Nurse By Department
+    public List<Nurse> getNursesByDepartment(String department){
+
+        List<Nurse> departmentNurse = new ArrayList<>();
+        for(Nurse nurse : nurseList){
+            if(nurse.getDepartmentId().equals(department)){
+                departmentNurse.add(nurse);
             }
         }
+        return departmentNurse;
+    }
+
+    // get Nurse By Shift
+    public List<Nurse> getNursesByShift(String shift){
+
+        List<Nurse> shiftNurse = new ArrayList<>();
+
+        for(Nurse nurse : nurseList){
+            if(nurse.getShift().equals(shift)){
+                shiftNurse.add(nurse);
+            }
+        }
+        return shiftNurse;
+    }
+
+
+    @Override
+    public void add(Object entity) {
+
+    }
+
+    @Override
+    public void remove(String id) {
+
+    }
+
+    @Override
+    public List<Object> getAll() {
+        return List.of();
+    }
+
+    @Override
+    public void search(String keyword) {
+
+    }
+
+    @Override
+    public Object searchById(String id) {
+        return null;
     }
 }

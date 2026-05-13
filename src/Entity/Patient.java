@@ -1,161 +1,280 @@
 package Entity;
 
-import Behaviour.Appointable;
-import Behaviour.Billable;
-import Utils.Helper;
-import java.time.LocalDate;
+import Behavior.Displayable;
+import Utils.HelperUtils;
 
-public class Patient extends Person implements Appointable, Billable {
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+// Level 2 Inheritance
+public class Patient extends Person implements Displayable {
+
     private String patientId;
     private String bloodGroup;
+    private List<String> allergies;
+    private String emergencyContact;
     private LocalDate registrationDate;
     private String insuranceId;
+    private List<MedicalRecord> medicalRecords;
+    private List <Appointment>appointments;
 
-    // Full Constructor
-    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
-                   String phoneNumber, String email, String address, String pId,
-                   String bloodGroup, LocalDate registrationDate, String insuranceId) {
+    // Constructor chaining to Person
+    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments) {
 
+        // Calls Person constructor
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address);
 
-
-        this.patientId = Helper.isNotNull(pId) ? pId : Helper.generateId("PAT");
-
-
-        setBloodGroup(bloodGroup);
-        setInsuranceId(insuranceId);
-
-
-        this.registrationDate = Helper.isNotNull(registrationDate) ? registrationDate : LocalDate.now();
+        this.patientId = patientId;
+        this.bloodGroup = bloodGroup;
+        this.allergies = new ArrayList<>();
+        this.emergencyContact = emergencyContact;
+        this.registrationDate = registrationDate;
+        this.medicalRecords = new ArrayList<>();
+        this.insuranceId = insuranceId;
+        this.appointments = new ArrayList<>();
     }
 
-    // Default Constructor
-    public Patient() {
-        super();
-        this.patientId = Helper.generateId("PAT");
-        this.registrationDate = LocalDate.now();
+    public Patient(){
+
     }
 
-    // --- Business Logic & Validation ---
+    public Patient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId) {
 
-    @Override
-    public boolean validate() {
 
-        return super.validate() &&
-                Helper.isValidString(patientId) &&
-                (Helper.isPastDate(getDateOfBirth()) || Helper.isToday(getDateOfBirth()));
+
     }
 
-
-
-    public void setPatientId(String pId) {
-
-        if (Helper.isValidString(pId)) {
-            this.patientId = pId;
-        } else {
-            System.out.println("Error: Invalid Patient ID format.");
-        }
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setBloodGroup(String blood) {
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
 
-        if (Helper.isValidString(blood, "^(A|B|AB|O)[+-]$")) {
-            this.bloodGroup = blood;
-        } else {
-            System.out.println("Validation Error: Invalid blood group format (e.g., A+, O-).");
-        }
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public List<String> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(List<String> allergies) {
+        this.allergies = allergies;
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public String getInsuranceId() {
+        return insuranceId;
     }
 
     public void setInsuranceId(String insuranceId) {
-
-        if (Helper.isNotNull(insuranceId) && !insuranceId.trim().isEmpty()) {
-            this.insuranceId = insuranceId;
-        } else {
-            this.insuranceId = "Uninsured";
-        }
+        this.insuranceId = insuranceId;
     }
 
-    public void setRegistrationDate(LocalDate date) {
-
-        if (Helper.isNotNull(date) && !Helper.isFutureDate(date)) {
-            this.registrationDate = date;
-        } else {
-            this.registrationDate = LocalDate.now();
-        }
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
     }
 
-    // --- Display Methods ---
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
 
     @Override
     public void displayInfo() {
         super.displayInfo();
-        System.out.println("Patient ID       : " + patientId);
-        System.out.println("Blood Group      : " + (Helper.isNotNull(bloodGroup) ? bloodGroup : "Unknown"));
-        System.out.println("Registration Date: " + registrationDate);
-        System.out.println("Insurance Status : " + (Helper.isNotNull(insuranceId) ? insuranceId : "Private/Uninsured"));
+        System.out.println("patient Id : "+ patientId);
+        System.out.println("patient blood Group : "+ bloodGroup);
+        System.out.println("patient allergies : "+ allergies);
+        System.out.println("patient emergency Contact : "+ emergencyContact);
+        System.out.println("patient registration Date : "+ registrationDate);
+        System.out.println("patient insuranceId : "+ insuranceId);
+        System.out.println("patient medical Records : "+ medicalRecords);
+        System.out.println("patient appointments : "+ appointments);
+
     }
 
     @Override
     public void displaySummary() {
-        System.out.println("Patient Record: " + getFirstName() + " " + getLastName() + " [ID: " + patientId + "]");
+
     }
 
-    // --- Appointable Implementation ---
+    // Add medical record
+    public void addMedicalRecord(MedicalRecord record){
 
-    @Override
-    public void scheduleAppointment(Appointment a) {
-        if (Helper.isNotNull(a)) {
-            System.out.println("Scheduling Success: Appointment linked to Patient " + patientId);
+        // Validate record
+        if (HelperUtils.isNull(record)) {
+            System.out.println("Invalid medical record.");
+            return;
         }
+
+        // Add record
+        medicalRecords.add(record);
+        System.out.println("Medical record added successfully.");
     }
 
-    @Override
-    public void cancelAppointment(String id) {
-        if (Helper.isValidString(id)) {
-            System.out.println("Cancellation Success: Appointment " + id + " has been removed.");
+    // Add appointment
+    public void addAppointment(Appointment appointment) {
+
+        // Validate appointment
+        if (HelperUtils.isNull(appointment)) {
+            System.out.println("Invalid appointment.");
+            return;
         }
-    }
 
-    @Override
-    public void rescheduleAppointment(String id, LocalDate newDate) {
-
-        if (Helper.isFutureDate(newDate) || Helper.isToday(newDate)) {
-            System.out.println("Update Success: Appointment " + id + " moved to " + newDate);
-        } else {
-            System.out.println("Scheduling Error: Cannot reschedule to a date in the past.");
+        //  prevent duplicate appointments
+        if (appointments.contains(appointment)) {
+            System.out.println("Appointment already exists.");
+            return;
         }
+
+        // Add appointment
+        appointments.add(appointment);
+
+        System.out.println("Appointment added successfully.");
     }
 
-    // --- Billable Implementation ---
+    // Update insurance
+    public void updateInsurance(String newInsuranceId) {
 
-    @Override
-    public double calculateCharges() {
-        return 150.0;
-    }
-
-    @Override
-    public void generateBill() {
-        System.out.println("\n--- INVOICE ---");
-        System.out.println("Patient Name: " + getFirstName() + " " + getLastName());
-        System.out.println("Patient ID  : " + patientId);
-        System.out.println("Total Due   : $" + calculateCharges());
-        System.out.println("----------------");
-    }
-
-    @Override
-    public void processPayment(double amount) {
-
-        if (Helper.isPositive(amount)) {
-            System.out.println("Payment Receipt: Transaction of $" + amount + " successful.");
-        } else {
-            System.out.println("Payment Error: Invalid transaction amount.");
+        // Validate newInsuranceId
+        if (!HelperUtils.isValidString(newInsuranceId)) {
+            System.out.println("Insurance ID cannot be empty.");
+            return;
         }
+
+        this.insuranceId = newInsuranceId;
+
+        System.out.println("Insurance updated successfully.");
     }
 
 
+    //overloaded updateContact(String phone)
+    public void updateContact(String phone){
 
-    public String getPatientId() { return patientId; }
-    public String getBloodGroup() { return bloodGroup; }
-    public LocalDate getRegistrationDate() { return registrationDate; }
-    public String getInsuranceId() { return insuranceId; }
+        // Validate phone number
+        if (!HelperUtils.isValidString(phone)) {
+            System.out.println("Phone number cannot be empty.");
+            return;
+        }
+
+        // Validate numeric format using HelperUtils regex method
+        if (!HelperUtils.isValidString(phone, "\\d+")) {
+            System.out.println("Invalid phone number format. Only digits are allowed.");
+            return;
+        }
+
+        // Update phone
+        this.setPhoneNumber(phone);
+
+        System.out.println("Contact phone number is updated successfully");
+
+    }
+
+    //overloaded updateContact(String phone, String email)
+    public void updateContact(String phone, String email){
+
+        // Validate phone number
+        if (!HelperUtils.isValidString(phone)) {
+            System.out.println("Phone number cannot be empty.");
+            return;
+        }
+
+        // Validate numeric format using HelperUtils regex method
+        if (!HelperUtils.isValidString(phone, "\\d+")) {
+            System.out.println("Invalid phone number format. Only digits are allowed.");
+            return;
+        }
+
+
+        // validate email
+        if (!HelperUtils.isValidString(email)) {
+            System.out.println("Email cannot be empty.");
+            return;
+        }
+
+        // Validate email using HelperUtils regex
+        if (!HelperUtils.isValidString(email, "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            System.out.println("Invalid email format.");
+            return;
+        }
+
+        this.setPhoneNumber(phone);
+        this.setEmail(email);
+
+        System.out.println("Contact phone number and email  updated successfully");
+
+    }
+
+    //overloaded updateContact(String phone, String email)
+    public void updateContact(String phone, String email, String address){
+
+        // Validate phone number
+        if (!HelperUtils.isValidString(phone)) {
+            System.out.println("Phone number cannot be empty.");
+            return;
+        }
+
+        // Validate numeric format using HelperUtils regex method
+        if (!HelperUtils.isValidString(phone, "\\d+")) {
+            System.out.println("Invalid phone number format. Only digits are allowed.");
+            return;
+        }
+
+
+        // validate email
+        if (!HelperUtils.isValidString(email)) {
+            System.out.println("Email cannot be empty.");
+            return;
+        }
+
+        // Validate email using HelperUtils regex
+        if (!HelperUtils.isValidString(email, "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            System.out.println("Invalid email format.");
+            return;
+        }
+
+        // Validate address
+        if (!HelperUtils.isValidString(address)) {
+            System.out.println("Address cannot be empty.");
+            return;
+        }
+
+        this.setPhoneNumber(phone);
+        this.setEmail(email);
+        this.setAddress(address);
+
+        System.out.println("Contact details (phone, email, address) updated successfully.");
+
+    }
+
 }

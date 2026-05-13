@@ -1,96 +1,95 @@
 package Entity;
 
-import Utils.Helper;
+import Behavior.Displayable;
+import Utils.HelperUtils;
+
 import java.time.LocalDate;
 import java.util.List;
 
-public class GeneralPractitioner extends Doctor {
+public class GeneralPractitioner extends Doctor implements Displayable{
 
     private boolean walkinAvailable;
     private boolean homeVisitAvailable;
     private boolean vaccinationCertified;
 
-    public GeneralPractitioner(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender,
-                               String phoneNumber, String email, String address, String doctorId, String specialization,
-                               String qualification, int experienceYears, String departmentId, double consultationFee,
-                               List<String> availableSlots, List<String> assignedPatients, boolean walkinAvailable,
-                               boolean homeVisitAvailable, boolean vaccinationCertified) {
-
-        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address, doctorId,
-                specialization, qualification, experienceYears, departmentId, consultationFee,
-                availableSlots, assignedPatients);
-
+    public GeneralPractitioner(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String qualification, int experienceYears, String departmentId, double consultationFee, List<String> availableSlots, List<Patient> assignedPatients, boolean walkinAvailable, boolean homeVisitAvailable, boolean vaccinationCertified) {
+        super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address, doctorId, specialization, qualification, experienceYears, departmentId, consultationFee, availableSlots, assignedPatients);
         this.walkinAvailable = walkinAvailable;
         this.homeVisitAvailable = homeVisitAvailable;
         this.vaccinationCertified = vaccinationCertified;
     }
 
-    public GeneralPractitioner() {
-        super();
+    public boolean isWalkinAvailable() {
+        return walkinAvailable;
+    }
+
+    public void setWalkinAvailable(boolean walkinAvailable) {
+        this.walkinAvailable = walkinAvailable;
+    }
+
+    public boolean isVaccinationCertified() {
+        return vaccinationCertified;
+    }
+
+    public void setVaccinationCertified(boolean vaccinationCertified) {
+        this.vaccinationCertified = vaccinationCertified;
+    }
+
+    public boolean isHomeVisitAvailable() {
+        return homeVisitAvailable;
+    }
+
+    public void setHomeVisitAvailable(boolean homeVisitAvailable) {
+        this.homeVisitAvailable = homeVisitAvailable;
     }
 
     @Override
     public void displayInfo() {
         super.displayInfo();
-        System.out.println("Walk-in Available      : " + (walkinAvailable ? "Yes" : "No"));
-        System.out.println("Home Visit Available   : " + (homeVisitAvailable ? "Yes" : "No"));
-        System.out.println("Vaccination Certified : " + (vaccinationCertified ? "Yes" : "No"));
+        System.out.println("walk in Available : "+ walkinAvailable);
+        System.out.println("home Visit Available :"+ homeVisitAvailable);
+        System.out.println("vaccination Certified :"+ vaccinationCertified);
     }
 
-    @Override
-    public void displaySummary() {
-        System.out.println("GP: Dr. " + getLastName() + " | Specialty: " + (Helper.isNotNull(getSpecialization()) ? getSpecialization() : "General") +
-                " | Walk-in: " + (walkinAvailable ? "Enabled" : "Disabled"));
-    }
-
-    @Override
-    public boolean validate() {
-
-        return super.validate() && Helper.isValidString(getSpecialization());
-    }
-
-
-
+    //scheduleHomeVisit
     public void scheduleHomeVisit(String patientName, String address) {
-        if (!homeVisitAvailable) {
-            System.out.println("Error: Home visits are not offered by Dr. " + getLastName());
+
+        // Validate patient name
+        if (!HelperUtils.isValidString(patientName)) {
+            System.out.println("Invalid patient name.");
             return;
         }
 
-
-        if (Helper.isValidString(patientName) && Helper.isValidString(address)) {
-            System.out.println("Home visit scheduled successfully.");
-            System.out.println("Patient Name : " + patientName);
-            System.out.println("Address      : " + address);
-        } else {
-            System.out.println("Error: Patient name and address are required for home visits.");
+        // Validate address
+        if (!HelperUtils.isValidString(address)) {
+            System.out.println("Invalid address.");
+            return;
         }
+
+        System.out.println("Home visit scheduled successfully.");
+        System.out.println("Patient Name : " + patientName);
+        System.out.println("Address      : " + address);
+
     }
 
+    // administerVaccine()
     public void administerVaccine(String patientName, String vaccineName) {
-        if (!vaccinationCertified) {
-            System.out.println("Error: Dr. " + getLastName() + " is not certified to administer vaccinations.");
+
+        // Validate patient name
+        if (!HelperUtils.isValidString(patientName)) {
+            System.out.println("Invalid patient name.");
             return;
         }
 
-
-        if (Helper.isValidString(patientName) && Helper.isValidString(vaccineName)) {
-            System.out.println("Vaccine administered successfully.");
-            System.out.println("Patient Name : " + patientName);
-            System.out.println("Vaccine      : " + vaccineName);
-        } else {
-            System.out.println("Error: Vaccination details are incomplete.");
+        // Validate vaccineName name
+        if (!HelperUtils.isValidString(vaccineName)) {
+            System.out.println("Invalid vaccine name .");
+            return;
         }
+
+        System.out.println("Vaccine administered successfully.");
+        System.out.println("Patient Name : " + patientName);
+        System.out.println("Vaccine      : " + vaccineName);
     }
 
-
-
-    public boolean isWalkinAvailable() { return walkinAvailable; }
-    public void setWalkinAvailable(boolean walkinAvailable) { this.walkinAvailable = walkinAvailable; }
-
-    public boolean isVaccinationCertified() { return vaccinationCertified; }
-    public void setVaccinationCertified(boolean vaccinationCertified) { this.vaccinationCertified = vaccinationCertified; }
-
-    public boolean isHomeVisitAvailable() { return homeVisitAvailable; }
-    public void setHomeVisitAvailable(boolean homeVisitAvailable) { this.homeVisitAvailable = homeVisitAvailable; }
 }

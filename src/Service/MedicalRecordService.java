@@ -1,96 +1,194 @@
 package Service;
 
+import Behavior.Manageable;
+import Behavior.Searchable;
 import Entity.MedicalRecord;
-import Utils.Helper;
+import Entity.Nurse;
+
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MedicalRecordService {
-    private Scanner scanner = new Scanner(System.in);
-    private static List<MedicalRecord> medicalRecords = new ArrayList<>();
+public class MedicalRecordService implements Manageable, Searchable {
 
-    public void addMedicalRecordFromConsole() {
-        try {
-            System.out.println("\n--- Add New Medical Record ---");
+    Scanner scanner = new Scanner(System.in);
+    static List<MedicalRecord> medicalRecordList = new ArrayList<>();
 
-            String recordId = Helper.generateId("REC");
+    public MedicalRecord addMedicalRecord() {
 
-            System.out.print("Enter Patient ID: ");
-            String patientId = scanner.nextLine();
-            System.out.print("Enter Doctor ID: ");
-            String doctorId = scanner.nextLine();
-            System.out.print("Enter Visit Date (YYYY-MM-DD): ");
-            LocalDate visitDate = LocalDate.parse(scanner.nextLine());
-            System.out.print("Enter Diagnosis: ");
-            String diagnosis = scanner.nextLine();
-            System.out.print("Enter Prescription: ");
-            String prescription = scanner.nextLine();
-            System.out.print("Enter Test Results: ");
-            String testResults = scanner.nextLine();
-            System.out.print("Enter Notes: ");
-            String notes = scanner.nextLine();
+        System.out.println("Enter record Id :");
+        String recordId = scanner.nextLine();
 
-            if (Helper.isValidString(patientId) && Helper.isValidString(doctorId)) {
-                MedicalRecord record = new MedicalRecord(recordId, patientId, doctorId, visitDate, diagnosis, prescription, testResults, notes);
-                medicalRecords.add(record);
-                System.out.println("Success: Medical Record saved with ID: " + recordId);
-            } else {
-                System.out.println("Error: Patient or Doctor ID cannot be empty.");
-            }
+        System.out.println("Enter patient Id :");
+        String patientId = scanner.nextLine();
 
-        } catch (DateTimeParseException e) {
-            System.out.println("Error: Invalid date format. Use YYYY-MM-DD.");
-        }
+        System.out.println("Enter doctor Id :");
+        String doctorId = scanner.nextLine();
+
+        System.out.println("Enter visit Date:");
+        String visitDate = scanner.nextLine();
+        LocalDate date = LocalDate.parse(visitDate);
+
+        System.out.println("Enter diagnosis :");
+        String diagnosis = scanner.nextLine();
+
+        System.out.println("Enter prescription :");
+        String prescription = scanner.nextLine();
+
+        System.out.println("Enter test Results :");
+        String testResults = scanner.nextLine();
+
+        System.out.println("Enter notes :");
+        String notes = scanner.nextLine();
+
+        MedicalRecord medicalRecord = new MedicalRecord(recordId,patientId,doctorId,date,diagnosis,testResults,prescription,notes);
+
+        return medicalRecord;
     }
 
-    public MedicalRecord getRecordById(String recordId) {
-        if (Helper.isNull(recordId)) return null;
-        for (MedicalRecord r : medicalRecords) {
-            if (r.getRecordId().equals(recordId)) return r;
+    public List<MedicalRecord> addMedicalRecords() {
+
+        Boolean continueFlag = true;
+        while (continueFlag) {
+
+            medicalRecordList.add(addMedicalRecord());
+            System.out.println("Medical record add successfully");
+
+            System.out.println("Enter c to add more , and q to exit");
+            if (scanner.nextLine().equalsIgnoreCase("q")) {
+                continueFlag = false;
+            }
         }
-        return null;
+        return medicalRecordList;
+
     }
 
     public void editMedicalRecord(String recordId) {
-        MedicalRecord record = getRecordById(recordId);
-        if (Helper.isNotNull(record)) {
-            System.out.print("Enter updated Diagnosis (Current: " + record.getDiagnosis() + "): ");
-            record.setDiagnosis(scanner.nextLine());
-            System.out.print("Enter updated Prescription: ");
-            record.setPrescription(scanner.nextLine());
-            System.out.print("Enter updated Notes: ");
-            record.setNotes(scanner.nextLine());
-            System.out.println("Record updated successfully!");
-        } else {
-            System.out.println("Record not found.");
+
+        for(MedicalRecord medicalRecord : medicalRecordList){
+
+            if(medicalRecord.getRecordId().equals(recordId)){
+
+                System.out.println("Enter updated patient Id :");
+                medicalRecord.setPatientId(scanner.nextLine());
+
+                System.out.println("Enter updated doctor Id :");
+                medicalRecord.setDoctorId(scanner.nextLine());
+
+                System.out.println("Enter updated visit Date:");
+                String visitDate = scanner.nextLine();
+                LocalDate date = LocalDate.parse(visitDate);
+                medicalRecord.setVisitDate(date);
+
+                System.out.println("Enter updated diagnosis :");
+                medicalRecord.setDiagnosis(scanner.nextLine());
+
+                System.out.println("Enter updated prescription :");
+                medicalRecord.setPrescription(scanner.nextLine());
+
+                System.out.println("Enter updated test Results :");
+                medicalRecord.setTestResults(scanner.nextLine());
+
+                System.out.println("Enter updated notes :");
+                medicalRecord.setNotes(scanner.nextLine());
+
+                System.out.println("Medical record updated successfully");
+
+
+            }
+
         }
+
     }
 
-    public void removeMedicalRecord(String recordId) {
-        if (Helper.isValidString(recordId)) {
-            if (medicalRecords.removeIf(r -> r.getRecordId().equals(recordId))) {
-                System.out.println("Record removed.");
-            } else {
-                System.out.println("Record not found.");
+    // remove medical record by ID
+    public void removeMedicalRecord(String recordId){
+
+        medicalRecordList.removeIf(M -> M.getRecordId() == recordId);
+        System.out.println("medical record removed successfully");
+
+        System.out.println("medical record not found");
+
+    }
+
+    //retrieve medical record
+    public MedicalRecord getMedicalRecord(String recordId){
+
+        for(MedicalRecord medicalRecord: medicalRecordList){
+            if(medicalRecord.getRecordId().equals(recordId)){
+                return medicalRecord;
+            }
+
+        }
+        System.out.println("medical Record not found");
+        return null;
+    }
+
+    //get Records By PatientId
+    public List<MedicalRecord> getRecordsByPatientId(String patientId){
+
+        List<MedicalRecord> patientMedicalRecords = new ArrayList<>();
+
+        for (MedicalRecord medicalRecord : medicalRecordList){
+
+            if(medicalRecord.getPatientId().equals(patientId)){
+                patientMedicalRecords.add(medicalRecord);
             }
         }
+
+        return patientMedicalRecords;
     }
+
+    // get Records By DoctorId
+
+    public List<MedicalRecord> getRecordsByDoctorId(String doctorId){
+
+        List<MedicalRecord> doctorMedicalRecords = new ArrayList<>();
+
+        for (MedicalRecord medicalRecord : medicalRecordList){
+
+            if(medicalRecord.getDoctorId().equals(doctorId)){
+                doctorMedicalRecords.add(medicalRecord);
+            }
+        }
+
+        return doctorMedicalRecords;
+    }
+
+    //display PatientHistory
 
     public void displayPatientHistory(String patientId) {
-        if (Helper.isNull(patientId)) return;
 
-        System.out.println("\n--- Medical History for Patient ID: " + patientId + " ---");
-        boolean found = false;
-        for (MedicalRecord record : medicalRecords) {
-            if (record.getPatientId().equals(patientId)) {
-                record.displayInfo();
-                System.out.println("-----------------------");
-                found = true;
+        for(MedicalRecord medicalRecord : medicalRecordList){
+            if(medicalRecord.getPatientId().equals(patientId)){
+                medicalRecord.displayInfo();
             }
         }
-        if (!found) System.out.println("No records found for this patient.");
+    }
+
+    @Override
+    public void add(Object entity) {
+
+    }
+
+    @Override
+    public void remove(String id) {
+
+    }
+
+    @Override
+    public List<Object> getAll() {
+        return List.of();
+    }
+
+    @Override
+    public void search(String keyword) {
+
+    }
+
+    @Override
+    public Object searchById(String id) {
+        return null;
     }
 }

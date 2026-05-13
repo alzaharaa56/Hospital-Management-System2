@@ -1,129 +1,101 @@
 package Service;
 
 import Entity.Doctor;
-import Entity.Patient;
-import Behaviour.Manageable;
-import Behaviour.Searchable;
-import Utils.Helper;
-import java.time.LocalDate;
+import Entity.Surgeon;
+import Behavior.Manageable;
+import Behavior.Searchable;
+import Utils.HelperUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
+public class DoctorService implements Manageable, Searchable {
 
-public class DoctorService implements Manageable<Doctor>, Searchable<Doctor> {
-
-    private Scanner scanner = new Scanner(System.in);
     private static List<Doctor> doctors = new ArrayList<>();
 
-
+    // --- Manageable Interface Implementation ---
 
     @Override
-    public void add(Doctor doctor) {
+    public void add(Object entity) {
+        if (entity instanceof Doctor) {
+            Doctor doc = (Doctor) entity;
+            if (searchById(doc.getDoctorId()) == null) {
+                doctors.add(doc);
+                System.out.println("Success: Doctor [" + doc.getFirstName() + "] added successfully.");
+            } else {
+                System.out.println("Error: Doctor ID already exists.");
+            }
+        }
+    }
 
-        if (Helper.isNotNull(doctor) && doctor.validate()) {
-            doctors.add(doctor);
-            System.out.println("Success: Doctor " + doctor.getLastName() + " added to the system.");
-        } else {
-            System.out.println("Error: Doctor validation failed. Record not saved.");
+    // Overloaded Method: Quick add with basic info
+    public void add(String firstName, String lastName, String specialization) {
+        if (HelperUtils.isValidString(firstName) && HelperUtils.isValidString(specialization)) {
+            String newId = HelperUtils.generateId("DOC");
+            Doctor doc = new Doctor();
+            doc.setDoctorId(newId);
+            doc.setFirstName(firstName);
+            doc.setLastName(lastName);
+            doc.setSpecialization(specialization);
+            doctors.add(doc);
+            System.out.println("Quick registration successful. ID: " + newId);
         }
     }
 
     @Override
-    public void remove(String doctorId) {
-        if (Helper.isNull(doctorId)) return;
-
-        boolean removed = doctors.removeIf(d -> d.getDoctorId().equals(doctorId));
+    public void remove(String id) {
+        boolean removed = doctors.removeIf(d -> d.getDoctorId().equalsIgnoreCase(id));
         if (removed) {
-            System.out.println("Success: Doctor record removed.");
+            System.out.println("Doctor record " + id + " removed.");
         } else {
-            System.out.println("Error: Doctor ID not found.");
+            System.out.println("Error: Doctor not found.");
         }
     }
 
     @Override
-    public List<Doctor> getAll() {
+    public List<Object> getAll() {
         return new ArrayList<>(doctors);
     }
 
-
+    // --- Searchable Interface Implementation ---
 
     @Override
-    public Doctor searchById(String doctorId) {
-        if (Helper.isNull(doctorId)) return null;
+    public Object searchById(String id) {
         return doctors.stream()
-                .filter(d -> d.getDoctorId().equals(doctorId))
-                .findFirst()
-                .orElse(null);
+                .filter(d -> d.getDoctorId().equalsIgnoreCase(id))
+                .findFirst().orElse(null);
     }
 
     @Override
-    public List<Doctor> search(String keyword) {
-        if (Helper.isNull(keyword)) return new ArrayList<>();
-        String key = keyword.toLowerCase();
-        return doctors.stream()
-                .filter(d -> d.getFirstName().toLowerCase().contains(key) ||
-                        d.getLastName().toLowerCase().contains(key) ||
-                        d.getSpecialization().toLowerCase().contains(key))
+    public void search(String keyword) {
+        System.out.println("\nSearching Doctors for: '" + keyword + "'");
+        List<Doctor> results = doctors.stream()
+                .filter(d -> d.getFirstName().toLowerCase().contains(keyword.toLowerCase()) ||
+                        d.getSpecialization().toLowerCase().contains(keyword.toLowerCase()))
                 .collect(Collectors.toList());
-    }
 
-
-
-    public Doctor addDoctorFromConsole() {
-        try {
-            System.out.println("\n--- Register New Doctor ---");
-            System.out.print("First Name: ");
-            String fName = scanner.nextLine();
-            System.out.print("Last Name: ");
-            String lName = scanner.nextLine();
-
-
-            String docId = Helper.generateId("DOC", 4);
-
-            System.out.print("Specialization: ");
-            String spec = scanner.nextLine();
-            System.out.print("Consultation Fee: ");
-            double fee = scanner.nextDouble(); scanner.nextLine();
-
-
-            Doctor doctor = new Doctor();
-            doctor.setFirstName(fName);
-            doctor.setLastName(lName);
-            doctor.setDoctorId(docId);
-            doctor.setSpecialization(spec);
-            doctor.setConsultationFee(fee);
-
-            add(doctor);
-            return doctor;
-        } catch (Exception e) {
-            System.out.println("Input Error: " + e.getMessage());
-            return null;
-        }
-    }
-
-
-    public void assignPatient(String doctorId, String patientId) {
-        Doctor doc = searchById(doctorId);
-        if (Helper.isNotNull(doc) && Helper.isValidString(patientId)) {
-            doc.getAssignedPatients().add(patientId);
-            System.out.println("Success: Patient " + patientId + " assigned to Dr. " + doc.getLastName());
+        if (results.isEmpty()) {
+            System.out.println("No matching doctors found.");
         } else {
-            System.out.println("Error: Assignment failed. Check IDs.");
+            results.forEach(Doctor::displaySummary);
         }
     }
 
-    // --- Display Methods ---
+    // --- Specific Reports ---
 
-    public void displayDoctors() {
+    public void displayAllDoctors() {
+        System.out.println("\n===== HOSPITAL DOCTOR DIRECTORY =====");
         if (doctors.isEmpty()) {
-            System.out.println("No doctors currently in registry.");
+            System.out.println("No doctors registered.");
         } else {
-            System.out.println("\n--- Hospital Medical Staff ---");
-            for (Doctor doc : doctors) {
-                doc.displaySummary();
+            for (Doctor d : doctors) {
+                d.displayInfo();
+                System.out.println("-------------------------------------");
             }
         }
+    }
+
+    public Doctor getDoctorById(String doctorId) {
+        return null;
     }
 }
