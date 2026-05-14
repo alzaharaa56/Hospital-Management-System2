@@ -51,16 +51,16 @@ public class GeneralPractitioner extends Doctor implements Displayable{
         System.out.println("vaccination Certified :"+ vaccinationCertified);
     }
 
-    //scheduleHomeVisit
+
     public void scheduleHomeVisit(String patientName, String address) {
 
-        // Validate patient name
+
         if (!HelperUtils.isValidString(patientName)) {
             System.out.println("Invalid patient name.");
             return;
         }
 
-        // Validate address
+
         if (!HelperUtils.isValidString(address)) {
             System.out.println("Invalid address.");
             return;
@@ -72,16 +72,16 @@ public class GeneralPractitioner extends Doctor implements Displayable{
 
     }
 
-    // administerVaccine()
+
     public void administerVaccine(String patientName, String vaccineName) {
 
-        // Validate patient name
+
         if (!HelperUtils.isValidString(patientName)) {
             System.out.println("Invalid patient name.");
             return;
         }
 
-        // Validate vaccineName name
+
         if (!HelperUtils.isValidString(vaccineName)) {
             System.out.println("Invalid vaccine name .");
             return;

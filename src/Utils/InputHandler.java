@@ -2,46 +2,63 @@ package Utils;
 
 import java.util.Scanner;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 public class InputHandler {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static String getStringInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine();
+        String input;
+        do {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+
+            if (!HelperUtils.isValidString(input)) {
+                System.out.println("Error: Input cannot be empty.");
+            }
+        } while (!HelperUtils.isValidString(input));
+        return input;
     }
 
     public static int getIntInput(String prompt) {
-        try {
-            System.out.print(prompt);
-            return Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number. Try again.");
-            return getIntInput(prompt);
+        while (true) {
+            try {
+                System.out.print(prompt);
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Please enter a valid integer.");
+            }
         }
     }
 
-    // Task 3.6: Overloaded method with min and max
     public static int getIntInput(String prompt, int min, int max) {
-        int val = getIntInput(prompt);
-        if (val >= min && val <= max) return val;
-        System.out.println("Please enter a number between " + min + " and " + max);
-        return getIntInput(prompt, min, max);
+        while (true) {
+            int val = getIntInput(prompt);
+
+            if (HelperUtils.isValidNumber(val, min, max)) return val;
+            System.out.println("Error: Number must be between " + min + " and " + max);
+        }
     }
 
     public static double getDoubleInput(String prompt) {
-        try {
-            System.out.print(prompt);
-            return Double.parseDouble(scanner.nextLine());
-        } catch (Exception e) { return getDoubleInput(prompt); }
+        while (true) {
+            try {
+                System.out.print(prompt);
+                return Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Please enter a valid decimal number.");
+            }
+        }
     }
 
     public static LocalDate getDateInput(String prompt) {
-        try {
-            System.out.print(prompt + " (YYYY-MM-DD): ");
-            return LocalDate.parse(scanner.nextLine());
-        } catch (DateTimeParseException e) { return getDateInput(prompt); }
+        while (true) {
+            String dateStr = getStringInput(prompt + " (YYYY-MM-DD): ");
+
+            if (HelperUtils.isValidDate(dateStr)) {
+                return LocalDate.parse(dateStr);
+            }
+            System.out.println("Error: Invalid date format.");
+        }
     }
 
     public static boolean getConfirmation(String prompt) {

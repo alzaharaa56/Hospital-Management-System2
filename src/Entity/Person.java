@@ -3,7 +3,6 @@ package Entity;
 import Behavior.Displayable;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 // Base Class
@@ -17,6 +16,8 @@ public class Person implements Displayable {
     private String phoneNumber;
     private String email;
     private String address;
+    private String nurseId;
+    private String patientId;
 
     public Person(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address) {
         this.id = id;
@@ -137,5 +138,22 @@ public class Person implements Displayable {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, dateOfBirth, gender, phoneNumber, email, address);
+    }
+
+    public String getNurseId() {
+        return nurseId;
+    }
+
+    public void setNurseId(String nurseId) {
+        this.nurseId = nurseId;
+    }
+
+    public void setPatientId(String patientId) {
+
+        this.patientId = patientId;
+    }
+
+    public String getPatientId() {
+        return patientId;
     }
 }

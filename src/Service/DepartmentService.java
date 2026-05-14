@@ -2,7 +2,6 @@ package Service;
 
 import Behavior.Manageable;
 import Behavior.Searchable;
-import Entity.Appointment;
 import Entity.Department;
 import Entity.Doctor;
 import Entity.Nurse;
@@ -37,7 +36,7 @@ public class DepartmentService implements Manageable, Searchable {
         System.out.println("Enter department available Beds :");
         int availableBeds = scanner.nextInt();
 
-        Department department = new Department(departmentId,departmentName,headDoctorId,doctors,nurses,bedCapacity,availableBeds);
+        Department department = new Department(departmentId,departmentName,headDoctorId, bedCapacity,availableBeds);
 
         return department;
 
@@ -48,6 +47,7 @@ public class DepartmentService implements Manageable, Searchable {
         Boolean continueFlag = true;
         while (continueFlag) {
 
+            String id = "";
             departmentList.add(addDepartment());
             System.out.println("Department add successfully");
 
@@ -135,6 +135,9 @@ public class DepartmentService implements Manageable, Searchable {
 
 
     }
+    public List<Doctor> getDoctors() {
+        return this.doctors;
+    }
 
     @Override
     public void add(Object entity) {
@@ -160,4 +163,6 @@ public class DepartmentService implements Manageable, Searchable {
     public Object searchById(String id) {
         return null;
     }
+
+
 }

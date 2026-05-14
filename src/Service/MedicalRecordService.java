@@ -3,192 +3,104 @@ package Service;
 import Behavior.Manageable;
 import Behavior.Searchable;
 import Entity.MedicalRecord;
-import Entity.Nurse;
+import Utils.HelperUtils;
+import Utils.InputHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class MedicalRecordService implements Manageable, Searchable {
 
-    Scanner scanner = new Scanner(System.in);
-    static List<MedicalRecord> medicalRecordList = new ArrayList<>();
-
-    public MedicalRecord addMedicalRecord() {
-
-        System.out.println("Enter record Id :");
-        String recordId = scanner.nextLine();
-
-        System.out.println("Enter patient Id :");
-        String patientId = scanner.nextLine();
-
-        System.out.println("Enter doctor Id :");
-        String doctorId = scanner.nextLine();
-
-        System.out.println("Enter visit Date:");
-        String visitDate = scanner.nextLine();
-        LocalDate date = LocalDate.parse(visitDate);
-
-        System.out.println("Enter diagnosis :");
-        String diagnosis = scanner.nextLine();
-
-        System.out.println("Enter prescription :");
-        String prescription = scanner.nextLine();
-
-        System.out.println("Enter test Results :");
-        String testResults = scanner.nextLine();
-
-        System.out.println("Enter notes :");
-        String notes = scanner.nextLine();
-
-        MedicalRecord medicalRecord = new MedicalRecord(recordId,patientId,doctorId,date,diagnosis,testResults,prescription,notes);
-
-        return medicalRecord;
-    }
-
-    public List<MedicalRecord> addMedicalRecords() {
-
-        Boolean continueFlag = true;
-        while (continueFlag) {
-
-            medicalRecordList.add(addMedicalRecord());
-            System.out.println("Medical record add successfully");
-
-            System.out.println("Enter c to add more , and q to exit");
-            if (scanner.nextLine().equalsIgnoreCase("q")) {
-                continueFlag = false;
-            }
-        }
-        return medicalRecordList;
-
-    }
-
-    public void editMedicalRecord(String recordId) {
-
-        for(MedicalRecord medicalRecord : medicalRecordList){
-
-            if(medicalRecord.getRecordId().equals(recordId)){
-
-                System.out.println("Enter updated patient Id :");
-                medicalRecord.setPatientId(scanner.nextLine());
-
-                System.out.println("Enter updated doctor Id :");
-                medicalRecord.setDoctorId(scanner.nextLine());
-
-                System.out.println("Enter updated visit Date:");
-                String visitDate = scanner.nextLine();
-                LocalDate date = LocalDate.parse(visitDate);
-                medicalRecord.setVisitDate(date);
-
-                System.out.println("Enter updated diagnosis :");
-                medicalRecord.setDiagnosis(scanner.nextLine());
-
-                System.out.println("Enter updated prescription :");
-                medicalRecord.setPrescription(scanner.nextLine());
-
-                System.out.println("Enter updated test Results :");
-                medicalRecord.setTestResults(scanner.nextLine());
-
-                System.out.println("Enter updated notes :");
-                medicalRecord.setNotes(scanner.nextLine());
-
-                System.out.println("Medical record updated successfully");
+    private static List<MedicalRecord> medicalRecordList = new ArrayList<>();
 
 
-            }
-
-        }
-
-    }
-
-    // remove medical record by ID
-    public void removeMedicalRecord(String recordId){
-
-        medicalRecordList.removeIf(M -> M.getRecordId() == recordId);
-        System.out.println("medical record removed successfully");
-
-        System.out.println("medical record not found");
-
-    }
-
-    //retrieve medical record
-    public MedicalRecord getMedicalRecord(String recordId){
-
-        for(MedicalRecord medicalRecord: medicalRecordList){
-            if(medicalRecord.getRecordId().equals(recordId)){
-                return medicalRecord;
-            }
-
-        }
-        System.out.println("medical Record not found");
-        return null;
-    }
-
-    //get Records By PatientId
-    public List<MedicalRecord> getRecordsByPatientId(String patientId){
-
-        List<MedicalRecord> patientMedicalRecords = new ArrayList<>();
-
-        for (MedicalRecord medicalRecord : medicalRecordList){
-
-            if(medicalRecord.getPatientId().equals(patientId)){
-                patientMedicalRecords.add(medicalRecord);
-            }
-        }
-
-        return patientMedicalRecords;
-    }
-
-    // get Records By DoctorId
-
-    public List<MedicalRecord> getRecordsByDoctorId(String doctorId){
-
-        List<MedicalRecord> doctorMedicalRecords = new ArrayList<>();
-
-        for (MedicalRecord medicalRecord : medicalRecordList){
-
-            if(medicalRecord.getDoctorId().equals(doctorId)){
-                doctorMedicalRecords.add(medicalRecord);
-            }
-        }
-
-        return doctorMedicalRecords;
-    }
-
-    //display PatientHistory
-
-    public void displayPatientHistory(String patientId) {
-
-        for(MedicalRecord medicalRecord : medicalRecordList){
-            if(medicalRecord.getPatientId().equals(patientId)){
-                medicalRecord.displayInfo();
-            }
-        }
-    }
 
     @Override
     public void add(Object entity) {
+        if (entity instanceof MedicalRecord record) {
 
+            if (searchById(record.getRecordId()) == null) {
+                medicalRecordList.add(record);
+                System.out.println("Success: Medical record added.");
+            } else {
+                System.out.println("Error: Record ID already exists.");
+            }
+        }
     }
 
     @Override
     public void remove(String id) {
 
+        boolean removed = medicalRecordList.removeIf(m -> m.getRecordId().equalsIgnoreCase(id));
+        if (removed) {
+            System.out.println("Success: Medical record [" + id + "] removed.");
+        } else {
+            System.out.println("Error: Record not found.");
+        }
     }
 
     @Override
     public List<Object> getAll() {
-        return List.of();
+        return new ArrayList<>(medicalRecordList);
+    }
+
+
+
+    @Override
+    public Object searchById(String id) {
+        return medicalRecordList.stream()
+                .filter(m -> m.getRecordId().equalsIgnoreCase(id))
+                .findFirst().orElse(null);
     }
 
     @Override
     public void search(String keyword) {
+        System.out.println("\n--- Search Results for Medical Records: '" + keyword + "' ---");
+        List<MedicalRecord> results = medicalRecordList.stream()
+                .filter(m -> m.getPatientId().equalsIgnoreCase(keyword) ||
+                        m.getDiagnosis().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
 
+        if (results.isEmpty()) {
+            System.out.println("No records match your search.");
+        } else {
+            results.forEach(MedicalRecord::displaySummary);
+        }
     }
 
-    @Override
-    public Object searchById(String id) {
-        return null;
+
+
+    public void createAndAddRecord() {
+
+        String recordId = HelperUtils.generateId("REC");
+        String patientId = InputHandler.getStringInput("Enter Patient ID: ");
+        String doctorId = InputHandler.getStringInput("Enter Doctor ID: ");
+        LocalDate date = InputHandler.getDateInput("Enter Visit Date");
+        String diagnosis = InputHandler.getStringInput("Diagnosis: ");
+        String prescription = InputHandler.getStringInput("Prescription: ");
+        String tests = InputHandler.getStringInput("Test Results: ");
+        String notes = InputHandler.getStringInput("Notes: ");
+
+        MedicalRecord record = new MedicalRecord(recordId, patientId, doctorId, date, diagnosis, tests, prescription, notes);
+        add(record);
+    }
+
+    public void displayPatientHistory(String patientId) {
+        System.out.println("\n--- Medical History for Patient: " + patientId + " ---");
+        boolean found = false;
+        for (MedicalRecord record : medicalRecordList) {
+            if (record.getPatientId().equalsIgnoreCase(patientId)) {
+                record.displayInfo();
+                found = true;
+            }
+        }
+        if (!found) System.out.println("No history found for this patient.");
+    }
+
+    public void displayPatientHistory() {
+
+
     }
 }

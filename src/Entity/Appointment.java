@@ -4,7 +4,6 @@ import Behavior.Displayable;
 import Utils.HelperUtils;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Appointment implements Displayable {
 
@@ -17,214 +16,110 @@ public class Appointment implements Displayable {
     private String reason;
     private String notes;
 
-    public Appointment(String notes, String reason, String status, String appointmentTime, LocalDate appointmentDate, String doctorId, String patientId, String appointmentId) {
-        this.notes = notes;
-        this.reason = reason;
-        this.status = status;
-        this.appointmentTime = appointmentTime;
-        this.appointmentDate = appointmentDate;
-        this.doctorId = doctorId;
-        this.patientId = patientId;
+    // --- Constructors ---
+
+    public Appointment(String appointmentId, String patientId, String doctorId,
+                       LocalDate appointmentDate, String appointmentTime,
+                       String status, String reason, String notes) {
         this.appointmentId = appointmentId;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.appointmentDate = appointmentDate;
+        this.appointmentTime = appointmentTime;
+        this.status = status;
+        this.reason = reason;
+        this.notes = notes;
     }
-    public Appointment(){
 
-
+    public Appointment() {
+        this.status = "Scheduled";
     }
 
-    public String getAppointmentId() {
-        return appointmentId;
-    }
+    // --- Getters ---
+
+    public String getAppointmentId() { return appointmentId; }
+    public String getPatientId() { return patientId; }
+    public String getDoctorId() { return doctorId; }
+    public LocalDate getAppointmentDate() { return appointmentDate; }
+    public String getAppointmentTime() { return appointmentTime; }
+    public String getStatus() { return status; }
+
+    // --- Setters (تم إكمالها لضمان عمل الحفظ) ---
 
     public void setAppointmentId(String appointmentId) {
         this.appointmentId = appointmentId;
     }
 
-    public String getPatientId() {
-        return patientId;
-    }
-
     public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getDoctorId() {
-        return doctorId;
+        this.patientId = patientId; // تم الإصلاح: ضروري لربط الموعد بالمريض
     }
 
     public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+        this.doctorId = doctorId; // تم الإصلاح: ضروري لربط الموعد بالطبيب
     }
 
-    public LocalDate getAppointmentDate() {
-        return appointmentDate;
+    public void setAppointmentDate(LocalDate date) {
+        this.appointmentDate = date; // تم الإصلاح: ضروري لعرض التاريخ
     }
 
-    public void setAppointmentDate(LocalDate appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-
-    public String getAppointmentTime() {
-        return appointmentTime;
-    }
-
-    public void setAppointmentTime(String appointmentTime) {
-        this.appointmentTime = appointmentTime;
-    }
-
-    public String getStatus() {
-        return status;
+    public void setAppointmentTime(String time) {
+        this.appointmentTime = time; // تم الإصلاح: ضروري لعرض الوقت
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = status; // تم الإصلاح: ضروري لتحديث حالة الموعد
     }
 
-    public String getReason() {
-        return reason;
-    }
+    // --- Display Methods ---
 
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public void displayInfo(){
+    @Override
+    public void displayInfo() {
+        System.out.println("\n--- Appointment Details ---");
         System.out.println("Appointment ID: " + appointmentId);
-        System.out.println("Patient ID: " + patientId);
-        System.out.println("Doctor ID: " + doctorId);
-        System.out.println("Appointment Date: " + appointmentDate);
-        System.out.println("Appointment Time: " + appointmentTime);
-        System.out.println("Status: " + status);
-        System.out.println("Reason: " + reason);
-        System.out.println("Notes: " + notes);
+        System.out.println("Patient ID    : " + patientId);
+        System.out.println("Doctor ID     : " + doctorId);
+        System.out.println("Date & Time   : " + appointmentDate + " at " + appointmentTime);
+        System.out.println("Status        : " + status);
+        System.out.println("Reason        : " + (reason != null ? reason : "General Checkup"));
+        System.out.println("Notes         : " + (notes != null ? notes : "No notes"));
     }
 
     @Override
     public void displaySummary() {
-
+        // تنسيق مخرج المواعيد ليظهر بشكل مرتب في القائمة الرئيسية
+        System.out.printf("Appt: %-10s | Date: %-12s | Time: %-8s | Status: %-12s\n",
+                appointmentId, appointmentDate, appointmentTime, status);
     }
 
-    // reschedule() method
+    // --- Business Logic ---
+
     public void reschedule(LocalDate newDate, String newTime) {
-
-        if(!HelperUtils.isValidDate(newDate)){
-            System.out.println("Invalid appointment date.");
+        if (!HelperUtils.isValidDate(newDate) || HelperUtils.isPastDate(newDate)) {
+            System.out.println("Error: Invalid or past date provided.");
             return;
         }
-
-        // Check if date is in the past
-        if (HelperUtils.isPastDate(newDate)) {
-            System.out.println("Appointment date cannot be in the past.");
-            return;
-        }
-
-        // Check if time is valid
-
-        if(HelperUtils.isNull(newTime)){
-            System.out.println("Invalid appointment time.");
-            return;
-        }
-
         this.appointmentDate = newDate;
         this.appointmentTime = newTime;
         this.status = "Rescheduled";
-
-        System.out.println("Appointment rescheduled successfully.");
+        System.out.println("Success: Appointment rescheduled.");
     }
 
-    // cancel() method
     public void cancel() {
-
         this.status = "Cancelled";
-
         System.out.println("Appointment cancelled.");
     }
 
-    // Complete Appointment
-    public void complete() {
-        this.status = "Completed";
+    // --- Overloaded addNotes Methods (Task 2.3) ---
 
-        System.out.println("Appointment marked as completed.");
+    public void addNotes(String notes) {
+        if (HelperUtils.isValidString(notes)) {
+            this.notes = notes;
+        }
     }
 
-    // overloaded addNotes(String notes)
-    public void addNotes(String notes){
-
-        // Check if notes are empty
-        if(HelperUtils.isNull(notes)){
-            System.out.println("Notes cannot be empty.");
-            return;
+    public void addNotes(String notes, String addedBy) {
+        if (HelperUtils.isValidString(notes) && HelperUtils.isValidString(addedBy)) {
+            this.notes = notes + " (Added By: " + addedBy + ")";
         }
-
-        // Add notes
-        this.notes = notes;
-
-        System.out.println("Notes added successfully.");
-
     }
-
-    // overloaded addNotes(String notes, String addedBy)
-
-    public void addNotes(String notes, String addedBy){
-
-        // Check if notes are empty
-        if(!HelperUtils.isValidString(notes)){
-            System.out.println("Notes cannot be empty.");
-            return;
-        }
-
-        // Check if addedBy is empty
-        if (!HelperUtils.isValidString(addedBy)) {
-            System.out.println("AddedBy field cannot be empty.");
-            return;
-        }
-
-        // Add notes
-        this.notes = notes + " , Added By:" + addedBy;
-
-        System.out.println("Notes added successfully ");
-
-    }
-
-    // overloaded addNotes(String notes, String addedBy, LocalDateTime timestamp)
-
-    public void addNotes(String notes, String addedBy, LocalDateTime timestamp){
-
-        // Check if notes are empty
-        if(!HelperUtils.isValidString(notes)){
-            System.out.println("Notes cannot be empty.");
-            return;
-        }
-
-
-        // Check if addedBy is empty
-        if (!HelperUtils.isValidString(addedBy)) {
-            System.out.println("AddedBy field cannot be empty.");
-            return;
-        }
-
-        // Validate timestamp
-        if (!HelperUtils.isValidDate(timestamp.toLocalDate())) {
-            System.out.println("Timestamp cannot be null.");
-            return;
-        }
-
-        // Store formatted note
-        this.notes =
-                "Added By: " + addedBy +
-                        "\nTimestamp: " + timestamp +
-                        "\nNote: " + notes;
-
-        System.out.println("Notes added successfully ");
-
-    }
-
 }

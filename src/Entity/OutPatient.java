@@ -6,17 +6,17 @@ import Utils.HelperUtils;
 import java.time.LocalDate;
 import java.util.List;
 
-// Level 3 Inheritance
+
 public class OutPatient extends Patient implements Displayable {
 
     private int visitCount;
     private LocalDate lastVisitDate;
     private String preferredDoctorId;
 
-    // Constructor chaining to Patient
+
     public OutPatient(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String patientId, String bloodGroup, List<String> allergies, String emergencyContact, LocalDate registrationDate, List<MedicalRecord> medicalRecords, String insuranceId, List<Appointment> appointments, int visitCount, LocalDate lastVisitDate, String preferredDoctorId) {
 
-        // Calls Patient constructor
+
         super(id, firstName, dateOfBirth, lastName, gender, phoneNumber, email, address, patientId, bloodGroup, allergies, emergencyContact, registrationDate, medicalRecords, insuranceId, appointments);
         this.visitCount = visitCount;
         this.lastVisitDate = lastVisitDate;
@@ -61,16 +61,16 @@ public class OutPatient extends Patient implements Displayable {
 
     }
 
-    // scheduleFollowUp()
+
     public void scheduleFollowUp(LocalDate followUpDate ) {
 
-        // Validate date using HelperUtils
+
         if (!HelperUtils.isValidDate(followUpDate)) {
             System.out.println("Invalid follow-up date.");
             return;
         }
 
-        // Prevent past follow-up dates
+
         if (HelperUtils.isPastDate(followUpDate)) {
             System.out.println("Follow-up date cannot be in the past.");
             return;
@@ -80,7 +80,7 @@ public class OutPatient extends Patient implements Displayable {
         System.out.println("Follow-up Date : " + followUpDate);
     }
 
-    // update Visit Count
+
     public void updateVisitCount(){
 
         //  validation (ensure object is in valid state)
@@ -90,10 +90,10 @@ public class OutPatient extends Patient implements Displayable {
         }
 
 
-        // Update visit count
+
         visitCount++;
 
-        // Update last visit date
+
         lastVisitDate = LocalDate.now();
 
         System.out.println("Visit count updated successfully.");

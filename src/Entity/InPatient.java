@@ -14,12 +14,10 @@ public class InPatient extends Patient {
 
     // --- Constructors ---
 
-    // Option 1: The No-Argument Constructor (Fixes the current errors)
     public InPatient() {
         super(); // Calls the empty constructor in Patient class
     }
 
-    // Option 2: The Full Constructor (Used for passing all data at once)
     public InPatient(String id, String firstName, LocalDate dateOfBirth, String lastName,
                      String gender, String phoneNumber, String email, String address,
                      String patientId, LocalDate admissionDate, String roomNumber, double dailyCharges) {
@@ -30,7 +28,6 @@ public class InPatient extends Patient {
         this.dailyCharges = dailyCharges;
     }
 
-    // --- Getters and Setters ---
 
     public LocalDate getAdmissionDate() {
         return admissionDate;
@@ -80,7 +77,6 @@ public class InPatient extends Patient {
         this.dailyCharges = dailyCharges;
     }
 
-    // --- Overridden Methods ---
 
     @Override
     public void displayInfo() {

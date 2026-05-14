@@ -59,7 +59,7 @@ public class Surgeon extends Doctor implements Displayable {
             return false;
         }
 
-        // Check if surgery is authorized
+
         if(!surgeryTypes.contains(surgeryType)){
 
             System.out.println("Surgery type not authorized: " + surgeryType);
@@ -67,7 +67,7 @@ public class Surgeon extends Doctor implements Displayable {
             return false;
         }
 
-        // Check operation theatre access
+
         if(!operationTheatreAccess){
 
             System.out.println("Access denied: No operation theatre privileges.");
@@ -75,7 +75,7 @@ public class Surgeon extends Doctor implements Displayable {
             return false;
         }
 
-        // Perform surgery
+
         surgeriesPerformed++;
 
         System.out.println("Surgery performed successfully: " + surgeryType);
@@ -84,7 +84,7 @@ public class Surgeon extends Doctor implements Displayable {
         return true;
     }
 
-    // updateSurgeryCount()
+
     public void updateSurgeryCount(int count) {
 
         if (HelperUtils.isValidNumber(count, 0, Integer.MAX_VALUE)) {
