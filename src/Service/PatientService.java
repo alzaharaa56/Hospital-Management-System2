@@ -138,4 +138,11 @@ public class PatientService implements Manageable, Searchable {
         System.out.println("Total Records Processed: " + patients.size());
     }
 
+    public void remove() {
+
+
+    }
+
+    public void search() {
+    }
 }

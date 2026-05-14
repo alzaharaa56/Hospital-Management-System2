@@ -1,8 +1,12 @@
 package Main;
 
-import Utils.InputHandler;
+import Entity.Appointment;
+import Entity.Department;
+import Entity.MedicalRecord;
+import Entity.Nurse;
 import Service.*;
-import Entity.*;
+import Utils.InputHandler;
+
 import java.time.LocalDate;
 
 class HospitalManagementApp {
@@ -60,7 +64,7 @@ class HospitalManagementApp {
         boolean back = false;
         while (!back) {
             System.out.println("\n--- 1. Patient Management ---");
-            System.out.println("1. Register\t5. View All\t8. Remove\t0. Back");
+            System.out.println("1. Register\t2. search\t5. View All\t8. Remove\t0. Back");
             int choice = InputHandler.getIntInput("Choice: ", 0, 8);
             switch (choice) {
                 case 1 -> patientService.addPatient(
@@ -68,6 +72,8 @@ class HospitalManagementApp {
                         InputHandler.getStringInput("Last Name: "),
                         InputHandler.getStringInput("Phone: ")
                 );
+                case 2 ->{patientService.search();}
+
                 case 5 -> patientService.displayAll();
                 case 8 -> patientService.remove(InputHandler.getStringInput("Enter ID: "));
                 case 0 -> back = true;
