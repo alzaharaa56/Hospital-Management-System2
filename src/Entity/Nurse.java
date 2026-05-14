@@ -16,7 +16,7 @@ public class Nurse extends Person implements Displayable {
     private String qualification;
     private List<Patient> assignedPatients;
 
-    // --- Constructors ---
+
 
 
     public Nurse(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String nurseId, String departmentId, String shift, String qualification) {

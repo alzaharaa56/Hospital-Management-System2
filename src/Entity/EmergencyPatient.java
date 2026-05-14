@@ -57,7 +57,7 @@ public class EmergencyPatient extends InPatient implements Displayable, Billable
         return false;
     }
 
-    // --- Getters & Setters ---
+
 
     public String getEmergencyType() { return emergencyType; }
     public void setEmergencyType(String emergencyType) { this.emergencyType = emergencyType; }

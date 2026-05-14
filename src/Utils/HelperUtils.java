@@ -29,7 +29,7 @@ public class HelperUtils {
         return str != null && !str.trim().isEmpty();
     }
 
-    // ***** 2. String Validation Methods (Overloaded) *****
+
 
     public static boolean isValidString(String str) {
         return str != null && !str.trim().isEmpty();
@@ -51,7 +51,7 @@ public class HelperUtils {
         return str.matches(regex);
     }
 
-    // ***** 3. ID Generation Methods (Overloaded) *****
+
 
     public static String generateId() {
         return UUID.randomUUID().toString();

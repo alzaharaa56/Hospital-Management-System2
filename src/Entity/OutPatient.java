@@ -83,7 +83,7 @@ public class OutPatient extends Patient implements Displayable {
 
     public void updateVisitCount(){
 
-        //  validation (ensure object is in valid state)
+
         if (!HelperUtils.isValidDate(lastVisitDate)) {
             System.out.println("Patient record is not initialized properly.");
             return;

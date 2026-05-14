@@ -2,7 +2,7 @@ package Entity;
 
 import java.time.LocalDate;
 
-// Level 3 Inheritance
+
 public class InPatient extends Patient {
 
     private LocalDate admissionDate;
@@ -12,10 +12,10 @@ public class InPatient extends Patient {
     private String admittingDoctorId;
     private double dailyCharges;
 
-    // --- Constructors ---
+
 
     public InPatient() {
-        super(); // Calls the empty constructor in Patient class
+        super();
     }
 
     public InPatient(String id, String firstName, LocalDate dateOfBirth, String lastName,

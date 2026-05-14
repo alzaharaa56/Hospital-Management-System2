@@ -44,7 +44,7 @@ public class MedicalRecord implements Displayable {
 
     @Override
     public void displaySummary() {
-        // تم تفعيل هذه الميثود لتظهر السجلات الطبية بشكل مختصر ومنظم في التقارير
+
         System.out.printf("Record: %-10s | Date: %-12s | Diagnosis: %-15s\n",
                 recordId, visitDate, (diagnosis != null ? diagnosis : "N/A"));
     }

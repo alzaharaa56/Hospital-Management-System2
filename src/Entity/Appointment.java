@@ -16,7 +16,7 @@ public class Appointment implements Displayable {
     private String reason;
     private String notes;
 
-    // --- Constructors ---
+
 
     public Appointment(String appointmentId, String patientId, String doctorId,
                        LocalDate appointmentDate, String appointmentTime,
@@ -35,7 +35,7 @@ public class Appointment implements Displayable {
         this.status = "Scheduled";
     }
 
-    // --- Getters ---
+
 
     public String getAppointmentId() { return appointmentId; }
     public String getPatientId() { return patientId; }
@@ -44,33 +44,33 @@ public class Appointment implements Displayable {
     public String getAppointmentTime() { return appointmentTime; }
     public String getStatus() { return status; }
 
-    // --- Setters (تم إكمالها لضمان عمل الحفظ) ---
+
 
     public void setAppointmentId(String appointmentId) {
         this.appointmentId = appointmentId;
     }
 
     public void setPatientId(String patientId) {
-        this.patientId = patientId; // تم الإصلاح: ضروري لربط الموعد بالمريض
+        this.patientId = patientId;
     }
 
     public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId; // تم الإصلاح: ضروري لربط الموعد بالطبيب
+        this.doctorId = doctorId;
     }
 
     public void setAppointmentDate(LocalDate date) {
-        this.appointmentDate = date; // تم الإصلاح: ضروري لعرض التاريخ
+        this.appointmentDate = date;
     }
 
     public void setAppointmentTime(String time) {
-        this.appointmentTime = time; // تم الإصلاح: ضروري لعرض الوقت
+        this.appointmentTime = time;
     }
 
     public void setStatus(String status) {
-        this.status = status; // تم الإصلاح: ضروري لتحديث حالة الموعد
+        this.status = status;
     }
 
-    // --- Display Methods ---
+
 
     @Override
     public void displayInfo() {
@@ -86,12 +86,12 @@ public class Appointment implements Displayable {
 
     @Override
     public void displaySummary() {
-        // تنسيق مخرج المواعيد ليظهر بشكل مرتب في القائمة الرئيسية
+
         System.out.printf("Appt: %-10s | Date: %-12s | Time: %-8s | Status: %-12s\n",
                 appointmentId, appointmentDate, appointmentTime, status);
     }
 
-    // --- Business Logic ---
+
 
     public void reschedule(LocalDate newDate, String newTime) {
         if (!HelperUtils.isValidDate(newDate) || HelperUtils.isPastDate(newDate)) {
@@ -109,7 +109,7 @@ public class Appointment implements Displayable {
         System.out.println("Appointment cancelled.");
     }
 
-    // --- Overloaded addNotes Methods (Task 2.3) ---
+
 
     public void addNotes(String notes) {
         if (HelperUtils.isValidString(notes)) {

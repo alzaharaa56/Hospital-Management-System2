@@ -11,7 +11,7 @@ public class Consultant extends Doctor implements Displayable {
 
     private List<String> consultationTypes;
     private boolean onlineConsultationAvailable;
-    private int consultationDuration; // int - in minutes
+    private int consultationDuration;
 
     public Consultant(String id, String firstName, LocalDate dateOfBirth, String lastName, String gender, String phoneNumber, String email, String address, String doctorId, String specialization, String qualification, int experienceYears, String departmentId, double consultationFee, List<String> availableSlots, List<Patient> assignedPatients, List<String> consultationTypes, boolean onlineConsultationAvailable, int consultationDuration) {
 
@@ -65,7 +65,7 @@ public class Consultant extends Doctor implements Displayable {
 
     public void scheduleConsultation(String consultationType, boolean online) {
 
-        // Validate consultation type
+
         if (HelperUtils.isNull(consultationType)) {
             System.out.println("Invalid consultation type.");
             return;
@@ -88,10 +88,10 @@ public class Consultant extends Doctor implements Displayable {
 
     }
 
-    // provideSecondOpinion()
+
     public void provideSecondOpinion(String patientCase) {
 
-        // Validate patientCase
+
         if (!HelperUtils.isValidString(patientCase)) {
             System.out.println("Invalid patient case.");
             return;
