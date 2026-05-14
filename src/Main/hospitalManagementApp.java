@@ -312,7 +312,7 @@ class HospitalManagementApp {
         doctorService.addDoctor("Laila", "Cardiology", "97778888", 70.0);
         doctorService.addDoctor("Fahad", "Neurology", "98889999", 60.0);
         doctorService.addDoctor("Muna", "General Medicine", "99990000", 45.0);
-        doctorService.addDoctor("Ali", "Surgery", "92221111", 80.0); // طبيب إضافي لضمان التنوع
+        doctorService.addDoctor("Ali", "Surgery", "92221111", 80.0);
 
         patientService.addPatient("Asma", "Al-Balushi", "91234567");
         patientService.addPatient("Khalid", "Al-Omani", "98765432");
@@ -356,7 +356,7 @@ class HospitalManagementApp {
         nurseService.add(new Nurse("NUR-03", "Fatma", "DEPT-02", "Night"));
         nurseService.add(new Nurse("NUR-04", "Maryam", "DEPT-03", "Morning"));
         nurseService.add(new Nurse("NUR-05", "Zakiya", "DEPT-02", "Evening"));
-        nurseService.add(new Nurse("NUR-06", "Laila", "DEPT-03", "Night")); // ممرضة إضافية للتنوع
+        nurseService.add(new Nurse("NUR-06", "Laila", "DEPT-03", "Night"));
         System.out.println("Data Loaded Successfully.\n");
     }
 }
