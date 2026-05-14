@@ -8,6 +8,7 @@ import Service.*;
 import Utils.InputHandler;
 
 import java.time.LocalDate;
+import java.util.List;
 
 class HospitalManagementApp {
 
@@ -63,20 +64,43 @@ class HospitalManagementApp {
     private static void patientManagementMenu() {
         boolean back = false;
         while (!back) {
-            System.out.println("\n--- 1. Patient Management ---");
-            System.out.println("1. Register\t2. search\t5. View All\t8. Remove\t0. Back");
+
+            System.out.println(Utils.MenuMessage.PatientManagementMenu);
+
             int choice = InputHandler.getIntInput("Choice: ", 0, 8);
             switch (choice) {
-                case 1 -> patientService.addPatient(
-                        InputHandler.getStringInput("First Name: "),
-                        InputHandler.getStringInput("Last Name: "),
-                        InputHandler.getStringInput("Phone: ")
-                );
-                case 2 ->{patientService.search();}
-
-                case 5 -> patientService.displayAll();
-                case 8 -> patientService.remove(InputHandler.getStringInput("Enter ID: "));
+                case 1 -> {
+                    String fn = InputHandler.getStringInput("First Name: ");
+                    String ln = InputHandler.getStringInput("Last Name: ");
+                    String ph = InputHandler.getStringInput("Phone: ");
+                    patientService.addPatient(fn, ln, ph);
+                }
+                case 2 -> {
+                    String fn = InputHandler.getStringInput("First Name: ");
+                    String ln = InputHandler.getStringInput("Last Name: ");
+                    String room = InputHandler.getStringInput("Room Number: ");
+                    String bed = InputHandler.getStringInput("Bed Number: ");
+                    patientService.addPatient(fn, ln, room, bed);
+                }
+                case 3 -> {
+                    String keyword = InputHandler.getStringInput("Enter Name or ID to search: ");
+                    patientService.search(keyword);
+                }
+                case 4 -> {
+                    patientService.displayPatients(true);
+                }
+                case 5 -> {
+                    patientService.displayAll();
+                }
+                case 6 -> {
+                    patientService.printFullPatientReport();
+                }
+                case 8 -> {
+                    String id = InputHandler.getStringInput("Enter Patient ID to remove: ");
+                    patientService.remove(id);
+                }
                 case 0 -> back = true;
+                default -> System.out.println("Invalid Option!");
             }
         }
     }
@@ -84,11 +108,37 @@ class HospitalManagementApp {
     private static void doctorManagementMenu() {
         boolean back = false;
         while (!back) {
+
             System.out.println("\n--- 2. Doctor Management ---");
-            System.out.println("4. View All Doctors\t0. Back");
+            System.out.println("1. Add New Doctor\t2. Search by Name/Spec\t3. View by Specialty");
+            System.out.println("4. View All Doctors\t5. Full Staff Report\t8. Remove Doctor\t0. Back");
+
             int choice = InputHandler.getIntInput("Choice: ");
-            if (choice == 4) doctorService.displayDoctors();
-            else if (choice == 0) back = true;
+            switch (choice) {
+                case 1 -> {
+                    String name = InputHandler.getStringInput("Doctor First Name: ");
+                    String spec = InputHandler.getStringInput("Specialization: ");
+                    String ph = InputHandler.getStringInput("Phone: ");
+                    double fee = (double) InputHandler.getIntInput("Consultation Fee: ");
+                    doctorService.addDoctor(name, spec, ph, fee);
+                }
+                case 2 -> {
+                    String keyword = InputHandler.getStringInput("Enter Name or Specialization: ");
+                    doctorService.search(keyword);
+                }
+                case 3 -> {
+                    String spec = InputHandler.getStringInput("Enter Specialty: ");
+                    doctorService.displayDoctors(spec);
+                }
+                case 4 -> doctorService.displayDoctors();
+                case 5 -> doctorService.printFullDoctorReport();
+                case 8 -> {
+                    String id = InputHandler.getStringInput("Enter Doctor ID: ");
+                    doctorService.remove(id);
+                }
+                case 0 -> back = true;
+                default -> System.out.println("Invalid Option!");
+            }
         }
     }
 
@@ -96,10 +146,34 @@ class HospitalManagementApp {
         boolean back = false;
         while (!back) {
             System.out.println("\n--- 3. Nurse Management ---");
-            System.out.println("2. View All Nurses\t0. Back");
+            System.out.println("1. Add Nurse (Quick)\t2. Add Nurse (Interactive)");
+            System.out.println("3. Search by Name/Shift\t4. View All Nurses");
+            System.out.println("8. Remove Nurse\t\t0. Back");
+
             int choice = InputHandler.getIntInput("Choice: ");
-            if (choice == 2) nurseService.displayAll();
-            else if (choice == 0) back = true;
+            switch (choice) {
+                case 1 -> {
+                    String id = InputHandler.getStringInput("Nurse ID: ");
+                    String name = InputHandler.getStringInput("Name: ");
+                    String dept = InputHandler.getStringInput("Dept ID: ");
+                    String shift = InputHandler.getStringInput("Shift (Morning/Evening/Night): ");
+                    nurseService.addNurse(id, name, dept, shift);
+                }
+                case 2 -> {
+                    nurseService.interactiveAddNurse();
+                }
+                case 3 -> {
+                    String keyword = InputHandler.getStringInput("Enter Name or Shift to search: ");
+                    nurseService.search(keyword);
+                }
+                case 4 -> nurseService.displayAll();
+                case 8 -> {
+                    String id = InputHandler.getStringInput("Enter Nurse ID to remove: ");
+                    nurseService.remove(id);
+                }
+                case 0 -> back = true;
+                default -> System.out.println("Invalid Option!");
+            }
         }
     }
 
@@ -107,10 +181,31 @@ class HospitalManagementApp {
         boolean back = false;
         while (!back) {
             System.out.println("\n--- 4. Appointment Management ---");
-            System.out.println("2. View All Appointments\t0. Back");
+            System.out.println("1. Schedule New Appointment\t2. View All Appointments");
+            System.out.println("3. Search by Patient/Doctor ID\t4. Cancel Appointment");
+            System.out.println("0. Back");
+
             int choice = InputHandler.getIntInput("Choice: ");
-            if (choice == 2) appointmentService.displayAll();
-            else if (choice == 0) back = true;
+            switch (choice) {
+                case 1 -> {
+                    String pId = InputHandler.getStringInput("Enter Patient ID: ");
+                    String dId = InputHandler.getStringInput("Enter Doctor ID: ");
+
+                    String time = InputHandler.getStringInput("Enter Time (e.g., 10:30 AM): ");
+                    appointmentService.createAppointment(pId, dId, LocalDate.now().plusDays(1), time);
+                }
+                case 2 -> appointmentService.displayAll();
+                case 3 -> {
+                    String keyword = InputHandler.getStringInput("Enter Patient or Doctor ID: ");
+                    appointmentService.search(keyword);
+                }
+                case 4 -> {
+                    String appId = InputHandler.getStringInput("Enter Appointment ID to cancel: ");
+                    appointmentService.cancelAppointment(appId);
+                }
+                case 0 -> back = true;
+                default -> System.out.println("Invalid Option!");
+            }
         }
     }
 
@@ -118,42 +213,85 @@ class HospitalManagementApp {
         boolean back = false;
         while (!back) {
             System.out.println("\n--- 5. Medical Records ---");
-            System.out.println("1. Create New\t2. View All\t3. View by Patient ID\t0. Back");
-            int choice = InputHandler.getIntInput("Choice: ", 0, 3);
+            System.out.println("1. Create New Record\t2. View All Records Summary");
+            System.out.println("3. View History by Patient ID\t4. Search by Diagnosis");
+            System.out.println("8. Remove Record\t0. Back");
+
+            int choice = InputHandler.getIntInput("Choice: ");
             switch (choice) {
-                case 2 -> recordService.displayPatientHistory();
-                case 3 -> recordService.displayPatientHistory(InputHandler.getStringInput("Patient ID: "));
+                case 1 -> {
+                    recordService.createAndAddRecord();
+                }
+                case 2 -> {
+                    List<Object> allRecords = recordService.getAll();
+                    if (allRecords.isEmpty()) {
+                        System.out.println("No records available.");
+                    } else {
+                        System.out.println("\n===== ALL MEDICAL RECORDS SUMMARY =====");
+                        allRecords.forEach(obj -> ((MedicalRecord) obj).displaySummary());
+                    }
+                }
+                case 3 -> {
+                    String pId = InputHandler.getStringInput("Enter Patient ID (e.g., PAT-01): ");
+                    recordService.displayPatientHistory(pId);
+                }
+                case 4 -> {
+                    String keyword = InputHandler.getStringInput("Enter Diagnosis keyword: ");
+                    recordService.search(keyword);
+                }
+                case 8 -> {
+                    String id = InputHandler.getStringInput("Enter Record ID to remove: ");
+                    recordService.remove(id);
+                }
                 case 0 -> back = true;
+                default -> System.out.println("Invalid Option!");
             }
         }
     }
 
     private static void departmentManagementMenu() {
-        boolean back = false;
-        while (!back) {
-            System.out.println("\n--- 6. Department Management ---");
-            System.out.println("1. Add\t2. View All\t3. View Details\t4. Assign Doctor\t0. Back");
-            int choice = InputHandler.getIntInput("Choice: ", 0, 6);
-            switch (choice) {
-                case 2 -> departmentService.displayAllDepartments();
-                case 3 -> {
-                    String id = InputHandler.getStringInput("Dept ID: ");
-                    Department dept = departmentService.getDepartment(id);
-                    if (dept != null) dept.displayInfo();
-                    else System.out.println("Department not found!");
+
+            boolean back = false;
+            while (!back) {
+                System.out.println("\n--- 6. Department Management ---");
+                System.out.println("1. Add New Dept (Interactive)\t2. View All Departments");
+                System.out.println("3. View Dept Details\t\t4. Assign Doctor to Dept");
+                System.out.println("5. Edit Department\t\t8. Remove Department\t0. Back");
+
+                int choice = InputHandler.getIntInput("Choice: ");
+                switch (choice) {
+                    case 1 -> {
+                        Department newDept = departmentService.addDepartment();
+                        departmentService.add(newDept);
+                    }
+                    case 2 -> departmentService.displayAllDepartments();
+                    case 3 -> {
+                        String id = InputHandler.getStringInput("Enter Dept ID: ");
+                        Department dept = departmentService.getDepartment(id);
+                        if (dept != null) dept.displayInfo();
+                    }
+                    case 4 -> {
+                        String dId = InputHandler.getStringInput("Doctor ID: ");
+                        String deptId = InputHandler.getStringInput("Department ID: ");
+                        departmentService.assignDoctorToDepartment(dId, deptId);
+                    }
+                    case 5 -> {
+                        String id = InputHandler.getStringInput("Enter Dept ID to edit: ");
+                        departmentService.editDepartment(id);
+                    }
+                    case 8 -> {
+                        String id = InputHandler.getStringInput("Enter Dept ID to remove: ");
+                        departmentService.removeDepartment(id);
+                    }
+                    case 0 -> back = true;
+                    default -> System.out.println("Invalid Option!");
                 }
-                case 4 -> departmentService.assignDoctorToDepartment(
-                        InputHandler.getStringInput("Doctor ID: "),
-                        InputHandler.getStringInput("Dept ID: ")
-                );
-                case 0 -> back = true;
             }
         }
-    }
 
     private static void reportsMenu() {
         System.out.println("\n--- 7. Reports & Statistics ---");
-        System.out.println("Functionality coming soon...");
+
     }
 
     private static void populateInitialData() {
